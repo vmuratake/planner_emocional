@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
     res.send('API do Diário de Bordo funcionando')
 })
 
+//GET
 app.get('/checkins', async (req, res) => {
     try {
         const sql = `
@@ -38,6 +39,78 @@ app.get('/checkins', async (req, res) => {
         console.error('Erro ao listar checkins:', error.message)
         res.status(500).json({ erro: 'Erro interno ao listar checkins'})
     }
+})
+
+
+//POST
+app.post('/checkins', async (req, res) => {
+    try {
+        const {
+        data_checkin,
+        nivel_energia,
+        peso_mental,
+        mente_texto,
+        necessidade,
+        pequena_vitoria
+    } = req.body
+
+    const ENERGIA = ['MUITO_CANSADA', 'CANSADA', 'OK', 'BEM', 'EM_PAZ']
+    const NECESSIDADES = ['DESCANSO', 'MOVIMENTO', 'SILENCIO', 'CONVERSA', 'ORACAO', 'ORGANIZACAO']
+
+    if (!data_checkin || !nivel_energia || !necessidade || !pequena_vitoria) {
+        return res.status(400).json({
+            erro: 'Campos obrigatórios: data_checkin, nivel_energia, necessidade, pequena_vitoria'
+        })
+    }
+
+    if (!ENERGIA.includes(nivel_energia)) {
+        return res.status(400).json({ erro: 'nivel_energia inválido'})
+    }
+
+    if (!NECESSIDADES.includes(necessidade)) {
+        return res.status(400).json({ erro: 'necessidade inválida'})
+    }
+
+    const sql = `
+      INSERT INTO TbCheckin
+      (data_checkin, nivel_energia, peso_mental, mente_texto, necessidade, pequena_vitoria)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `
+
+    const valores = [
+        data_checkin,
+        nivel_energia,
+        peso_mental || null,
+        mente_texto || null,
+        necessidade,
+        pequena_vitoria
+    ]
+
+    const [result] = await pool.query(sql, valores)
+
+    return res.status(201).json({
+        mensagem: 'Check-in criado com sucesso',
+        id: result.insertId
+    })
+  } catch (error) {
+    //tratamento para o erro de Unique Key da data
+    if (error.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({
+            erro: 'Já existe check-in para essa data'
+        })
+  }
+
+  // enum inválido / valor fora do domínio
+  if (
+    error.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD' ||
+    error.code === 'WARN_DATA_TRUNCATED'
+  ) {
+    return res.status(400).json({ erro: 'Valor inválido em nível de energia ou necessidade'})
+  }
+  
+  console.error('Erro ao criar checkin:', error.message)
+  return res.status(500).json({ erro: 'Erro interno ao criar checkin'})
+}
 })
 
 
