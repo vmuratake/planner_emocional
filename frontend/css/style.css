@@ -1,113 +1,185 @@
 :root {
-    --bg: #efedf3;
-    --paper: #fffdfa;
-    --ink: #2f3356;
-    --muted: #6f7399;
-    --line: #e8dfd5;
-    --primary: #6f7fd8;
-    --primary-dark: #5a69c4;
-    --light-btn: #f7f3ee;
+    --bg-lilac: #f4f2f7;
+    --card: #f8f5f4;
+    --paper: #fcfbfa;
+    --ink: #47508f;
+    --ink-soft: #7b80a6;
+    --line: #e8e2df;
+    --accent: #6b7ed6;
+    --border: #e6ddda;
 
+}
+
+* {
+    box-sizing: border-box; 
 }
 
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--ink);  
-
-}
-
-.page.diary-page {
-    max-width: 760px;
-    margin: 36px auto;
-    background: #fffdf8;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(47,51,86,0.8);
-    padding: 22px;
-
-}
-
-.diary-header {
-    display: grid;
-    grid-template-columns: 40px 1fr 40px;
-    align-items: center;
-    margin-bottom: 8px;
-
-}
-
-
-.diary-header h1 {
-    margin: 0;
-    text-align: center;
-    font-size: 36px;
+    min-height: 100vh;
     font-family: Georgia, 'Times New Roman', serif;
-    color: #4d5387;
-    
-    
+    background: 
+        radial-gradient(circle at 10% 10%, #ebe8f5 0%, transparent 30%),
+        radial-gradient(circle at 90% 90%, #f0e6ea 0%, transparent 30%),
+        var(--bg-lilac);
+    color: var(--ink);  
+    padding: 24px;
+
+}
+
+.journal-page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #faf8f7 0%, #f7f3f2 100%);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(52,45,66,0.12);
+    padding: 24px;
+
+}
+
+.journal-header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e8d8d8;
+    padding-bottom: 12px;
 }
 
 
 .back-btn {
-    background: transparent;
-    border: none;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    border: 1px solid #d6c9c5;
+    background: #fff;
+    border-radius: 8px;
+    width: 38px;
+    height: 32px;
     cursor: pointer;
-    font-size: 24px;
-    color: #9f8f87;
-
-
+    color: var(--ink);
 }
 
-.entry-date {
-    text-align: center;
-    font-size: 18px;
-    color: #5d628f;
-    margin: 10px 0 20px;
-
+.journal-header h1 {
+    margin: 0;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--ink);
+    font-weight: 700;
+    
 }
 
-.paper-card {
+
+.date-text {
+    margin: 12px 0 0;
+    font-size: 32px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+
+.paper {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 18px;
-
-}
-
-.paper-card h2 {
-    margin-top: 0;
-    font-size: 24px;
-    font-family: Georgia, 'Times New Roman', serif;
-    color: #4d5387;
-
+    border-radius: 18px;
+    padding: 20px;
 }
 
 
-.energy-group {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px;
-    margin: 14px 0 18px;
+.paper-title {
+    margin: 0 0 16px;
+    font-size: 42px;
+    color: var(--ink);
+    font-weight: 700;
+}
 
+/* Simula folhas pautadas */
+.notebook-form {
+    padding: 10px 14px 16px;
+    border: 1px solid #e8e0dd;
+    border-radius: 14px;
+    background: 
+    repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 38px,
+        rgba(122, 133, 179, 0.16) 39px,
+        transparent 40px
+
+    ),
+    #fff;
 }
 
 
-.energy-group legend {
-    padding: 0 8px;
-    color: var(--muted);
-
+.line-field {
+    margin-bottom: 16px;
+    padding: 6px 0;
 }
 
 
-.energy-group label {
+.field-label {
     display: block;
-    margin: 8px 0;
-    color: #3e426b;
-
+    margin-bottom: 8px;
+    font-size: 28px;
+    color: var(--ink);
+    font-family: "Brush Script MT", "Segoe Script", cursive;
+    letter-spacing: 0.4px;
 }
 
 
+.line-field input[type="text"],
+.line-field textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 21px;
+    color: #3f4675;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    padding: 6px 2px;
+    outline: none;
+}
+
+
+.line-field input[type="text"]::placeholder,
+.line-field textarea::placeholder {
+    color: #8c90ad;
+}
+
+
+.line-field textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.8;
+}
+
+
+/* radios */
+.radio-list {
+    display: grid;
+    gap: 8px;
+    padding-left: 2px;
+    font-size: 26px;
+    color: #3f4675;
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+.radio-list label {
+    display: grid;
+    gap: 8px;
+    padding-left: 2px;
+    font-size: 26px;
+    color: #3f4675;
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+.radio-list input[type="radio"] {
+    transform: scale(1.2);
+    accent-color: #7e88ca;
+}
+
+/* botões estilo suave */
 .actions {
     display: flex;
     gap: 12px;
@@ -116,34 +188,31 @@ body {
 }
 
 
-.btn {
+.btn-primary, .btn-secondary {
+    min-width: 150px;
     border-radius: 999px;
-    border: 1px solid var(--line);
-    padding: 10px 20px;
+    padding: 10px 18px;
+    font-size: 22px;
     cursor: pointer;
-    font-size: 15px;
-}
+    border: 1px solid #d7cfd0;
 
+}
 
 .btn-primary {
-    background: var(--primary);
-    color: #fff;;
-    border-color: transparent;
+    background: linear-gradient(180deg, #7284d9 0%, #6073cb 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 10px rgba(76, 91, 173, 0.35);
+}
+
+.btn-secondary {
+    background: #f8f6f6;
+    color: #585f87;
 
 }
 
-.btn-primary:hover {
-    background: var(--primary-dark);
-}
-
-.btn-light {
-    background: var(--light-btn);
-    color: #4c4f73;
-
-}
-
-.status {
-    margin-top: 14px;
-    color: #6a4f4f;
-    min-height: 20px;
+.status-msg {
+    margin-top: 12px;
+    color: #6e7399;
+    min-height: 18px;
 }

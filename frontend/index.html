@@ -7,38 +7,62 @@
     <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-<main class="page diary-page">
-    <header class="diary-header">
-        <button type="button" class="btn-back" aria-label="Voltar">←</button>
-        <h1>Nova Entrada</h1>
-    </header>
+<main class="journal-page">
+	  <header class="journal-header">
+    <button class="back-btn" type="button" aria-label="Voltar">←</button>
+    <h1>Nova Entrada</h1>
+    <p id="dataTopo" class="date-text"></p>
+  </header>
 
-    <p class="entry-date">
-        <strong id="dataAtual">-- de ----, ----</strong>
-    </p>
 
-    <section class="paper-card">
-        <h2>Como me sinto hoje?</h2>
 
-        <form id="checkinForm">
-            <fieldset class="energy-group">
-                <legend>Nível de energia</legend>
+    <section class="paper">
+        <h2 class="paper-title">Como me sinto hoje?</h2>
 
+        <form id="checkinForm" class="notebook-form">
+            <div class="line-field">
+                <label for="nivel_energia" class="field-label">Nível de energia</label>
+                <div class="radio-list">
                 <label><input type="radio" name="nivel_energia" value="MUITO_CANSADA"/> Muito cansada</label>
                 <label><input type="radio" name="nivel_energia" value="CANSADA"/> Cansada</label>
                 <label><input type="radio" name="nivel_energia" value=" OK"/> Ok</label>
                 <label><input type="radio" name="nivel_energia" value="BEM"/> Bem</label>
                 <label><input type="radio" name="nivel_energia" value="EM_PAZ"/> Em paz</label>    
-            </fieldset>
+                </div>
+            </div>
+
+            <div class="line-field">
+                <label for="peso_mental" class="field-label">Peso mental</label>
+                <input id="peso_mental" name="peso_mental" type="text" placeholder="Ex.: Leve, Moderado, Esgotada">
+            </div>
+
+             <div class="line-field">
+                <label for="necessidade" class="field-label">Necessidade principal</label>
+                <input id="necessidade" name="necessidade" type="text" placeholder="Ex.: Descansar, Conversar, Foco">
+            </div>
+
+            <div class="line-field">
+                <label for="mente_texto" class="field-label">O que ocupou minha mente hoje?</label>
+                <input id="mente_texto" name="mente_texto" rows="4" placeholder="Escreva como no diário...">
+            </div>
+
+
+             <div class="line-field">
+                <label for="pequena_vitoria" class="field-label">Pequena vitória de hoje</label>
+                <input id="pequena_vitoria" name="pequena_vitoria" type="text" placeholder="Algo que você conseguiu ou se orgulha hoje...">
+            </div>
+
 
             <div class="actions">
                 <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                <button type="button" id="btnLimpar" class="btn btn-light">Limpar</button>
+                <button type="button" id="btnLimpar" class="btn btn-secondary">Limpar</button>
             </div>
+
+                <p id="status" class="status-msg">Preencha e salve seu check-in.</p>
         </form>
     </section>
 
-    <p id="status" class="status"></p>
+
 </main>
     <script src="./js/app.js"></script>    
 </body>
