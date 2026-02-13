@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f1ea;
+    color: #2b2b2b;
+
+}
+
+.page {
+    max-width: 900px;
+    margin: 40 auto;
+    background: #fffdf8;
+    border: 1px solid #e7ddcf;
+    border-radius: 12px;
+    padding: 20px;
+
+}
