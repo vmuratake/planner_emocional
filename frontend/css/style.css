@@ -1,21 +1,149 @@
-* {
-    box-sizing: border-box;
+:root {
+    --bg: #efedf3;
+    --paper: #fffdfa;
+    --ink: #2f3356;
+    --muted: #6f7399;
+    --line: #e8dfd5;
+    --primary: #6f7fd8;
+    --primary-dark: #5a69c4;
+    --light-btn: #f7f3ee;
+
 }
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f1ea;
-    color: #2b2b2b;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--ink);  
 
 }
 
-.page {
-    max-width: 900px;
-    margin: 40 auto;
+.page.diary-page {
+    max-width: 760px;
+    margin: 36px auto;
     background: #fffdf8;
-    border: 1px solid #e7ddcf;
-    border-radius: 12px;
-    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(47,51,86,0.8);
+    padding: 22px;
 
+}
+
+.diary-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    margin-bottom: 8px;
+
+}
+
+
+.diary-header h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 36px;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #4d5387;
+    
+    
+}
+
+
+.back-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #9f8f87;
+
+
+}
+
+.entry-date {
+    text-align: center;
+    font-size: 18px;
+    color: #5d628f;
+    margin: 10px 0 20px;
+
+}
+
+.paper-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+
+}
+
+.paper-card h2 {
+    margin-top: 0;
+    font-size: 24px;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #4d5387;
+
+}
+
+
+.energy-group {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    margin: 14px 0 18px;
+
+}
+
+
+.energy-group legend {
+    padding: 0 8px;
+    color: var(--muted);
+
+}
+
+
+.energy-group label {
+    display: block;
+    margin: 8px 0;
+    color: #3e426b;
+
+}
+
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+
+}
+
+
+.btn {
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;;
+    border-color: transparent;
+
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-light {
+    background: var(--light-btn);
+    color: #4c4f73;
+
+}
+
+.status {
+    margin-top: 14px;
+    color: #6a4f4f;
+    min-height: 20px;
 }
