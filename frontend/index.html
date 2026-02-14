@@ -1,69 +1,146 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário de Bordo</title>
-    <link rel="stylesheet" href="./css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova Entrada • Diário de Bordo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-<main class="journal-page">
-	  <header class="journal-header">
-    <button class="back-btn" type="button" aria-label="Voltar">←</button>
-    <h1>Nova Entrada</h1>
-    <p id="dataTopo" class="date-text"></p>
-  </header>
+  <main class="page">
+    <!-- Topo -->
+    <header class="entry-header">
+      <button class="back-btn" type="button" aria-label="Voltar">←</button>
 
+      <h1 class="title">Nova Entrada</h1>
 
+      <div class="header-ornament" aria-hidden="true">
+        <span></span><i>✦</i><span></span>
+      </div>
 
-    <section class="paper">
-        <h2 class="paper-title">Como me sinto hoje?</h2>
+      <p id="dataAtual" class="entry-date">-- de ------ de ----</p>
+    </header>
 
-        <form id="checkinForm" class="notebook-form">
-            <div class="line-field">
-                <label for="nivel_energia" class="field-label">Nível de energia</label>
-                <div class="radio-list">
-                <label><input type="radio" name="nivel_energia" value="MUITO_CANSADA"/> Muito cansada</label>
-                <label><input type="radio" name="nivel_energia" value="CANSADA"/> Cansada</label>
-                <label><input type="radio" name="nivel_energia" value=" OK"/> Ok</label>
-                <label><input type="radio" name="nivel_energia" value="BEM"/> Bem</label>
-                <label><input type="radio" name="nivel_energia" value="EM_PAZ"/> Em paz</label>    
-                </div>
-            </div>
+    <!-- Folha -->
+    <section class="sheet">
+      <form id="checkinForm" class="sheet-content" novalidate>
+        <h2 class="question-title">Como me sinto hoje?</h2>
 
-            <div class="line-field">
-                <label for="peso_mental" class="field-label">Peso mental</label>
-                <input id="peso_mental" name="peso_mental" type="text" placeholder="Ex.: Leve, Moderado, Esgotada">
-            </div>
+        <!-- Nível de energia -->
+        <fieldset class="lined-group">
+          <legend>Nível de energia</legend>
 
-             <div class="line-field">
-                <label for="necessidade" class="field-label">Necessidade principal</label>
-                <input id="necessidade" name="necessidade" type="text" placeholder="Ex.: Descansar, Conversar, Foco">
-            </div>
+          <label class="radio-line">
+            <span>Muito cansada</span>
+            <input type="radio" name="nivel_energia" value="MUITO_CANSADA" />
+          </label>
 
-            <div class="line-field">
-                <label for="mente_texto" class="field-label">O que ocupou minha mente hoje?</label>
-                <input id="mente_texto" name="mente_texto" rows="4" placeholder="Escreva como no diário...">
-            </div>
+          <label class="radio-line">
+            <span>Cansada</span>
+            <input type="radio" name="nivel_energia" value="CANSADA" />
+          </label>
 
+          <label class="radio-line">
+            <span>Ok</span>
+            <input type="radio" name="nivel_energia" value="OK" />
+          </label>
 
-             <div class="line-field">
-                <label for="pequena_vitoria" class="field-label">Pequena vitória de hoje</label>
-                <input id="pequena_vitoria" name="pequena_vitoria" type="text" placeholder="Algo que você conseguiu ou se orgulha hoje...">
-            </div>
+          <label class="radio-line">
+            <span>Bem</span>
+            <input type="radio" name="nivel_energia" value="BEM" />
+          </label>
 
+          <label class="radio-line">
+            <span>Em paz</span>
+            <input type="radio" name="nivel_energia" value="EM_PAZ" />
+          </label>
+        </fieldset>
 
-            <div class="actions">
-                <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                <button type="button" id="btnLimpar" class="btn btn-secondary">Limpar</button>
-            </div>
+        <!-- Peso mental -->
+        <div class="lined-block">
+          <label for="peso_mental">Peso mental</label>
+          <input
+            id="peso_mental"
+            name="peso_mental"
+            type="text"
+            maxlength="50"
+            placeholder="Ex.: Leve, Moderado, Esgotada"
+          />
+        </div>
 
-                <p id="status" class="status-msg">Preencha e salve seu check-in.</p>
-        </form>
+        <!-- Necessidade principal: AGORA EM RADIO (mesmo padrão do nível de energia) -->
+        <fieldset class="lined-group">
+          <legend>Necessidade principal</legend>
+
+          <label class="radio-line">
+            <span>Descansar</span>
+            <input type="radio" name="necessidade" value="DESCANSAR" />
+          </label>
+
+          <label class="radio-line">
+            <span>Conversar</span>
+            <input type="radio" name="necessidade" value="CONVERSAR" />
+          </label>
+
+          <label class="radio-line">
+            <span>Foco</span>
+            <input type="radio" name="necessidade" value="FOCO" />
+          </label>
+
+          <label class="radio-line">
+            <span>Orar</span>
+            <input type="radio" name="necessidade" value="ORAR" />
+          </label>
+
+          <label class="radio-line">
+            <span>Pausar</span>
+            <input type="radio" name="necessidade" value="PAUSAR" />
+          </label>
+        </fieldset>
+
+        <!-- O que ocupou a mente -->
+        <div class="lined-block lined-textarea">
+          <label for="mente_texto">O que ocupou minha mente hoje?</label>
+          <textarea
+            id="mente_texto"
+            name="mente_texto"
+            rows="4"
+            maxlength="800"
+            placeholder="Escreva como no diário..."
+          ></textarea>
+        </div>
+
+        <!-- Pequena vitória -->
+        <div class="lined-block lined-textarea">
+          <label for="pequena_vitoria">Pequena vitória de hoje</label>
+          <textarea
+            id="pequena_vitoria"
+            name="pequena_vitoria"
+            rows="3"
+            maxlength="500"
+            placeholder="Algo que você conseguiu ou se orgulha hoje..."
+          ></textarea>
+        </div>
+
+        <!-- Ações -->
+        <div class="actions">
+          <button id="btnSalvar" type="submit" class="btn btn-primary">Salvar</button>
+          <button id="btnLimpar" type="button" class="btn btn-secondary">Limpar</button>
+        </div>
+
+        <!-- Status -->
+        <p id="statusMsg" class="status" role="status" aria-live="polite">
+          Formulário pronto para integração com API.
+        </p>
+      </form>
     </section>
+  </main>
 
-
-</main>
-    <script src="./js/app.js"></script>    
+  <script src="./js/app.js"></script>
 </body>
 </html>

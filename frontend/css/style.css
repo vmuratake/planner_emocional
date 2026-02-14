@@ -1,218 +1,306 @@
 :root {
-    --bg-lilac: #f4f2f7;
-    --card: #f8f5f4;
-    --paper: #fcfbfa;
-    --ink: #47508f;
-    --ink-soft: #7b80a6;
-    --line: #e8e2df;
-    --accent: #6b7ed6;
-    --border: #e6ddda;
+  --bg: #efedf3;
+  --paper: #f8f3e8;
+  --paper-2: #fcf9f1;
 
+  --ink-main: #30418d;
+  --ink-soft: #6472ad;
+  --ink-placeholder: rgba(77, 89, 152, 0.45);
+
+  --border: #dfd3d5;
+  --line: rgba(98, 106, 156, 0.18);
+
+  --accent: #7282dd;
+  --accent-dark: #5b6ed3;
+  --shadow: 0 8px 24px rgba(44, 49, 92, 0.12);
+
+  /* NOVO: controla distância das linhas */
+  --line-gap: 32px;
 }
 
 * {
-    box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Georgia, 'Times New Roman', serif;
-    background: 
-        radial-gradient(circle at 10% 10%, #ebe8f5 0%, transparent 30%),
-        radial-gradient(circle at 90% 90%, #f0e6ea 0%, transparent 30%),
-        var(--bg-lilac);
-    color: var(--ink);  
-    padding: 24px;
-
+  background:
+    radial-gradient(1200px 600px at 50% -300px, #ffffff 0%, transparent 75%),
+    linear-gradient(180deg, #f2f0f6 0%, #ebe8f1 100%);
+  font-family: "Cormorant Garamond", serif;
+  color: var(--ink-main);
+  padding: 8px;
 }
 
-.journal-page {
-    max-width: 780px;
-    margin: 0 auto;
-    background: linear-gradient(180deg, #faf8f7 0%, #f7f3f2 100%);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    box-shadow: 0 12px 30px rgba(52,45,66,0.12);
-    padding: 24px;
-
+/* cartão principal */
+.page {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  background: linear-gradient(180deg, #f7f4f6 0%, #f2eef2 100%);
+  border: 1px solid #ddd2d9;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 10px;
 }
 
-.journal-header {
-    text-align: center;
-    position: relative;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e8d8d8;
-    padding-bottom: 12px;
+/* topo */
+.entry-header {
+  text-align: center;
+  position: relative;
+  padding: 0 8px 8px;
+  border-bottom: 1px solid #e5d8db;
 }
-
 
 .back-btn {
-    position: absolute;
-    left: 0;
-    top: 4px;
-    border: 1px solid #d6c9c5;
-    background: #fff;
-    border-radius: 8px;
-    width: 38px;
-    height: 32px;
-    cursor: pointer;
-    color: var(--ink);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 30px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid #dccfd4;
+  background: #f8f4f4;
+  color: #c1948f;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.journal-header h1 {
-    margin: 0;
-    font-size: 48px;
-    line-height: 1;
-    color: var(--ink);
-    font-weight: 700;
-    
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 700;
+  color: #3f4e97;
 }
 
-
-.date-text {
-    margin: 12px 0 0;
-    font-size: 32px;
-    color: var(--ink);
-    font-weight: 600;
+.header-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  color: #d3a8a3;
 }
 
-
-.paper {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 20px;
+.header-ornament span {
+  width: clamp(80px, 18vw, 150px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e0bfbb, transparent);
 }
 
-
-.paper-title {
-    margin: 0 0 16px;
-    font-size: 42px;
-    color: var(--ink);
-    font-weight: 700;
+.header-ornament i {
+  font-style: normal;
+  font-size: 12px;
+  transform: translateY(-1px);
 }
 
-/* Simula folhas pautadas */
-.notebook-form {
-    padding: 10px 14px 16px;
-    border: 1px solid #e8e0dd;
-    border-radius: 14px;
-    background: 
+.entry-date {
+  margin: 0;
+  font-size: clamp(1.9rem, 3vw, 2.3rem);
+  font-weight: 700;
+  color: #4f5da2;
+}
+
+/* folha */
+.sheet {
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 5px;
+  background: linear-gradient(180deg, #fcf8f0 0%, #f6efe2 100%);
+}
+
+.sheet-content {
+  border: 1px solid #e2d6cc;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background:
     repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 38px,
-        rgba(122, 133, 179, 0.16) 39px,
-        transparent 40px
-
+      to bottom,
+      transparent 0,
+      transparent calc(var(--line-gap) - 1px),
+      var(--line) calc(var(--line-gap) - 1px),
+      var(--line-gap)
     ),
-    #fff;
+    linear-gradient(180deg, #fdfaf4 0%, #f8f1e4 100%);
 }
 
-
-.line-field {
-    margin-bottom: 16px;
-    padding: 6px 0;
+/* título dentro do formulário */
+.question-title {
+  margin: 0;
+  min-height: var(--line-gap);
+  display: flex;
+  align-items: center;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #33468f;
 }
 
-
-.field-label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 28px;
-    color: var(--ink);
-    font-family: "Brush Script MT", "Segoe Script", cursive;
-    letter-spacing: 0.4px;
+/* fieldset padrão (radio groups) */
+.lined-group {
+  margin: 0 0 2px;
+  padding: 0 8px 2px;
+  border: 1px solid #dfd3c9;
+  border-radius: 8px;
+  background: transparent;
 }
 
-
-.line-field input[type="text"],
-.line-field textarea {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-size: 21px;
-    color: #3f4675;
-    font-family: "Segoe UI", system-ui, sans-serif;
-    padding: 6px 2px;
-    outline: none;
+.lined-group legend {
+  padding: 0 6px;
+  font-family: "Dancing Script", cursive;
+  font-size: 1.8rem;
+  color: #33468e;
 }
 
-
-.line-field input[type="text"]::placeholder,
-.line-field textarea::placeholder {
-    color: #8c90ad;
+/* cada opção ocupando 1 linha do caderno */
+.radio-line {
+  min-height: var(--line-gap);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  color: #2f407f;
 }
 
-
-.line-field textarea {
-    resize: vertical;
-    min-height: 110px;
-    line-height: 1.8;
+.radio-line span {
+  transform: translateY(1px); /* alinha visualmente no meio da linha */
 }
 
-
-/* radios */
-.radio-list {
-    display: grid;
-    gap: 8px;
-    padding-left: 2px;
-    font-size: 26px;
-    color: #3f4675;
-    font-family: "Segoe UI", sans-serif;
+.radio-line input[type="radio"] {
+  transform: scale(0.86);
+  accent-color: #7484d7;
+  cursor: pointer;
 }
 
-
-.radio-list label {
-    display: grid;
-    gap: 8px;
-    padding-left: 2px;
-    font-size: 26px;
-    color: #3f4675;
-    font-family: "Segoe UI", sans-serif;
+/* blocos de input/textarea alinhados na linha */
+.lined-block {
+  min-height: calc(var(--line-gap) * 2);
+  margin-bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 2px;
 }
 
-
-.radio-list input[type="radio"] {
-    transform: scale(1.2);
-    accent-color: #7e88ca;
+.lined-textarea {
+  min-height: calc(var(--line-gap) * 3);
+  justify-content: flex-start;
+  padding-top: 2px;
 }
 
-/* botões estilo suave */
+.lined-block label {
+  margin: 0;
+  min-height: var(--line-gap);
+  display: flex;
+  align-items: center;
+  font-family: "Dancing Script", cursive;
+  font-size: 1.75rem;
+  color: #33468e;
+}
+
+.lined-block input,
+.lined-block textarea {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  resize: none;
+  margin: 0;
+  padding: 0 2px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  color: #2b3d80;
+  line-height: 1.35;
+}
+
+.lined-block textarea {
+  min-height: calc(var(--line-gap) * 1.8);
+}
+
+.lined-block input::placeholder,
+.lined-block textarea::placeholder {
+  color: var(--ink-placeholder);
+  opacity: 1;
+}
+
+/* botões */
 .actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 14px;
-
+  min-height: var(--line-gap);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
 }
 
-
-.btn-primary, .btn-secondary {
-    min-width: 150px;
-    border-radius: 999px;
-    padding: 10px 18px;
-    font-size: 22px;
-    cursor: pointer;
-    border: 1px solid #d7cfd0;
-
+.btn {
+  height: 30px;
+  min-width: 82px;
+  border-radius: 999px;
+  border: 1px solid #d3c8cb;
+  font-family: "Inter", sans-serif;
+  font-size: 0.77rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .btn-primary {
-    background: linear-gradient(180deg, #7284d9 0%, #6073cb 100%);
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 10px rgba(76, 91, 173, 0.35);
+  border: none;
+  background: linear-gradient(180deg, #7e8de8 0%, #6475d8 100%);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(84, 100, 187, 0.35);
 }
 
 .btn-secondary {
-    background: #f8f6f6;
-    color: #585f87;
-
+  background: #f5efee;
+  color: #6f78ab;
 }
 
-.status-msg {
-    margin-top: 12px;
-    color: #6e7399;
-    min-height: 18px;
+/* status */
+.status {
+  margin: 0;
+  min-height: var(--line-gap);
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #5d6cad;
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  :root {
+    --line-gap: 30px;
+  }
+
+  .page {
+    padding: 6px;
+  }
+
+  .title {
+    font-size: 2.4rem;
+  }
+
+  .entry-date {
+    font-size: 1.9rem;
+  }
+
+  .question-title {
+    font-size: 2.05rem;
+  }
+
+  .lined-group legend,
+  .lined-block label {
+    font-size: 1.65rem;
+  }
+
+  .radio-line {
+    font-size: 1.85rem;
+  }
 }
