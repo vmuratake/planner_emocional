@@ -41,6 +41,38 @@ app.get('/checkins', async (req, res) => {
     }
 })
 
+//GET por DATA
+app.get('/checkins/by-date/:data', async (req, res) => {
+    const { data } = req.params
+
+    try {
+        const sql = `
+        SELECT
+            id,
+            data_checkin,
+            nivel_energia,
+            peso_mental,
+            mente_texto,
+            necessidade,
+            pequena_vitoria,
+            created_at
+        FROM tbcheckin
+        WHERE data_checkin = ?
+        ORDER BY id DESC
+        `
+        const [rows] = await pool.query(sql, [data])
+
+    if (!rows.length) {
+      return res.status(404).json({ erro: "Não existe check-in para essa data" });
+    }
+
+    return res.status(200).json(rows[0])
+    } catch (error) {
+        console.error('Erro ao buscar checkins por data:', error.message)
+        res.status(500).json({ erro: 'Erro interno ao buscar checkins por data'})
+    }
+})
+
 
 //POST
 app.post('/checkins', async (req, res) => {
@@ -72,7 +104,7 @@ app.post('/checkins', async (req, res) => {
     }
 
     const sql = `
-      INSERT INTO TbCheckin
+      INSERT INTO tbcheckin
       (data_checkin, nivel_energia, peso_mental, mente_texto, necessidade, pequena_vitoria)
       VALUES (?, ?, ?, ?, ?, ?)
     `
