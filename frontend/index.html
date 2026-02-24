@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,10 +8,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="./css/style.css" />
 </head>
+
 <body>
   <main class="page">
     <!-- Topo -->
@@ -20,7 +24,7 @@
       <h1 class="title">Nova Entrada</h1>
 
       <div class="header-ornament" aria-hidden="true">
-        <span></span><i>✦</i><span></span>
+        <span></span><i>✦✦✦</i><span></span>
       </div>
 
       <p id="dataAtual" class="entry-date">-- de ------ de ----</p>
@@ -64,67 +68,57 @@
         <!-- Peso mental -->
         <div class="lined-block">
           <label for="peso_mental">Peso mental</label>
-          <input
-            id="peso_mental"
-            name="peso_mental"
-            type="text"
-            maxlength="50"
-            placeholder="Ex.: Leve, Moderado, Esgotada"
-          />
+          <input id="peso_mental" name="peso_mental" type="text" maxlength="50"
+            placeholder="Ex.: Leve, Moderado, Esgotada" />
         </div>
 
-        <!-- Necessidade principal: AGORA EM RADIO (mesmo padrão do nível de energia) -->
+        <!-- Necessidade principal -->
         <fieldset class="lined-group">
           <legend>Necessidade principal</legend>
 
           <label class="radio-line">
             <span>Descansar</span>
-            <input type="radio" name="necessidade" value="DESCANSAR" />
+            <input type="radio" name="necessidade" value="DESCANSO" />
+          </label>
+
+          <label class="radio-line">
+            <span>Movimento</span>
+            <input type="radio" name="necessidade" value="MOVIMENTO" />
+          </label>
+
+          <label class="radio-line">
+            <span>Silêncio</span>
+            <input type="radio" name="necessidade" value="SILENCIO" />
           </label>
 
           <label class="radio-line">
             <span>Conversar</span>
-            <input type="radio" name="necessidade" value="CONVERSAR" />
+            <input type="radio" name="necessidade" value="CONVERSA" />
           </label>
 
           <label class="radio-line">
-            <span>Foco</span>
-            <input type="radio" name="necessidade" value="FOCO" />
+            <span>Oração</span>
+            <input type="radio" name="necessidade" value="ORACAO" />
           </label>
 
           <label class="radio-line">
-            <span>Orar</span>
-            <input type="radio" name="necessidade" value="ORAR" />
-          </label>
-
-          <label class="radio-line">
-            <span>Pausar</span>
-            <input type="radio" name="necessidade" value="PAUSAR" />
+            <span>Organização</span>
+            <input type="radio" name="necessidade" value="ORGANIZACAO" />
           </label>
         </fieldset>
 
         <!-- O que ocupou a mente -->
         <div class="lined-block lined-textarea">
           <label for="mente_texto">O que ocupou minha mente hoje?</label>
-          <textarea
-            id="mente_texto"
-            name="mente_texto"
-            rows="4"
-            maxlength="800"
-            placeholder="Escreva como no diário..."
-          ></textarea>
+          <textarea id="mente_texto" name="mente_texto" rows="4" maxlength="800"
+            placeholder="Escreva como no diário..."></textarea>
         </div>
 
         <!-- Pequena vitória -->
         <div class="lined-block lined-textarea">
           <label for="pequena_vitoria">Pequena vitória de hoje</label>
-          <textarea
-            id="pequena_vitoria"
-            name="pequena_vitoria"
-            rows="3"
-            maxlength="500"
-            placeholder="Algo que você conseguiu ou se orgulha hoje..."
-          ></textarea>
+          <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="500"
+            placeholder="Algo que você conseguiu ou se orgulha hoje..."></textarea>
         </div>
 
         <!-- Ações -->
@@ -139,8 +133,17 @@
         </p>
       </form>
     </section>
+
+    <!-- Lista de Checkins -->
+    <section class="sheet" style="margin-top: 10px;">
+      <div class="sheet-content">
+        <h2 class="question-title">Últimos check-ins</h2>
+        <div id="listaCheckins" class="checkins-list"></div>
+      </div>
+    </section>
   </main>
 
   <script src="./js/app.js"></script>
 </body>
+
 </html>

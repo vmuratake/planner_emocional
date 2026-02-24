@@ -304,3 +304,52 @@ body {
     font-size: 1.85rem;
   }
 }
+
+.checkins-list {
+  display: grid;
+  gap: 10px;
+  padding: 6px 2px 2px;
+}
+
+.checkin-card {
+  border: 1px solid #dfd3c9;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.55);
+  padding: 10px 12px;
+}
+
+.checkin-card .top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.checkin-card .date {
+  font-weight: 700;
+  color: #33468f;
+  font-size: 1.15rem;
+}
+
+.checkin-card .pill {
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #d6cbd0;
+  background: #f5eff5;
+  color: #5b66a6;
+  white-space: nowrap;
+}
+
+
+.checkin-card .meta {
+  margin-top: 6px;
+  color: #2f407f;
+  font-size: 1.05rem;
+}
+
+
+.checkin-card .meta small {
+  color: rgba(47, 64, 127, 0.70);
+}
