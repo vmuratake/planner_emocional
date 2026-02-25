@@ -1,5 +1,5 @@
-import path from "path";
-import { fileURLToPath } from "url";
+const path = require("path");
+// import { fileURLToPath } from "url";
 
 const express = require('express')
 const cors = require('cors')
@@ -19,19 +19,17 @@ app.get("/", (req, res) => {
 });
 
 
-//rotas
+// Middlewares
 app.use(cors())
 app.use(express.json())
 
+// Health (API)
 app.get('/health', (req, res) => {
     res.status(200).json({ ok: true, service: 'planner_emocional_api' })
 })
 
-app.get('/', (req, res) => {
-    res.send('API do Diário de Bordo funcionando')
-})
 
-//GET
+// GET - listar checkins
 app.get('/checkins', async (req, res) => {
     try {
         const sql = `
@@ -50,8 +48,8 @@ app.get('/checkins', async (req, res) => {
         const [rows] = await pool.query(sql)
         res.status(200).json(rows)
     } catch (error) {
-        console.error('Erro ao listar checkins:', error.message)
-        res.status(500).json({ erro: 'Erro interno ao listar checkins' })
+        console.error('Erro ao listar registros:', error.message)
+        res.status(500).json({ erro: 'Erro interno ao listar registros' })
     }
 })
 
@@ -70,24 +68,26 @@ app.get('/checkins/by-date/:data', async (req, res) => {
                 necessidade,
                 pequena_vitoria,
                 created_at
-            FROM tbcheckin
-            ORDER BY data_checkin DESC, id DESC
+                FROM tbcheckin
+                WHERE data_checkin = ?
+                ORDER BY id DESC
+                LIMIT 1
             `;
         const [rows] = await pool.query(sql, [data])
 
         if (!rows.length) {
-            return res.status(404).json({ erro: "Não existe check-in para essa data" });
+            return res.status(404).json({ erro: "Não existe registro para essa data" });
         }
 
         return res.status(200).json(rows[0])
     } catch (error) {
-        console.error('Erro ao buscar checkins por data:', error.message)
-        res.status(500).json({ erro: 'Erro interno ao buscar checkins por data' })
+        console.error('Erro ao buscar registro por data:', error.message)
+        res.status(500).json({ erro: 'Erro interno ao buscar registro por data' })
     }
 })
 
 
-//POST
+//POST -  criar checkin
 app.post('/checkins', async (req, res) => {
     try {
         const {
@@ -124,10 +124,10 @@ app.post('/checkins', async (req, res) => {
         }
 
         const sql = `
-  INSERT INTO tbcheckin
-  (data_checkin, nivel_energia, peso_mental, ocupa_mente, necessidade, pequena_vitoria)
-  VALUES (?, ?, ?, ?, ?, ?)
-`;
+            INSERT INTO tbcheckin
+            (data_checkin, nivel_energia, peso_mental, ocupa_mente, necessidade, pequena_vitoria)
+            VALUES (?, ?, ?, ?, ?, ?)
+            `;
 
         const valores = [
             data_checkin,
@@ -141,14 +141,14 @@ app.post('/checkins', async (req, res) => {
         const [result] = await pool.query(sql, valores);
 
         return res.status(201).json({
-            mensagem: 'Check-in criado com sucesso',
+            mensagem: 'Registro criado com sucesso',
             id: result.insertId
         })
     } catch (error) {
         //tratamento para o erro de Unique Key da data
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({
-                erro: 'Já existe check-in para essa data'
+                erro: 'Já existe resgistro para essa data'
             })
         }
 
@@ -160,8 +160,8 @@ app.post('/checkins', async (req, res) => {
             return res.status(400).json({ erro: 'Valor inválido em nível de energia ou necessidade' })
         }
 
-        console.error('Erro ao criar checkin:', error.message)
-        return res.status(500).json({ erro: 'Erro interno ao criar checkin' })
+        console.error('Erro ao criar registro:', error.message)
+        return res.status(500).json({ erro: 'Erro interno ao criar registro' })
     }
 })
 
