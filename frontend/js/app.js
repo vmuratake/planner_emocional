@@ -23,17 +23,8 @@ function dataISOHoje() {
   return `${ano}-${mes}-${dia}`;
 }
 
-// aceita: Date, "YYYY-MM-DD", "YYYY-MM-DDT00:00:00.000Z"
 function normalizarISODate(value) {
   if (!value) return null;
-
-  if (value instanceof Date) {
-    const y = value.getFullYear();
-    const m = String(value.getMonth() + 1).padStart(2, "0");
-    const d = String(value.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  }
-
   const s = String(value);
   return s.length >= 10 ? s.slice(0, 10) : s;
 }
@@ -61,116 +52,98 @@ function escapeHtml(str) {
 
 dataAtualEl.textContent = formatarDataBR(new Date());
 
-// -------- RENDERIZAR LISTA (READ) --------
-function renderizarLista(checkins) {
-  console.log("[renderizarLista] recebido:", checkins);
-
+// -------- RENDER ÚLTIMO REGISTRO --------
+function renderizarUltimo(checkins) {
   if (!Array.isArray(checkins) || checkins.length === 0) {
     listaCheckinsEl.innerHTML =
-      '<p class="status">Nenhum check-in encontrado. Crie o primeiro ✨</p>';
+      '<p class="status">Nenhum registro encontrado ainda. Crie o primeiro ✨</p>';
     return;
   }
 
-  const html = checkins.slice(0, 10).map((c) => {
-    const peso = c.peso_mental
-      ? ` • <small>Peso mental: ${escapeHtml(c.peso_mental)}</small>`
-      : "";
+  const c = checkins[0]; // API ordena DESC: mais recente primeiro
 
-    const mente = c.mente_texto
-      ? `<div class="meta"><small>Mente: </small>${escapeHtml(c.mente_texto)}</div>`
-      : "";
-
-    const vitoria = c.pequena_vitoria
-      ? `<div class="meta"><small>Vitória: </small>${escapeHtml(
-          c.pequena_vitoria
-        )}</div>`
-      : "";
-
-    return `
-      <div class="checkin-card">
-        <div class="top">
-          <div class="date">${dataISOToBR(c.data_checkin)}</div>
-          <div class="pill">${escapeHtml(c.nivel_energia)} • ${escapeHtml(
-      c.necessidade
-    )}</div>
+  listaCheckinsEl.innerHTML = `
+    <div class="checkin-card ultimo">
+      <div class="top">
+        <div class="date">${dataISOToBR(c.data_checkin)}</div>
+        <div class="pill pill-${String(c.nivel_energia).toLowerCase()}">
+          ${escapeHtml(c.nivel_energia)} • ${escapeHtml(c.necessidade)}
         </div>
-        <div class="meta"><small>ID:</small> ${c.id}${peso}</div>
-        ${mente}
-        ${vitoria}
       </div>
-    `;
-  }).join("");
 
-  listaCheckinsEl.innerHTML = html;
+      <div class="meta">
+        <div class="row"><span class="k">🧠 Peso mental</span><span class="v">${escapeHtml(c.peso_mental)}</span></div>
+        <div class="row"><span class="k">✍️ O que ocupou minha mente</span><span class="v">${escapeHtml(c.ocupa_mente)}</span></div>
+        <div class="row"><span class="k">🏆 Pequena vitória</span><span class="v">${escapeHtml(c.pequena_vitoria)}</span></div>
+      </div>
+
+      <div class="foot">
+        <span class="id">ID: ${c.id}</span>
+        <span class="created">Criado em: ${dataISOToBR(normalizarISODate(c.created_at)) || ""}</span>
+      </div>
+    </div>
+  `;
 }
 
-async function carregarLista() {
+async function carregarUltimo() {
   try {
-    console.log("[carregarLista] GET", `${API_BASE_URL}/checkins`);
-
     const res = await fetch(`${API_BASE_URL}/checkins`);
-    const text = await res.text(); // <-- importante pra debugar qualquer coisa
-
-    console.log("[carregarLista] status:", res.status);
-    console.log("[carregarLista] body:", text);
+    const data = await res.json();
 
     if (!res.ok) {
-      listaCheckinsEl.innerHTML = `<p class="status">Erro ao carregar check-ins (${res.status}).</p>`;
+      listaCheckinsEl.innerHTML =
+        `<p class="status">Erro ao carregar registros (${res.status}).</p>`;
       return;
     }
 
-    const data = JSON.parse(text);
-    renderizarLista(data);
+    renderizarUltimo(data);
   } catch (e) {
-    console.error("[carregarLista] erro:", e);
-    listaCheckinsEl.innerHTML = `<p class="status">Falha de conexão ao carregar check-ins.</p>`;
+    listaCheckinsEl.innerHTML =
+      `<p class="status">Falha de conexão ao carregar registros.</p>`;
   }
 }
 
-// -------- LIMPAR FORM --------
+// -------- LIMPAR --------
 btnLimpar.addEventListener("click", () => {
   form.reset();
-  statusMsg.textContent =
-    "Formulário limpo. Selecione um nível de energia para continuar.";
+  statusMsg.textContent = "Formulário limpo. Preencha e salve seu registro.";
 });
 
 // -------- SUBMIT / POST --------
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const nivelSelecionado = document.querySelector(
-    'input[name="nivel_energia"]:checked'
-  );
-  if (!nivelSelecionado) {
-    statusMsg.textContent = "Selecione um nível de energia para continuar.";
+  const nivel = document.getElementById("nivel_energia").value;
+  const necessidade = document.getElementById("necessidade").value;
+
+  const pesoMental = document.getElementById("peso_mental").value.trim();
+  const ocupaMente = document.getElementById("ocupa_mente").value.trim();
+  const pequenaVitoria = document.getElementById("pequena_vitoria").value.trim();
+
+  if (!nivel) {
+    statusMsg.textContent = "Selecione um nível de energia.";
     return;
   }
-
-  const necessidadeSelecionada = document.querySelector(
-    'input[name="necessidade"]:checked'
-  );
-  if (!necessidadeSelecionada) {
-    statusMsg.textContent = "Selecione uma necessidade principal para continuar.";
+  if (!necessidade) {
+    statusMsg.textContent = "Selecione uma necessidade principal.";
+    return;
+  }
+  if (!pesoMental || !ocupaMente || !pequenaVitoria) {
+    statusMsg.textContent = "Preencha Peso mental, O que ocupou sua mente e Pequena vitória.";
     return;
   }
 
   const payload = {
     data_checkin: dataISOHoje(),
-    nivel_energia: nivelSelecionado.value,
-    peso_mental: document.getElementById("peso_mental").value.trim() || null,
-    mente_texto: document.getElementById("mente_texto").value.trim() || null,
-    necessidade: necessidadeSelecionada.value,
-    pequena_vitoria:
-      document.getElementById("pequena_vitoria").value.trim() || null,
+    nivel_energia: nivel,
+    peso_mental: pesoMental,
+    ocupa_mente: ocupaMente,
+    necessidade: necessidade,
+    pequena_vitoria: pequenaVitoria,
   };
 
-  if (!payload.pequena_vitoria) {
-    statusMsg.textContent = "Preencha a Pequena Vitória para salvar o check-in.";
-    return;
-  }
-
   try {
-    statusMsg.textContent = "Salvando check-in...";
+    statusMsg.textContent = "Salvando registro...";
 
     const response = await fetch(`${API_BASE_URL}/checkins`, {
       method: "POST",
@@ -181,16 +154,21 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
-      statusMsg.textContent = data.erro || "Erro ao salvar check-in.";
+      if (response.status === 409) {
+        statusMsg.textContent = data.erro || "Já existe registro para esta data.";
+        return;
+      }
+      statusMsg.textContent = data.erro || "Erro ao salvar registro.";
       return;
     }
 
-    statusMsg.textContent = data.mensagem || "Check-in salvo com sucesso!";
-    await carregarLista();
+    statusMsg.textContent = data.mensagem || "Registro salvo com sucesso!";
+    await carregarUltimo();
   } catch (error) {
     console.error("Erro de conexão no POST /checkins:", error);
     statusMsg.textContent = "Falha de conexão com a API.";
   }
 });
 
-carregarLista();
+// Carrega ao abrir
+carregarUltimo();

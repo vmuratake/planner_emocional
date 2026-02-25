@@ -21,7 +21,7 @@
     <header class="entry-header">
       <button class="back-btn" type="button" aria-label="Voltar">←</button>
 
-      <h1 class="title">Nova Entrada</h1>
+      <h1 class="title">Meu Diário</h1>
 
       <div class="header-ornament" aria-hidden="true">
         <span></span><i>✦✦✦</i><span></span>
@@ -33,91 +33,53 @@
     <!-- Folha -->
     <section class="sheet">
       <form id="checkinForm" class="sheet-content" novalidate>
-        <h2 class="question-title">Como me sinto hoje?</h2>
+        <h2 class="question-title">Meu registro de hoje</h2>
 
-        <!-- Nível de energia -->
-        <fieldset class="lined-group">
-          <legend>Nível de energia</legend>
+        <!-- Nível de energia (SELECT) -->
+        <div class="lined-block select-block">
+          <label for="nivel_energia">Nível de energia</label>
+          <select id="nivel_energia" name="nivel_energia" required>
+            <option value="" selected disabled>Selecione...</option>
+            <option value="MUITO_CANSADA">Muito cansada</option>
+            <option value="CANSADA">Cansada</option>
+            <option value="OK">Ok</option>
+            <option value="BEM">Bem</option>
+            <option value="EM_PAZ">Em paz</option>
+          </select>
+        </div>
 
-          <label class="radio-line">
-            <span>Muito cansada</span>
-            <input type="radio" name="nivel_energia" value="MUITO_CANSADA" />
-          </label>
-
-          <label class="radio-line">
-            <span>Cansada</span>
-            <input type="radio" name="nivel_energia" value="CANSADA" />
-          </label>
-
-          <label class="radio-line">
-            <span>Ok</span>
-            <input type="radio" name="nivel_energia" value="OK" />
-          </label>
-
-          <label class="radio-line">
-            <span>Bem</span>
-            <input type="radio" name="nivel_energia" value="BEM" />
-          </label>
-
-          <label class="radio-line">
-            <span>Em paz</span>
-            <input type="radio" name="nivel_energia" value="EM_PAZ" />
-          </label>
-        </fieldset>
-
-        <!-- Peso mental -->
+        <!-- Peso mental (obrigatório) -->
         <div class="lined-block">
           <label for="peso_mental">Peso mental</label>
-          <input id="peso_mental" name="peso_mental" type="text" maxlength="50"
+          <input id="peso_mental" name="peso_mental" type="text" maxlength="120" required
             placeholder="Ex.: Leve, Moderado, Esgotada" />
         </div>
 
-        <!-- Necessidade principal -->
-        <fieldset class="lined-group">
-          <legend>Necessidade principal</legend>
+        <!-- Necessidade principal (SELECT) -->
+        <div class="lined-block select-block">
+          <label for="necessidade">Necessidade principal</label>
+          <select id="necessidade" name="necessidade" required>
+            <option value="" selected disabled>Selecione...</option>
+            <option value="DESCANSO">Descanso</option>
+            <option value="MOVIMENTO">Movimento</option>
+            <option value="SILENCIO">Silêncio</option>
+            <option value="CONVERSA">Conversa</option>
+            <option value="ORACAO">Oração</option>
+            <option value="ORGANIZACAO">Organização</option>
+          </select>
+        </div>
 
-          <label class="radio-line">
-            <span>Descansar</span>
-            <input type="radio" name="necessidade" value="DESCANSO" />
-          </label>
-
-          <label class="radio-line">
-            <span>Movimento</span>
-            <input type="radio" name="necessidade" value="MOVIMENTO" />
-          </label>
-
-          <label class="radio-line">
-            <span>Silêncio</span>
-            <input type="radio" name="necessidade" value="SILENCIO" />
-          </label>
-
-          <label class="radio-line">
-            <span>Conversar</span>
-            <input type="radio" name="necessidade" value="CONVERSA" />
-          </label>
-
-          <label class="radio-line">
-            <span>Oração</span>
-            <input type="radio" name="necessidade" value="ORACAO" />
-          </label>
-
-          <label class="radio-line">
-            <span>Organização</span>
-            <input type="radio" name="necessidade" value="ORGANIZACAO" />
-          </label>
-        </fieldset>
-
-        <!-- O que ocupou a mente -->
+        <!-- O que ocupou a mente (ocupa_mente) -->
         <div class="lined-block lined-textarea">
-          <label for="mente_texto">O que ocupou minha mente hoje?</label>
-          <textarea id="mente_texto" name="mente_texto" rows="4" maxlength="800"
+          <label for="ocupa_mente">O que ocupou minha mente hoje?</label>
+          <textarea id="ocupa_mente" name="ocupa_mente" rows="4" maxlength="1200" required
             placeholder="Escreva como no diário..."></textarea>
         </div>
 
         <!-- Pequena vitória -->
         <div class="lined-block lined-textarea">
           <label for="pequena_vitoria">Pequena vitória de hoje</label>
-          <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="500"
+          <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="1200" required
             placeholder="Algo que você conseguiu ou se orgulha hoje..."></textarea>
         </div>
 
@@ -129,18 +91,22 @@
 
         <!-- Status -->
         <p id="statusMsg" class="status" role="status" aria-live="polite">
-          Formulário pronto para integração com API.
+          Preencha os campos e salve seu registro.
         </p>
       </form>
     </section>
 
-    <!-- Lista de Checkins -->
+    <!-- ÚLTIMO REGISTRO -->
     <section class="sheet" style="margin-top: 10px;">
       <div class="sheet-content">
-        <h2 class="question-title">Últimos check-ins</h2>
+        <div class="section-head">
+          <h2 class="question-title" style="margin:0;">Último registro</h2>
+          <span class="hint">atualiza automaticamente ao salvar</span>
+        </div>
         <div id="listaCheckins" class="checkins-list"></div>
       </div>
     </section>
+
   </main>
 
   <script src="./js/app.js"></script>
