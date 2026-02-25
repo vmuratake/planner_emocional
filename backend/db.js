@@ -2,11 +2,11 @@ const mysql = require('mysql2/promise')
 require('dotenv').config()
 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: Number(process.env.MYSQLPORT || 3306),
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -14,13 +14,14 @@ const pool = mysql.createPool({
 
 
 async function testConnection() {
-    try {
-        const conn = await pool.getConnection()
-        console.log('Conexão com MySQL OK')
-        conn.release()
-    } catch (error) {
-        console.error('Erro ao conectar no MySQL:', error.message)
-    }
+  try {
+    const conn = await pool.getConnection();
+    await conn.ping();
+    conn.release();
+    console.log("✅ Conectado ao MySQL (Railway) com sucesso!");
+  } catch (err) {
+    console.error("❌ Erro ao conectar no MySQL:", err.message);
+  }
 }
 
-module.exports = { pool, testConnection }
+module.exports = { pool, testConnection };
