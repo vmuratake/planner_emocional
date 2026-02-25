@@ -1,14 +1,10 @@
 const path = require("path");
-// import { fileURLToPath } from "url";
+const express = require("express");
+const cors = require("cors");
+const { pool, testConnection } = require("./db");
 
-const express = require('express')
-const cors = require('cors')
-const { pool, testConnection } = require('./db')
-const app = express()
+const app = express();
 const PORT = process.env.PORT || 3000;
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // serve o frontend (pasta ../frontend)
 app.use(express.static(path.resolve(__dirname, "../frontend")));
