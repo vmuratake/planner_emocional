@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nova Entrada • Diário de Bordo</title>
+  <title>Meu Diário • Planner Emocional</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,14 +17,18 @@
 
 <body>
   <main class="page">
+
     <!-- Topo -->
     <header class="entry-header">
-      <button class="back-btn" type="button" aria-label="Voltar">←</button>
+      <!-- Botão voltar (no lado direito, maior) -->
+      <button class="nav-btn nav-next" type="button" aria-label="Ir para o Calendário (em breve)" title="Calendário (em breve)">
+        →
+      </button>
 
       <h1 class="title">Meu Diário</h1>
 
       <div class="header-ornament" aria-hidden="true">
-        <span></span><i>✦✦✦</i><span></span>
+        <span></span><i>✦</i><span></span>
       </div>
 
       <p id="dataAtual" class="entry-date">-- de ------ de ----</p>
@@ -35,64 +39,94 @@
       <form id="checkinForm" class="sheet-content" novalidate>
         <h2 class="question-title">Meu registro de hoje</h2>
 
+
         <!-- Nível de energia (SELECT) -->
         <div class="lined-block select-block">
-          <label for="nivel_energia">Nível de energia</label>
+          <label for="nivel_energia"><span class="label-emoji">⚡</span> Nível de energia</label>
+
           <select id="nivel_energia" name="nivel_energia" required>
             <option value="" selected disabled>Selecione...</option>
-            <option value="MUITO_CANSADA">Muito cansada</option>
-            <option value="CANSADA">Cansada</option>
-            <option value="OK">Ok</option>
-            <option value="BEM">Bem</option>
-            <option value="EM_PAZ">Em paz</option>
+            <option value="MUITO_CANSADA">🥱 Muito cansada</option>
+            <option value="CANSADA">😮‍💨 Cansada</option>
+            <option value="OK">🙂 Ok</option>
+            <option value="BEM">😄 Bem</option>
+            <option value="EM_PAZ">😌 Em paz</option>
           </select>
+
+          <!-- Chips (igual ao mockup) -->
+          <div class="chips" data-target="nivel_energia" aria-label="Opções rápidas de nível de energia">
+            <button type="button" class="chip" data-value="MUITO_CANSADA">🥱 Muito cansada</button>
+            <button type="button" class="chip" data-value="CANSADA">😮‍💨 Cansada</button>
+            <button type="button" class="chip" data-value="OK">🙂 Ok</button>
+            <button type="button" class="chip" data-value="BEM">😄 Bem</button>
+            <button type="button" class="chip" data-value="EM_PAZ">😌 Em paz</button>
+          </div>
         </div>
 
         <!-- Peso mental (obrigatório) -->
         <div class="lined-block">
-          <label for="peso_mental">Peso mental</label>
+          <label for="peso_mental"><span class="label-emoji">🧠</span> Peso mental</label>
           <input id="peso_mental" name="peso_mental" type="text" maxlength="120" required
             placeholder="Ex.: Leve, Moderado, Esgotada" />
         </div>
 
         <!-- Necessidade principal (SELECT) -->
         <div class="lined-block select-block">
-          <label for="necessidade">Necessidade principal</label>
+          <label for="necessidade"><span class="label-emoji">🧭</span> Necessidade principal</label>
+
           <select id="necessidade" name="necessidade" required>
             <option value="" selected disabled>Selecione...</option>
-            <option value="DESCANSO">Descanso</option>
-            <option value="MOVIMENTO">Movimento</option>
-            <option value="SILENCIO">Silêncio</option>
-            <option value="CONVERSA">Conversa</option>
-            <option value="ORACAO">Oração</option>
-            <option value="ORGANIZACAO">Organização</option>
+            <option value="DESCANSO">🛌 Descanso</option>
+            <option value="MOVIMENTO">🏃 Movimento</option>
+            <option value="SILENCIO">🤫 Silêncio</option>
+            <option value="CONVERSA">💬 Conversa</option>
+            <option value="ORACAO">🙏 Oração</option>
+            <option value="ORGANIZACAO">🗂️ Organização</option>
           </select>
+
+          <!-- Chips (igual ao mockup) -->
+          <div class="chips" data-target="necessidade" aria-label="Opções rápidas de necessidade principal">
+            <button type="button" class="chip" data-value="DESCANSO">🛌 Descanso</button>
+            <button type="button" class="chip" data-value="MOVIMENTO">🏃 Movimento</button>
+            <button type="button" class="chip" data-value="SILENCIO">🤫 Silêncio</button>
+            <button type="button" class="chip" data-value="CONVERSA">💬 Conversa</button>
+            <button type="button" class="chip" data-value="ORACAO">🙏 Oração</button>
+            <button type="button" class="chip" data-value="ORGANIZACAO">🗂️ Organização</button>
+          </div>
         </div>
 
         <!-- O que ocupou a mente (ocupa_mente) -->
         <div class="lined-block lined-textarea">
-          <label for="ocupa_mente">O que ocupou minha mente hoje?</label>
+          <label for="ocupa_mente"><span class="label-emoji">💭</span> O que ocupou minha mente hoje?</label>
           <textarea id="ocupa_mente" name="ocupa_mente" rows="4" maxlength="1200" required
             placeholder="Escreva como no diário..."></textarea>
         </div>
 
         <!-- Pequena vitória -->
         <div class="lined-block lined-textarea">
-          <label for="pequena_vitoria">Pequena vitória de hoje</label>
+          <label for="pequena_vitoria"><span class="label-emoji">🏆</span> Pequena vitória de hoje</label>
           <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="1200" required
             placeholder="Algo que você conseguiu ou se orgulha hoje..."></textarea>
         </div>
 
         <!-- Ações -->
         <div class="actions">
-          <button id="btnSalvar" type="submit" class="btn btn-primary">Salvar</button>
-          <button id="btnLimpar" type="button" class="btn btn-secondary">Limpar</button>
+          <button id="btnSalvar" type="submit" class="btn btn-primary">
+            <span class="btn-ico"></span> Salvar
+          </button>
+
+          <button id="btnLimpar" type="button" class="btn btn-secondary">
+            <span class="btn-ico"></span> Limpar
+          </button>
         </div>
 
         <!-- Status -->
         <p id="statusMsg" class="status" role="status" aria-live="polite">
           Preencha os campos e salve seu registro.
         </p>
+
+        <!-- detalhe decorativo canto -->
+        <div class="decor-quill" aria-hidden="true"></div>
       </form>
     </section>
 
@@ -101,8 +135,15 @@
       <div class="sheet-content">
         <div class="section-head">
           <h2 class="question-title" style="margin:0;">Último registro</h2>
-          <span class="hint">atualiza automaticamente ao salvar</span>
+
+          <div class="section-actions">
+            <button id="btnRecarregar" type="button" class="icon-btn" aria-label="Recarregar último registro" title="Recarregar">
+              ↻
+            </button>
+            <span class="hint">atualiza automaticamente ao salvar</span>
+          </div>
         </div>
+
         <div id="listaCheckins" class="checkins-list"></div>
       </div>
     </section>

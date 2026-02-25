@@ -4,7 +4,44 @@ const form = document.getElementById("checkinForm");
 const statusMsg = document.getElementById("statusMsg");
 const dataAtualEl = document.getElementById("dataAtual");
 const btnLimpar = document.getElementById("btnLimpar");
+const btnSalvar = document.getElementById("btnSalvar");
 const listaCheckinsEl = document.getElementById("listaCheckins");
+const btnRecarregar = document.getElementById("btnRecarregar");
+
+// -------- STATUS HELPERS (NOVO) --------
+const STATUS_PADRAO = "Preencha os campos e salve seu registro.";
+let statusTimerId = null;
+
+function setStatus(msg) {
+  statusMsg.textContent = msg;
+}
+
+function setStatusTemporario(msg, ms = 2000) {
+  if (statusTimerId) clearTimeout(statusTimerId);
+  setStatus(msg);
+  statusTimerId = setTimeout(() => {
+    setStatus(STATUS_PADRAO);
+    statusTimerId = null;
+  }, ms);
+}
+
+function setSaving(isSaving) {
+  if (!btnSalvar) return;
+
+  btnSalvar.disabled = isSaving;
+  btnSalvar.setAttribute("aria-busy", String(isSaving));
+
+  if (isSaving) {
+    btnSalvar.dataset.originalText = btnSalvar.textContent;
+    btnSalvar.textContent = "Salvando…";
+    btnSalvar.style.opacity = "0.75";
+    btnSalvar.style.cursor = "not-allowed";
+  } else {
+    btnSalvar.textContent = btnSalvar.dataset.originalText || "Salvar";
+    btnSalvar.style.opacity = "";
+    btnSalvar.style.cursor = "";
+  }
+}
 
 // -------- DATA NO TOPO --------
 function formatarDataBR(data) {
@@ -52,34 +89,113 @@ function escapeHtml(str) {
 
 dataAtualEl.textContent = formatarDataBR(new Date());
 
+// -------- CHIPS -> SELECT --------
+function marcarChipAtivo(chipsContainer, value) {
+  const chips = chipsContainer.querySelectorAll(".chip");
+  chips.forEach((c) => c.classList.toggle("is-active", c.dataset.value === value));
+}
+
+function configurarChips() {
+  const containers = document.querySelectorAll(".chips[data-target]");
+  containers.forEach((wrap) => {
+    const targetId = wrap.dataset.target;
+    const select = document.getElementById(targetId);
+    if (!select) return;
+
+    // clique no chip seleciona o valor
+    wrap.addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+
+      const val = btn.dataset.value;
+      select.value = val;
+      marcarChipAtivo(wrap, val);
+    });
+
+    // quando select muda manualmente
+    select.addEventListener("change", () => {
+      marcarChipAtivo(wrap, select.value);
+    });
+  });
+}
+
+// -------- RESET APÓS SALVAR --------
+function limparChipsAtivos() {
+  document.querySelectorAll(".chips").forEach((wrap) => {
+    wrap.querySelectorAll(".chip").forEach((c) => c.classList.remove("is-active"));
+  });
+}
+
+function resetarFormularioAposSalvar() {
+  form.reset();
+  limparChipsAtivos();
+
+  // garante selects no "Selecione..."
+  const selEnergia = document.getElementById("nivel_energia");
+  const selNec = document.getElementById("necessidade");
+  if (selEnergia) selEnergia.selectedIndex = 0;
+  if (selNec) selNec.selectedIndex = 0;
+
+  selEnergia?.focus();
+}
+
 // -------- RENDER ÚLTIMO REGISTRO --------
-function renderizarUltimo(checkins) {
-  if (!Array.isArray(checkins) || checkins.length === 0) {
+function renderizarUltimo(registros) {
+  if (!Array.isArray(registros) || registros.length === 0) {
     listaCheckinsEl.innerHTML =
       '<p class="status">Nenhum registro encontrado ainda. Crie o primeiro ✨</p>';
     return;
   }
 
-  const c = checkins[0]; // API ordena DESC: mais recente primeiro
+  const r = registros[0];
+
+  const energiaEmoji = {
+    MUITO_CANSADA: "🥱",
+    CANSADA: "😮‍💨",
+    OK: "🙂",
+    BEM: "😄",
+    EM_PAZ: "😌",
+  };
+
+  const necessidadeEmoji = {
+    DESCANSO: "🛌",
+    MOVIMENTO: "🏃",
+    SILENCIO: "🤫",
+    CONVERSA: "💬",
+    ORACAO: "🙏",
+    ORGANIZACAO: "🗂️",
+  };
+
+  const eEm = energiaEmoji[r.nivel_energia] ? `${energiaEmoji[r.nivel_energia]} ` : "";
+  const nEm = necessidadeEmoji[r.necessidade] ? ` ${necessidadeEmoji[r.necessidade]}` : "";
 
   listaCheckinsEl.innerHTML = `
     <div class="checkin-card ultimo">
       <div class="top">
-        <div class="date">${dataISOToBR(c.data_checkin)}</div>
-        <div class="pill pill-${String(c.nivel_energia).toLowerCase()}">
-          ${escapeHtml(c.nivel_energia)} • ${escapeHtml(c.necessidade)}
-        </div>
+        <div class="date">${dataISOToBR(r.data_checkin)}</div>
+        <div class="pill">${eEm}${escapeHtml(r.nivel_energia)} • ${escapeHtml(r.necessidade)}${nEm}</div>
       </div>
 
       <div class="meta">
-        <div class="row"><span class="k">🧠 Peso mental</span><span class="v">${escapeHtml(c.peso_mental)}</span></div>
-        <div class="row"><span class="k">✍️ O que ocupou minha mente</span><span class="v">${escapeHtml(c.ocupa_mente)}</span></div>
-        <div class="row"><span class="k">🏆 Pequena vitória</span><span class="v">${escapeHtml(c.pequena_vitoria)}</span></div>
+        <div class="row">
+          <span class="k">🧠 Peso mental</span>
+          <span class="v">${escapeHtml(r.peso_mental)}</span>
+        </div>
+
+        <div class="row">
+          <span class="k">💭 O que ocupou minha mente</span>
+          <span class="v">${escapeHtml(r.ocupa_mente)}</span>
+        </div>
+
+        <div class="row">
+          <span class="k">🏆 Pequena vitória</span>
+          <span class="v">${escapeHtml(r.pequena_vitoria)}</span>
+        </div>
       </div>
 
       <div class="foot">
-        <span class="id">ID: ${c.id}</span>
-        <span class="created">Criado em: ${dataISOToBR(normalizarISODate(c.created_at)) || ""}</span>
+        <span class="id">ID: ${r.id}</span>
+        <span class="created">Criado em: ${dataISOToBR(normalizarISODate(r.created_at)) || ""}</span>
       </div>
     </div>
   `;
@@ -106,12 +222,29 @@ async function carregarUltimo() {
 // -------- LIMPAR --------
 btnLimpar.addEventListener("click", () => {
   form.reset();
-  statusMsg.textContent = "Formulário limpo. Preencha e salve seu registro.";
+  limparChipsAtivos();
+
+  const selEnergia = document.getElementById("nivel_energia");
+  const selNec = document.getElementById("necessidade");
+  if (selEnergia) selEnergia.selectedIndex = 0;
+  if (selNec) selNec.selectedIndex = 0;
+
+  setStatus("Formulário limpo. Preencha e salve seu registro.");
+});
+
+// -------- RECARREGAR --------
+btnRecarregar?.addEventListener("click", async () => {
+  setStatus("Recarregando último registro...");
+  await carregarUltimo();
+  setStatusTemporario("Último registro atualizado ✅", 1500);
 });
 
 // -------- SUBMIT / POST --------
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  // evita duplo clique/duplo submit
+  if (btnSalvar?.disabled) return;
 
   const nivel = document.getElementById("nivel_energia").value;
   const necessidade = document.getElementById("necessidade").value;
@@ -120,17 +253,10 @@ form.addEventListener("submit", async (event) => {
   const ocupaMente = document.getElementById("ocupa_mente").value.trim();
   const pequenaVitoria = document.getElementById("pequena_vitoria").value.trim();
 
-  if (!nivel) {
-    statusMsg.textContent = "Selecione um nível de energia.";
-    return;
-  }
-  if (!necessidade) {
-    statusMsg.textContent = "Selecione uma necessidade principal.";
-    return;
-  }
+  if (!nivel) return setStatus("Selecione um nível de energia.");
+  if (!necessidade) return setStatus("Selecione uma necessidade principal.");
   if (!pesoMental || !ocupaMente || !pequenaVitoria) {
-    statusMsg.textContent = "Preencha Peso mental, O que ocupou sua mente e Pequena vitória.";
-    return;
+    return setStatus("Preencha Peso mental, O que ocupou sua mente e Pequena vitória.");
   }
 
   const payload = {
@@ -143,7 +269,8 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
-    statusMsg.textContent = "Salvando registro...";
+    setSaving(true);
+    setStatus("Salvando registro...");
 
     const response = await fetch(`${API_BASE_URL}/checkins`, {
       method: "POST",
@@ -155,20 +282,28 @@ form.addEventListener("submit", async (event) => {
 
     if (!response.ok) {
       if (response.status === 409) {
-        statusMsg.textContent = data.erro || "Já existe registro para esta data.";
+        setStatus(data.erro || "Já existe registro para esta data.");
         return;
       }
-      statusMsg.textContent = data.erro || "Erro ao salvar registro.";
+      setStatus(data.erro || "Erro ao salvar registro.");
       return;
     }
 
-    statusMsg.textContent = data.mensagem || "Registro salvo com sucesso!";
+    // ✅ sucesso
+    resetarFormularioAposSalvar();
     await carregarUltimo();
+
+    // ✅ mostra “salvo ✅” por 2s e volta pro padrão
+    setStatusTemporario("Salvo ✅", 3000);
   } catch (error) {
     console.error("Erro de conexão no POST /checkins:", error);
-    statusMsg.textContent = "Falha de conexão com a API.";
+    setStatus("Falha de conexão com a API.");
+  } finally {
+    setSaving(false);
   }
 });
 
-// Carrega ao abrir
+// Inicialização
+setStatus(STATUS_PADRAO);
+configurarChips();
 carregarUltimo();
