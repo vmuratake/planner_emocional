@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://planneremocional-production.up.railway.app";
 
 const form = document.getElementById("checkinForm");
 const statusMsg = document.getElementById("statusMsg");
