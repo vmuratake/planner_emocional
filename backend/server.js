@@ -7,11 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // serve o frontend (pasta ../frontend)
-app.use(express.static(path.resolve(__dirname, "../frontend")));
+app.use(express.static(path.join(__dirname, "frontend")));
 
 // rota raiz abre o index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
 
