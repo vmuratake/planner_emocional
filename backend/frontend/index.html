@@ -20,8 +20,9 @@
 
     <!-- Topo -->
     <header class="entry-header">
-      <!-- Botão voltar (no lado direito, maior) -->
-      <button class="nav-btn nav-next" type="button" aria-label="Ir para o Calendário (em breve)" title="Calendário (em breve)">
+      <!-- Botão voltar -->
+      <button class="nav-btn nav-next" type="button" aria-label="Ir para o Calendário (em breve)"
+        title="Calendário (em breve)">
         →
       </button>
 
@@ -37,96 +38,268 @@
     <!-- Folha -->
     <section class="sheet">
       <form id="checkinForm" class="sheet-content" novalidate>
-        <h2 class="question-title">Meu registro de hoje</h2>
+        <div class="question-title" style="display:block;">
+          <div class="checkin-head">
+            <div class="checkin-title">✨ Check-in </div>
 
+            <div class="checkin-datetime">
+              📅 Data: <span id="infoDataCheckin">—</span><br>
+              ⏰ Horário do registro: <span id="infoHoraRegistro">—</span>
+            </div>
 
-        <!-- Nível de energia (SELECT) -->
-        <div class="lined-block select-block">
-          <label for="nivel_energia"><span class="label-emoji">⚡</span> Nível de energia</label>
+            <div class="checkin-tips-title">💡 DICAS DE USO</div>
 
-          <select id="nivel_energia" name="nivel_energia" required>
-            <option value="" selected disabled>Selecione...</option>
-            <option value="MUITO_CANSADA">🥱 Muito cansada</option>
-            <option value="CANSADA">😮‍💨 Cansada</option>
-            <option value="OK">🙂 Ok</option>
-            <option value="BEM">😄 Bem</option>
-            <option value="EM_PAZ">😌 Em paz</option>
-          </select>
-
-          <!-- Chips (igual ao mockup) -->
-          <div class="chips" data-target="nivel_energia" aria-label="Opções rápidas de nível de energia">
-            <button type="button" class="chip" data-value="MUITO_CANSADA">🥱 Muito cansada</button>
-            <button type="button" class="chip" data-value="CANSADA">😮‍💨 Cansada</button>
-            <button type="button" class="chip" data-value="OK">🙂 Ok</button>
-            <button type="button" class="chip" data-value="BEM">😄 Bem</button>
-            <button type="button" class="chip" data-value="EM_PAZ">😌 Em paz</button>
+            <div class="checkin-tips">
+              Não é obrigatório preencher tudo<br>
+              Alguns dias serão curtos — e isso está tudo bem<br>
+              O valor está na continuidade, não na perfeição<br>
+              Este diário é um espaço seguro para você ser honesto(a) consigo mesmo(a)<br>
+            </div>
           </div>
-        </div>
 
-        <!-- Peso mental (obrigatório) -->
-        <div class="lined-block">
-          <label for="peso_mental"><span class="label-emoji">🧠</span> Peso mental</label>
-          <input id="peso_mental" name="peso_mental" type="text" maxlength="120" required
-            placeholder="Ex.: Leve, Moderado, Esgotada" />
-        </div>
 
-        <!-- Necessidade principal (SELECT) -->
-        <div class="lined-block select-block">
-          <label for="necessidade"><span class="label-emoji">🧭</span> Necessidade principal</label>
+          <!-- 🔋 Energia Física (SELECT) -->
+          <div class="lined-block select-block">
+            <label for="energia_fisica">
+              <span class="label-emoji">🔋</span>
+              <span class="label-title">Energia Física</span>
+              <span class="label-sub">Como meu corpo se sente hoje?</span>
+            </label>
 
-          <select id="necessidade" name="necessidade" required>
-            <option value="" selected disabled>Selecione...</option>
-            <option value="DESCANSO">🛌 Descanso</option>
-            <option value="MOVIMENTO">🏃 Movimento</option>
-            <option value="SILENCIO">🤫 Silêncio</option>
-            <option value="CONVERSA">💬 Conversa</option>
-            <option value="ORACAO">🙏 Oração</option>
-            <option value="ORGANIZACAO">🗂️ Organização</option>
-          </select>
+            <select id="energia_fisica" name="energia_fisica" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="ENERGIZADO">⚡ Energizado</option>
+              <option value="CANSADO">😮‍💨 Cansado</option>
+              <option value="EXAUSTO">🥱 Exausto</option>
+              <option value="LEVE">🍃 Leve</option>
+              <option value="PESADO">🪨 Pesado</option>
+              <option value="TENSO">🧱 Tenso</option>
+              <option value="RELAXADO">🧘 Relaxado</option>
+            </select>
 
-          <!-- Chips (igual ao mockup) -->
-          <div class="chips" data-target="necessidade" aria-label="Opções rápidas de necessidade principal">
-            <button type="button" class="chip" data-value="DESCANSO">🛌 Descanso</button>
-            <button type="button" class="chip" data-value="MOVIMENTO">🏃 Movimento</button>
-            <button type="button" class="chip" data-value="SILENCIO">🤫 Silêncio</button>
-            <button type="button" class="chip" data-value="CONVERSA">💬 Conversa</button>
-            <button type="button" class="chip" data-value="ORACAO">🙏 Oração</button>
-            <button type="button" class="chip" data-value="ORGANIZACAO">🗂️ Organização</button>
+            <!-- Chips  -->
+            <div class="chips" data-target="energia_fisica" aria-label="Opções rápidas de energia física">
+              <button type="button" class="chip" data-value="ENERGIZADO">⚡ Energizado</button>
+              <button type="button" class="chip" data-value="CANSADO">😮‍💨 Cansado</button>
+              <button type="button" class="chip" data-value="EXAUSTO">🥱 Exausto</button>
+              <button type="button" class="chip" data-value="LEVE">🍃 Leve</button>
+              <button type="button" class="chip" data-value="PESADO">🪨 Pesado</button>
+              <button type="button" class="chip" data-value="TENSO">🧱 Tenso</button>
+              <button type="button" class="chip" data-value="RELAXADO">🧘 Relaxado</button>
+            </div>
           </div>
-        </div>
 
-        <!-- O que ocupou a mente (ocupa_mente) -->
-        <div class="lined-block lined-textarea">
-          <label for="ocupa_mente"><span class="label-emoji">💭</span> O que ocupou minha mente hoje?</label>
-          <textarea id="ocupa_mente" name="ocupa_mente" rows="4" maxlength="1200" required
-            placeholder="Escreva como no diário..."></textarea>
-        </div>
 
-        <!-- Pequena vitória -->
-        <div class="lined-block lined-textarea">
-          <label for="pequena_vitoria"><span class="label-emoji">🏆</span> Pequena vitória de hoje</label>
-          <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="1200" required
-            placeholder="Algo que você conseguiu ou se orgulha hoje..."></textarea>
-        </div>
+          <!-- 🧠 Energia Mental (SELECT) -->
+          <div class="lined-block select-block">
+            <label for="energia_mental">
+              <span class="label-emoji">🧠</span>
+              <span class="label-title">Energia Mental</span>
+              <span class="label-sub">Como está minha mente hoje?</span>
+            </label>
 
-        <!-- Ações -->
-        <div class="actions">
-          <button id="btnSalvar" type="submit" class="btn btn-primary">
-            <span class="btn-ico"></span> Salvar
-          </button>
+            <select id="energia_mental" name="energia_mental" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="CLARA">🔎 Clara</option>
+              <option value="CONFUSA">🌀 Confusa</option>
+              <option value="ACELERADA">⚡ Acelerada</option>
+              <option value="DISPERSA">🎈 Dispersa</option>
+              <option value="FOCADA">🎯 Focada</option>
+              <option value="SOBRECARREGADA">🧯 Sobrecarregada</option>
+              <option value="CRIATIVA">💡 Criativa</option>
+            </select>
 
-          <button id="btnLimpar" type="button" class="btn btn-secondary">
-            <span class="btn-ico"></span> Limpar
-          </button>
-        </div>
+            <!-- Chips  -->
+            <div class="chips" data-target="energia_mental" aria-label="Opções rápidas de energia mental">
+              <button type="button" class="chip" data-value="CLARA">🔎 Clara</button>
+              <button type="button" class="chip" data-value="CONFUSA">🌀 Confusa</button>
+              <button type="button" class="chip" data-value="ACELERADA">⚡ Acelerada</button>
+              <button type="button" class="chip" data-value="DISPERSA">🎈 Dispersa</button>
+              <button type="button" class="chip" data-value="FOCADA">🎯 Focada</button>
+              <button type="button" class="chip" data-value="SOBRECARREGADA">🧯 Sobrecarregada</button>
+              <button type="button" class="chip" data-value="CRIATIVA">💡 Criativa</button>
+            </div>
+          </div>
 
-        <!-- Status -->
-        <p id="statusMsg" class="status" role="status" aria-live="polite">
-          Preencha os campos e salve seu registro.
-        </p>
 
-        <!-- detalhe decorativo canto -->
-        <div class="decor-quill" aria-hidden="true"></div>
+          <!-- ❤️ Energia Emocional (SELECT) -->
+          <div class="lined-block select-block">
+            <label for="energia_emocional">
+              <span class="label-emoji">❤️</span>
+              <span class="label-title">Energia Emocional</span>
+              <span class="label-sub">Estou mais aberto(a) ou fechado(a) emocionalmente?</span>
+            </label>
+
+            <select id="energia_emocional" name="energia_emocional" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="ESTAVEL">⚖️ Estável</option>
+              <option value="SENSIVEL">🌸 Sensível</option>
+              <option value="REATIVA">🔥 Reativo(a)</option>
+              <option value="ACOLHEDORA">🤲 Acolhedor(a)</option>
+              <option value="DEFENSIVA">🛡️ Defensivo(a)</option>
+              <option value="VULNERAVEL">🫶 Vulnerável</option>
+              <option value="INSENSIVEL">🧊 Insensível</option>
+            </select>
+
+            <!-- Chips  -->
+            <div class="chips" data-target="energia_emocional" aria-label="Opções rápidas de energia emocional">
+              <button type="button" class="chip" data-value="ESTAVEL">⚖️ Estável</button>
+              <button type="button" class="chip" data-value="SENSIVEL">🌸 Sensível</button>
+              <button type="button" class="chip" data-value="REATIVA">🔥 Reativo(a)</button>
+              <button type="button" class="chip" data-value="ACOLHEDORA">🤲 Acolhedor(a)</button>
+              <button type="button" class="chip" data-value="DEFENSIVA">🛡️ Defensivo(a)</button>
+              <button type="button" class="chip" data-value="VULNERAVEL">🫶 Vulnerável</button>
+              <button type="button" class="chip" data-value="INSENSIVEL">🧊 Insensível</button>
+            </div>
+          </div>
+
+
+          <!-- 🌱 Energia Espiritual (SELECT) -->
+          <div class="lined-block select-block">
+            <label for="energia_espiritual">
+              <span class="label-emoji">🌱</span>
+              <span class="label-title">Energia Espiritual</span>
+              <span class="label-sub">Como me sinto espiritualmente hoje?</span>
+            </label>
+
+            <select id="energia_espiritual" name="energia_espiritual" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="CONECTADA">🔗 Conectado(a)</option>
+              <option value="DESCONECTADA">📴 Desconectado(a)</option>
+              <option value="EM_PAZ">🕊️ Em paz</option>
+              <option value="EM_CONFLITO">⚔️ Em conflito</option>
+              <option value="CONFIANTE">🛐 Confiante</option>
+              <option value="VAZIA">🫙 Vazio(a)</option>
+              <option value="ESPERANCOSA">🌟 Esperançoso(a)</option>
+            </select>
+
+            <!-- Chips  -->
+            <div class="chips" data-target="energia_espiritual" aria-label="Opções rápidas de energia espiritual">
+              <button type="button" class="chip" data-value="CONECTADA">🔗 Conectado(a)</button>
+              <button type="button" class="chip" data-value="DESCONECTADA">📴 Desconectado(a)</button>
+              <button type="button" class="chip" data-value="EM_PAZ">🕊️ Em paz</button>
+              <button type="button" class="chip" data-value="EM_CONFLITO">⚔️ Em conflito</button>
+              <button type="button" class="chip" data-value="CONFIANTE">🛐 Confiante</button>
+              <button type="button" class="chip" data-value="VAZIA">🫙 Vazio(a)</button>
+              <button type="button" class="chip" data-value="ESPERANCOSA">🌟 Esperançoso(a)</button>
+            </div>
+          </div>
+
+
+          <!-- 🧍 Energia Social (SELECT) -->
+          <div class="lined-block select-block">
+            <label for="energia_social">
+              <span class="label-emoji">🧍</span>
+              <span class="label-title">Energia Social</span>
+              <span class="label-sub">Tenho mais vontade de me aproximar ou me afastar hoje?</span>
+            </label>
+
+            <select id="energia_social" name="energia_social" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="ABERTA">🌞 Aberto(a)</option>
+              <option value="FECHADA">🌙 Fechado(a)</option>
+              <option value="CONECTADA">🤝 Conectado(a)</option>
+              <option value="ISOLADA">🏝️ Isolado(a)</option>
+              <option value="RECEPTIVA">📩 Receptivo(a)</option>
+              <option value="IRRITAVEL">🌋 Irritável</option>
+              <option value="PROTETIVA">🛡️ Protetivo(a)</option>
+            </select>
+
+            <!-- Chips  -->
+            <div class="chips" data-target="energia_social" aria-label="Opções rápidas de energia social">
+              <button type="button" class="chip" data-value="ABERTA">🌞 Aberto(a)</button>
+              <button type="button" class="chip" data-value="FECHADA">🌙 Fechado(a)</button>
+              <button type="button" class="chip" data-value="CONECTADA">🤝 Conectado(a)</button>
+              <button type="button" class="chip" data-value="ISOLADA">🏝️ Isolado(a)</button>
+              <button type="button" class="chip" data-value="RECEPTIVA">📩 Receptivo(a)</button>
+              <button type="button" class="chip" data-value="IRRITAVEL">🌋 Irritável</button>
+              <button type="button" class="chip" data-value="PROTETIVA">🛡️ Protetivo(a)</button>
+            </div>
+          </div>
+
+
+          <!-- O que ocupou a mente (ocupou_mente) -->
+          <div class="lined-block lined-textarea">
+            <label for="ocupa_mente"><span class="label-emoji">💭</span> O que ocupou minha mente hoje?</label>
+            <textarea id="ocupa_mente" name="ocupa_mente" rows="4" maxlength="1200" required
+              placeholder="Escreva como no diário..."></textarea>
+          </div>
+
+          <!-- 🧠 O que mais me afetou hoje?(afetou_hoje) -->
+          <div class="lined-block lined-textarea">
+            <label for="afetou_hoje">
+              <span class="label-emoji">🧠</span> O que mais me afetou hoje?
+            </label>
+            <textarea id="afetou_hoje" name="afetou_hoje" rows="3" maxlength="1200"
+              placeholder="situações, pensamentos, conversas, lembranças..."></textarea>
+          </div>
+
+          <!-- 🌱 Algo simples que posso fazer por mim (autocuidado) -->
+          <div class="lined-block lined-textarea">
+            <label for="autocuidado">
+              <span class="label-emoji">🌱</span> Algo simples que posso fazer por mim
+            </label>
+            <textarea id="autocuidado" name="autocuidado" rows="3" maxlength="1200"
+              placeholder="autocuidado..."></textarea>
+          </div>
+
+
+          <!-- ✍️ Observações Livres (observacoes_livres) -->
+          <div class="lined-block lined-textarea">
+            <label for="observacoes_livres">
+              <span class="label-emoji">✍️</span> Observações Livres
+            </label>
+            <textarea id="observacoes_livres" name="observacoes_livres" rows="3" maxlength="1200"
+              placeholder="escreva sem censura"></textarea>
+          </div>
+
+
+          <!-- Pequena vitória -->
+          <div class="lined-block lined-textarea">
+            <label for="pequena_vitoria"><span class="label-emoji">🏆</span> Pequena vitória de hoje</label>
+            <textarea id="pequena_vitoria" name="pequena_vitoria" rows="3" maxlength="1200" required
+              placeholder="Algo que você conseguiu ou se orgulha hoje..."></textarea>
+          </div>
+
+
+          <!-- 🌿 Dica importante -->
+          <div class="dica-importante">
+            <span class="dica-quote open">“</span>
+            <span class="dica-quote close">”</span>
+
+            <div class="dica-titulo">🌿 Dica importante</div>
+
+            <div class="dica-texto">
+              Não tente “melhorar” a energia no registro.<br>
+              O objetivo é perceber, não corrigir.<br>
+              Com o tempo, você começa a notar padrões como:
+            </div>
+
+            <div class="dica-lista">
+              • dias em que energia física cai antes da emocional<br>
+              • relação entre energia mental e conflitos<br>
+              • o que drena vs. o que recarrega você
+            </div>
+          </div>
+
+          <!-- Ações -->
+          <div class="actions">
+            <button id="btnSalvar" type="submit" class="btn btn-primary">
+              <span class="btn-ico"></span> Salvar
+            </button>
+
+            <button id="btnLimpar" type="button" class="btn btn-secondary">
+              <span class="btn-ico"></span> Limpar
+            </button>
+          </div>
+
+          <!-- Status -->
+          <p id="statusMsg" class="status" role="status" aria-live="polite">
+            Preencha os campos e salve seu registro.
+          </p>
+
+          <!-- detalhe decorativo canto -->
+          <div class="decor-quill" aria-hidden="true"></div>
       </form>
     </section>
 
@@ -137,7 +310,8 @@
           <h2 class="question-title" style="margin:0;">Último registro</h2>
 
           <div class="section-actions">
-            <button id="btnRecarregar" type="button" class="icon-btn" aria-label="Recarregar último registro" title="Recarregar">
+            <button id="btnRecarregar" type="button" class="icon-btn" aria-label="Recarregar último registro"
+              title="Recarregar">
               ↻
             </button>
             <span class="hint">atualiza automaticamente ao salvar</span>

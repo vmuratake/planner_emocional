@@ -1,4 +1,7 @@
-const API_BASE_URL = "https://planneremocional-production.up.railway.app";
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://planneremocional-production.up.railway.app";
 
 const form = document.getElementById("checkinForm");
 const statusMsg = document.getElementById("statusMsg");
@@ -8,7 +11,7 @@ const btnSalvar = document.getElementById("btnSalvar");
 const listaCheckinsEl = document.getElementById("listaCheckins");
 const btnRecarregar = document.getElementById("btnRecarregar");
 
-// -------- STATUS HELPERS (NOVO) --------
+// -------- STATUS HELPERS --------
 const STATUS_PADRAO = "Preencha os campos e salve seu registro.";
 let statusTimerId = null;
 
@@ -60,6 +63,13 @@ function dataISOHoje() {
   return `${ano}-${mes}-${dia}`;
 }
 
+function horaLocalHHMM() {
+  const agora = new Date();
+  const hh = String(agora.getHours()).padStart(2, "0");
+  const mm = String(agora.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+
 function normalizarISODate(value) {
   if (!value) return null;
   const s = String(value);
@@ -87,7 +97,15 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-dataAtualEl.textContent = formatarDataBR(new Date());
+dataAtualEl.textContent = "";
+
+const infoDataEl = document.getElementById("infoDataCheckin");
+const infoHoraEl = document.getElementById("infoHoraRegistro");
+
+if (infoDataEl) infoDataEl.textContent = dataISOToBR(dataISOHoje());
+if (infoHoraEl) infoHoraEl.textContent = "—";
+
+
 
 // -------- CHIPS -> SELECT --------
 function marcarChipAtivo(chipsContainer, value) {
@@ -131,12 +149,20 @@ function resetarFormularioAposSalvar() {
   limparChipsAtivos();
 
   // garante selects no "Selecione..."
-  const selEnergia = document.getElementById("nivel_energia");
-  const selNec = document.getElementById("necessidade");
-  if (selEnergia) selEnergia.selectedIndex = 0;
-  if (selNec) selNec.selectedIndex = 0;
+  const selectsObrigatorios = [
+    "energia_fisica",
+    "energia_mental",
+    "energia_emocional",
+    "energia_espiritual",
+    "energia_social",
+  ];
 
-  selEnergia?.focus();
+  selectsObrigatorios.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+
+  document.getElementById("energia_fisica")?.focus();
 }
 
 // -------- RENDER ÚLTIMO REGISTRO --------
@@ -149,48 +175,50 @@ function renderizarUltimo(registros) {
 
   const r = registros[0];
 
-  const energiaEmoji = {
-    MUITO_CANSADA: "🥱",
-    CANSADA: "😮‍💨",
-    OK: "🙂",
-    BEM: "😄",
-    EM_PAZ: "😌",
+  const horaRegistro = r.horario_registro_local
+    ? escapeHtml(r.horario_registro_local)
+    : "—";
+
+  // helper: renderiza uma linha somente se tiver valor
+  const linhaSeTiver = (rotulo, valor) => {
+    if (valor == null) return "";
+    const v = String(valor).trim();
+    if (!v) return "";
+    return `
+      <div class="row">
+        <span class="k">${rotulo}</span>
+        <span class="v">${escapeHtml(v)}</span>
+      </div>
+    `;
   };
 
-  const necessidadeEmoji = {
-    DESCANSO: "🛌",
-    MOVIMENTO: "🏃",
-    SILENCIO: "🤫",
-    CONVERSA: "💬",
-    ORACAO: "🙏",
-    ORGANIZACAO: "🗂️",
-  };
-
-  const eEm = energiaEmoji[r.nivel_energia] ? `${energiaEmoji[r.nivel_energia]} ` : "";
-  const nEm = necessidadeEmoji[r.necessidade] ? ` ${necessidadeEmoji[r.necessidade]}` : "";
+  // helper: energia obrigatória (sempre mostra)
+  const linhaEnergia = (rotulo, valor) => `
+    <div class="row">
+      <span class="k">${rotulo}</span>
+      <span class="v">${valor ? escapeHtml(valor) : "—"}</span>
+    </div>
+  `;
 
   listaCheckinsEl.innerHTML = `
     <div class="checkin-card ultimo">
       <div class="top">
         <div class="date">${dataISOToBR(r.data_checkin)}</div>
-        <div class="pill">${eEm}${escapeHtml(r.nivel_energia)} • ${escapeHtml(r.necessidade)}${nEm}</div>
+        <div class="pill">📅 ${dataISOToBR(r.data_checkin)} • ⏰ ${horaRegistro}</div>
       </div>
 
       <div class="meta">
-        <div class="row">
-          <span class="k">🧠 Peso mental</span>
-          <span class="v">${escapeHtml(r.peso_mental)}</span>
-        </div>
+        ${linhaEnergia("🔋 Energia Física", r.energia_fisica)}
+        ${linhaEnergia("🧠 Energia Mental", r.energia_mental)}
+        ${linhaEnergia("❤️ Energia Emocional", r.energia_emocional)}
+        ${linhaEnergia("🌱 Energia Espiritual", r.energia_espiritual)}
+        ${linhaEnergia("🧍 Energia Social", r.energia_social)}
 
-        <div class="row">
-          <span class="k">💭 O que ocupou minha mente</span>
-          <span class="v">${escapeHtml(r.ocupa_mente)}</span>
-        </div>
-
-        <div class="row">
-          <span class="k">🏆 Pequena vitória</span>
-          <span class="v">${escapeHtml(r.pequena_vitoria)}</span>
-        </div>
+        ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente)}
+        ${linhaSeTiver("🧠 O que mais me afetou hoje?", r.afetou_hoje)}
+        ${linhaSeTiver("🌱 Algo simples que posso fazer por mim", r.autocuidado)}
+        ${linhaSeTiver("✍️ Observações Livres", r.observacoes_livres)}
+        ${linhaSeTiver("🏆 Pequena vitória", r.pequena_vitoria)}
       </div>
 
       <div class="foot">
@@ -224,10 +252,20 @@ btnLimpar.addEventListener("click", () => {
   form.reset();
   limparChipsAtivos();
 
-  const selEnergia = document.getElementById("nivel_energia");
-  const selNec = document.getElementById("necessidade");
-  if (selEnergia) selEnergia.selectedIndex = 0;
-  if (selNec) selNec.selectedIndex = 0;
+  const selectsObrigatorios = [
+    "energia_fisica",
+    "energia_mental",
+    "energia_emocional",
+    "energia_espiritual",
+    "energia_social",
+  ];
+
+  selectsObrigatorios.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+
+  document.getElementById("energia_fisica")?.focus();
 
   setStatus("Formulário limpo. Preencha e salve seu registro.");
 });
@@ -246,26 +284,53 @@ form.addEventListener("submit", async (event) => {
   // evita duplo clique/duplo submit
   if (btnSalvar?.disabled) return;
 
-  const nivel = document.getElementById("nivel_energia").value;
-  const necessidade = document.getElementById("necessidade").value;
+  // hora local do navegador no momento do clique
+  const horaRegistroLocal = new Date().toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  const pesoMental = document.getElementById("peso_mental").value.trim();
-  const ocupaMente = document.getElementById("ocupa_mente").value.trim();
-  const pequenaVitoria = document.getElementById("pequena_vitoria").value.trim();
 
-  if (!nivel) return setStatus("Selecione um nível de energia.");
-  if (!necessidade) return setStatus("Selecione uma necessidade principal.");
-  if (!pesoMental || !ocupaMente || !pequenaVitoria) {
-    return setStatus("Preencha Peso mental, O que ocupou sua mente e Pequena vitória.");
-  }
+  if (infoHoraEl) infoHoraEl.textContent = horaRegistroLocal;
+
+
+  // CAPTURA DOS SELECTS
+  const energiaFisica = document.getElementById("energia_fisica").value;
+  const energiaMental = document.getElementById("energia_mental").value;
+  const energiaEmocional = document.getElementById("energia_emocional").value;
+  const energiaEspiritual = document.getElementById("energia_espiritual").value;
+  const energiaSocial = document.getElementById("energia_social").value;
+
+  // CAPTURA DAS TEXTAREAS
+  const ocupouMente = document.getElementById("ocupou_mente")?.value.trim() || "";
+  const pequenaVitoria = document.getElementById("pequena_vitoria")?.value.trim() || "";
+  const afetouHoje = document.getElementById("afetou_hoje")?.value.trim() || "";
+  const autocuidado = document.getElementById("autocuidado")?.value.trim() || "";
+  const observacoesLivres = document.getElementById("observacoes_livres")?.value.trim() || "";
+
+  // ✅ Regras mínimas de preenchimento obrigatório (domínio)
+  if (!energiaFisica) return setStatus("Selecione a Energia Física.");
+  if (!energiaMental) return setStatus("Selecione a Energia Mental.");
+  if (!energiaEmocional) return setStatus("Selecione a Energia Emocional.");
+  if (!energiaEspiritual) return setStatus("Selecione a Energia Espiritual.");
+  if (!energiaSocial) return setStatus("Selecione a Energia Social.");
+
 
   const payload = {
     data_checkin: dataISOHoje(),
-    nivel_energia: nivel,
-    peso_mental: pesoMental,
-    ocupa_mente: ocupaMente,
-    necessidade: necessidade,
-    pequena_vitoria: pequenaVitoria,
+    horario_registro_local: horaRegistroLocal,
+
+    energia_fisica: energiaFisica,
+    energia_mental: energiaMental,
+    energia_emocional: energiaEmocional,
+    energia_espiritual: energiaEspiritual,
+    energia_social: energiaSocial,
+
+    ocupou_mente: ocupouMente || null,
+    afetou_hoje: afetouHoje || null,
+    autocuidado: autocuidado || null,
+    observacoes_livres: observacoesLivres || null,
+    pequena_vitoria: pequenaVitoria || null,
   };
 
   try {
@@ -292,8 +357,6 @@ form.addEventListener("submit", async (event) => {
     // ✅ sucesso
     resetarFormularioAposSalvar();
     await carregarUltimo();
-
-    // ✅ mostra “salvo ✅” por 2s e volta pro padrão
     setStatusTemporario("Salvo ✅", 3000);
   } catch (error) {
     console.error("Erro de conexão no POST /checkins:", error);
