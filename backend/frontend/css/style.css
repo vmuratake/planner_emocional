@@ -33,11 +33,11 @@ html, body {
   min-height: 100%;
 }
 
-body {
+body{
   background:
-    radial-gradient(900px 500px at 75% 10%, rgba(185, 170, 230, 0.35), transparent 60%),
-    radial-gradient(900px 500px at 20% -10%, rgba(255, 255, 255, 0.9), transparent 55%),
-    linear-gradient(180deg, #f2f0f6 0%, #ebe8f1 100%);
+    radial-gradient(1200px 600px at 75% 5%, rgba(220, 195, 205, 0.45), transparent 60%),
+    radial-gradient(900px 500px at 15% -10%, rgba(255, 250, 246, 0.95), transparent 55%),
+    linear-gradient(180deg, #f6f1ec 0%, #eee6df 100%);
   font-family: "Cormorant Garamond", serif;
   color: var(--ink-main);
   padding: 10px;
@@ -46,17 +46,24 @@ body {
 /* =========================================================
    Cartão principal / Responsividade (zoom)
 ========================================================= */
-.page {
+.page{
   width: min(920px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
-  border: 1px solid rgba(220, 208, 217, 0.9);
-  background: linear-gradient(180deg, rgba(247, 244, 246, 0.95), rgba(242, 238, 242, 0.95));
-  box-shadow: var(--shadow);
+  border-radius: 18px;
   padding: 12px;
   zoom: 1.25;
-}
 
+  border: 1px solid rgba(210, 175, 165, 0.65);
+
+  background:
+    radial-gradient(1000px 500px at 40% 0%, rgba(255, 220, 210, 0.35), transparent 60%),
+    linear-gradient(180deg, rgba(255, 250, 246, 0.98), rgba(244, 236, 229, 0.98));
+
+  box-shadow:
+    0 28px 70px rgba(60, 50, 45, 0.18),
+    0 0 0 1px rgba(255,255,255,0.7) inset,
+    0 0 50px rgba(205, 160, 150, 0.25);
+}
 @supports not (zoom: 1) {
   .page {
     transform: scale(1.25);
@@ -139,24 +146,22 @@ body {
 /* =========================================================
     “Folha”
 ========================================================= */
-.sheet {
+.sheet{
   margin-top: 26px;
   position: relative;
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 12px;
 
-  background: linear-gradient(
-    180deg,
-    rgba(252, 248, 240, 0.98) 0%,
-    rgba(246, 239, 226, 0.98) 100%
-  );
+  border: 1px solid rgba(200, 160, 150, 0.75);
+
+  background:
+    radial-gradient(900px 400px at 20% 0%, rgba(255, 225, 215, 0.28), transparent 60%),
+    linear-gradient(180deg, rgba(255, 253, 250, 1) 0%, rgba(248, 236, 228, 1) 100%);
 
   box-shadow:
-    0 18px 42px rgba(44, 49, 92, 0.16),
-    0 0 0 8px rgba(255, 255, 255, 0.22);
-
-  transition: box-shadow 220ms ease, transform 180ms ease;
+    0 24px 60px rgba(80, 60, 50, 0.20),
+    0 0 0 12px rgba(255,255,255,0.18),
+    0 0 40px rgba(210, 170, 160, 0.30);
 }
 
 .sheet::before {
@@ -174,12 +179,21 @@ body {
   mix-blend-mode: soft-light;
 }
 
-.sheet:hover {
+.sheet::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  pointer-events:none;
+  box-shadow: inset 0 0 40px rgba(255, 220, 205, 0.25);
+}
+
+.sheet:hover{
   transform: translateY(-2px);
   box-shadow:
-    0 28px 70px rgba(44, 49, 92, 0.22),
-    0 0 0 10px rgba(255, 255, 255, 0.32),
-    0 0 28px rgba(216, 160, 185, 0.28);
+    0 32px 80px rgba(80, 60, 50, 0.25),
+    0 0 0 14px rgba(255,255,255,0.25),
+    0 0 60px rgba(215, 175, 160, 0.40);
 }
 
 .sheet-content {
@@ -196,7 +210,7 @@ body {
       var(--line) calc(var(--line-gap) - 1px),
       var(--line-gap)
     ),
-    linear-gradient(180deg, rgba(253, 250, 244, 0.98) 0%, rgba(248, 241, 228, 0.98) 100%);
+    linear-gradient(180deg, rgba(255, 252, 249, 0.98) 0%, rgba(249, 238, 233, 0.98) 100%);
 
   box-shadow:
     inset 0 2px 6px rgba(255,255,255,0.75),
@@ -842,4 +856,33 @@ body {
 
 @media (max-width: 640px){
   .sheet-content{ overflow-x: hidden; }
+}
+
+.entry-date {
+  display: none;
+}
+
+
+.header-badges{
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge{
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(111, 127, 223, 0.22);
+  background: rgba(111, 127, 223, 0.10);
+  color: rgba(55, 71, 150, 0.86);
+}
+
+/* ===== Espaçamento maior entre blocos principais ===== */
+.sheet + .sheet{
+  margin-top: 54px; /* aumenta separação entre folhas */
 }

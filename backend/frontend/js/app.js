@@ -129,6 +129,27 @@ function horaLocalHHMM() {
   return `${hh}:${mm}`;
 }
 
+function iniciarRelogioLocal() {
+  if (!infoHoraEl) return;
+
+  function atualizar() {
+    const agora = new Date();
+    infoHoraEl.textContent = agora.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    // micro animação (sem mexer em layout)
+    infoHoraEl.classList.remove("is-ticking");
+    void infoHoraEl.offsetWidth; // reinicia a animação
+    infoHoraEl.classList.add("is-ticking");
+  }
+
+  atualizar();                 // já mostra imediato
+  setInterval(atualizar, 1000); // atualiza a cada 1s
+}
+
 function normalizarISODate(value) {
   if (!value) return null;
   const s = String(value);
@@ -162,7 +183,7 @@ const infoDataEl = document.getElementById("infoDataCheckin");
 const infoHoraEl = document.getElementById("infoHoraRegistro");
 
 if (infoDataEl) infoDataEl.textContent = dataISOToBR(dataISOHoje());
-if (infoHoraEl) infoHoraEl.textContent = "—";
+iniciarRelogioLocal();
 
 
 
