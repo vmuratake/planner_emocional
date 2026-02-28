@@ -11,6 +11,7 @@ const btnSalvar = document.getElementById("btnSalvar");
 const listaCheckinsEl = document.getElementById("listaCheckins");
 const btnRecarregar = document.getElementById("btnRecarregar");
 const ultimoHint = document.getElementById("ultimoHint");
+const secUltimoRegistro = document.getElementById("secUltimoRegistro");
 
 
 // ===== Labels amigáveis (para exibir no "Último registro") =====
@@ -389,22 +390,23 @@ btnLimpar.addEventListener("click", () => {
 
 // -------- RECARREGAR --------
 btnRecarregar?.addEventListener("click", async () => {
-  if (btnRecarregar.classList.contains("is-loading")) return; // evita spam
+  if (btnRecarregar.classList.contains("is-loading")) return;
 
-  // liga giro do botão
   btnRecarregar.classList.add("is-loading");
 
-  // mostra no HINT (não mexe no status abaixo do salvar)
   setHintUltimo("Recarregando último registro...", "loading");
 
   try {
     await carregarUltimo();
+
+    // 👉 abre o bloco ao carregar
+    secUltimoRegistro?.classList.remove("is-collapsed");
+
     setHintUltimo("Último registro atualizado ✅", "success");
+
   } catch (e) {
-    // opcional: sinalizar erro sem chamar atenção
     setHintUltimo("Falha ao atualizar. Tente novamente.", "default");
   } finally {
-    // desliga giro do botão
     btnRecarregar.classList.remove("is-loading");
   }
 });
@@ -504,4 +506,4 @@ form.addEventListener("submit", async (event) => {
 setStatus(STATUS_PADRAO);
 setHintUltimo(HINT_PADRAO, "default");
 configurarChips();
-carregarUltimo();
+// carregarUltimo();  // ❌ não carregar automaticamente

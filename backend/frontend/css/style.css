@@ -886,3 +886,13 @@ body{
 .sheet + .sheet{
   margin-top: 54px; /* aumenta separação entre folhas */
 }
+
+/* ===== Último registro colapsado ===== */
+
+.sheet.is-collapsed .checkins-list{
+  display: none;
+}
+
+.sheet.is-collapsed .section-head{
+  margin-bottom: 0;
+}
