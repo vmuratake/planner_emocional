@@ -884,7 +884,7 @@ body{
 
 /* ===== Espaçamento maior entre blocos principais ===== */
 .sheet + .sheet{
-  margin-top: 54px; /* aumenta separação entre folhas */
+  margin-top: 34px; /* aumenta separação entre folhas */
 }
 
 /* ===== Último registro colapsado ===== */
