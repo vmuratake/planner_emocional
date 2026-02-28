@@ -809,3 +809,37 @@ body {
 .checkin-card .k{
   margin-bottom: 2px;
 }
+
+
+/* ===== Mobile fix: Último registro não estoura a página ===== */
+@media (max-width: 640px){
+
+  /* garante que o conteúdo do card não vaze */
+  .checkin-card{
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* o topo vira coluna e a pill pode quebrar linha */
+  .checkin-card .top{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkin-card .pill{
+    width: 100%;
+    white-space: normal;     /* 👈 deixa quebrar */
+    overflow-wrap: anywhere; /* 👈 evita estouro por texto longo */
+  }
+
+  /* segurança extra para qualquer texto longo dentro do meta */
+  .checkin-card .meta,
+  .checkin-card .v{
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 640px){
+  .sheet-content{ overflow-x: hidden; }
+}
