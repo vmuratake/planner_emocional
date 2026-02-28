@@ -10,6 +10,65 @@ const btnLimpar = document.getElementById("btnLimpar");
 const btnSalvar = document.getElementById("btnSalvar");
 const listaCheckinsEl = document.getElementById("listaCheckins");
 const btnRecarregar = document.getElementById("btnRecarregar");
+const ultimoHint = document.getElementById("ultimoHint");
+
+
+// ===== Labels amigáveis (para exibir no "Último registro") =====
+const LABELS = {
+  energia_fisica: {
+    ENERGIZADO: "⚡ Energizado",
+    CANSADO: "😮‍💨 Cansado",
+    EXAUSTO: "🥱 Exausto",
+    LEVE: "🍃 Leve",
+    PESADO: "🪨 Pesado",
+    TENSO: "🧱 Tenso",
+    RELAXADO: "🧘 Relaxado",
+  },
+  energia_mental: {
+    CLARA: "🔎 Clara",
+    CONFUSA: "🌀 Confusa",
+    ACELERADA: "⚡ Acelerada",
+    DISPERSA: "🎈 Dispersa",
+    FOCADA: "🎯 Focada",
+    SOBRECARREGADA: "🧯 Sobrecarregada",
+    CRIATIVA: "💡 Criativa",
+  },
+  energia_emocional: {
+    ESTAVEL: "⚖️ Estável",
+    SENSIVEL: "🌸 Sensível",
+    REATIVA: "🔥 Reativo(a)",
+    ACOLHEDORA: "🤲 Acolhedor(a)",
+    DEFENSIVA: "🛡️ Defensivo(a)",
+    VULNERAVEL: "🫶 Vulnerável",
+    INSENSIVEL: "🧊 Insensível",
+  },
+  energia_espiritual: {
+    CONECTADA: "🔗 Conectado(a)",
+    DESCONECTADA: "📴 Desconectado(a)",
+    EM_PAZ: "🕊️ Em paz",
+    EM_CONFLITO: "⚔️ Em conflito",
+    CONFIANTE: "🛐 Confiante",
+    VAZIA: "🫙 Vazio(a)",
+    ESPERANCOSA: "🌟 Esperançoso(a)",
+  },
+  energia_social: {
+    ABERTA: "🌞 Aberto(a)",
+    FECHADA: "🌙 Fechado(a)",
+    CONECTADA: "🤝 Conectado(a)",
+    ISOLADA: "🏝️ Isolado(a)",
+    RECEPTIVA: "📩 Receptivo(a)",
+    IRRITAVEL: "🌋 Irritável",
+    PROTETIVA: "🛡️ Protetivo(a)",
+  },
+};
+
+// ----------------formata: enum -> label amigável------------
+function labelFrom(field, rawValue) {
+  if (!rawValue) return "—";
+  const key = String(rawValue).trim().toUpperCase();
+  return LABELS?.[field]?.[key] ?? key; // fallback: mostra o enum se não existir no mapa
+}
+
 
 // -------- STATUS HELPERS --------
 const STATUS_PADRAO = "Preencha os campos e salve seu registro.";
@@ -192,13 +251,13 @@ function renderizarUltimo(registros) {
     `;
   };
 
-  // helper: energia obrigatória (sempre mostra)
-  const linhaEnergia = (rotulo, valor) => `
-    <div class="row">
-      <span class="k">${rotulo}</span>
-      <span class="v">${valor ? escapeHtml(valor) : "—"}</span>
-    </div>
-  `;
+// helper: energia obrigatória (sempre mostra) - exibe label amigável
+const linhaEnergia = (rotulo, field, valor) => `
+  <div class="row">
+    <span class="k">${rotulo}</span>
+    <span class="v">${escapeHtml(labelFrom(field, valor))}</span>
+  </div>
+`;
 
   listaCheckinsEl.innerHTML = `
     <div class="checkin-card ultimo">
@@ -208,11 +267,11 @@ function renderizarUltimo(registros) {
       </div>
 
       <div class="meta">
-        ${linhaEnergia("🔋 Energia Física", r.energia_fisica)}
-        ${linhaEnergia("🧠 Energia Mental", r.energia_mental)}
-        ${linhaEnergia("❤️ Energia Emocional", r.energia_emocional)}
-        ${linhaEnergia("🌱 Energia Espiritual", r.energia_espiritual)}
-        ${linhaEnergia("🧍 Energia Social", r.energia_social)}
+${linhaEnergia("🔋 Energia Física", "energia_fisica", r.energia_fisica)}
+${linhaEnergia("🧠 Energia Mental", "energia_mental", r.energia_mental)}
+${linhaEnergia("❤️ Energia Emocional", "energia_emocional", r.energia_emocional)}
+${linhaEnergia("🌱 Energia Espiritual", "energia_espiritual", r.energia_espiritual)}
+${linhaEnergia("🧍 Energia Social", "energia_social", r.energia_social)}
 
         ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente)}
         ${linhaSeTiver("🧠 O que mais me afetou hoje?", r.afetou_hoje)}
@@ -228,6 +287,7 @@ function renderizarUltimo(registros) {
     </div>
   `;
 }
+
 
 async function carregarUltimo() {
   try {
@@ -246,6 +306,42 @@ async function carregarUltimo() {
       `<p class="status">Falha de conexão ao carregar registros.</p>`;
   }
 }
+
+
+// -------- STATUS ÚLTIMO REGISTRO --------
+// ===== HINT DO "ÚLTIMO REGISTRO"  =====
+const hintUltimo = document.querySelector(".section-actions .hint");
+
+const HINT_PADRAO = "atualiza automaticamente ao salvar";
+let hintTimerId = null;
+
+function setHintUltimo(msg, variant = "default") {
+  if (!hintUltimo) return;
+
+  // texto
+  hintUltimo.textContent = msg;
+
+  // estados de cor (bem sutis)
+  hintUltimo.classList.remove("is-loading", "is-success");
+  if (variant === "loading") hintUltimo.classList.add("is-loading");
+  if (variant === "success") hintUltimo.classList.add("is-success");
+
+  // micro “respira”
+  hintUltimo.classList.remove("is-animating");
+  // força reflow pra reiniciar animação
+  void hintUltimo.offsetWidth;
+  hintUltimo.classList.add("is-animating");
+
+  // volta ao padrão (se quiser)
+  if (hintTimerId) clearTimeout(hintTimerId);
+  if (variant !== "default") {
+    hintTimerId = setTimeout(() => {
+      hintUltimo.textContent = HINT_PADRAO;
+      hintUltimo.classList.remove("is-loading", "is-success");
+    }, 1600);
+  }
+}
+
 
 // -------- LIMPAR --------
 btnLimpar.addEventListener("click", () => {
@@ -272,9 +368,24 @@ btnLimpar.addEventListener("click", () => {
 
 // -------- RECARREGAR --------
 btnRecarregar?.addEventListener("click", async () => {
-  setStatus("Recarregando último registro...");
-  await carregarUltimo();
-  setStatusTemporario("Último registro atualizado ✅", 1500);
+  if (btnRecarregar.classList.contains("is-loading")) return; // evita spam
+
+  // liga giro do botão
+  btnRecarregar.classList.add("is-loading");
+
+  // mostra no HINT (não mexe no status abaixo do salvar)
+  setHintUltimo("Recarregando último registro...", "loading");
+
+  try {
+    await carregarUltimo();
+    setHintUltimo("Último registro atualizado ✅", "success");
+  } catch (e) {
+    // opcional: sinalizar erro sem chamar atenção
+    setHintUltimo("Falha ao atualizar. Tente novamente.", "default");
+  } finally {
+    // desliga giro do botão
+    btnRecarregar.classList.remove("is-loading");
+  }
 });
 
 // -------- SUBMIT / POST --------
@@ -357,6 +468,8 @@ form.addEventListener("submit", async (event) => {
     // ✅ sucesso
     resetarFormularioAposSalvar();
     await carregarUltimo();
+    setHintUltimo("Último registro atualizado ✅", "success");
+
     setStatusTemporario("Salvo ✅", 3000);
   } catch (error) {
     console.error("Erro de conexão no POST /checkins:", error);
@@ -368,5 +481,6 @@ form.addEventListener("submit", async (event) => {
 
 // Inicialização
 setStatus(STATUS_PADRAO);
+setHintUltimo(HINT_PADRAO, "default");
 configurarChips();
 carregarUltimo();

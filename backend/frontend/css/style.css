@@ -545,27 +545,6 @@ body {
   );
 }
 
-/* aspas (usando seus spans) */
-.dica-quote {
-  position: absolute;
-  font-family: "Cormorant Garamond", serif;
-  color: rgba(47, 64, 127, 0.40); /* mais visível, no “tom” do texto */
-  line-height: 1;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.dica-quote.open {
-  left: 20px;     /* um pouco à esquerda do bloco do texto */
-  top: 58px;      /* “acima” do começo do texto */
-  font-size: 2.1rem;
-}
-
-.dica-quote.close {
-  right: 450px;    /* um pouco à direita do final */
-  bottom: 24px;   /* “acima” do final do card */
-  font-size: 2.1rem;
-}
 
 /* título */
 .dica-titulo {
@@ -583,7 +562,7 @@ body {
 .dica-lista {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.02rem;
-  line-height: 1.7;
+  line-height: 1;
   font-style: italic;
   color: rgba(47, 64, 127, 0.85);
   position: relative;
@@ -739,4 +718,94 @@ body {
   .entry-header { padding: 6px 56px 10px; }
   .checkin-card .top { flex-direction: column; align-items: flex-start; }
   .checkin-card .foot { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ===== Micro animação + cores sutis do hint (Último registro) ===== */
+.hint{
+  transition: opacity 180ms ease, transform 220ms ease, filter 220ms ease, color 220ms ease;
+  will-change: opacity, transform, filter;
+  opacity: 0.72;
+}
+
+@keyframes hintBreath{
+  0%   { opacity: 0.60; transform: translateY(0); }
+  45%  { opacity: 1;    transform: translateY(-1px); }
+  100% { opacity: 0.82; transform: translateY(0); }
+}
+
+.hint.is-animating{
+  animation: hintBreath 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  filter: saturate(1.05);
+}
+
+/* cor bem sutil por estado */
+/* Recarregando */
+.hint.is-loading{
+  color: rgba(47, 64, 127, 0.62);
+}
+
+/* Atualizado */
+.hint.is-success{
+  color: rgba(47, 64, 127, 0.78);
+}
+
+
+/* ===== Botão ↻ girando suavemente (recarregando) ===== */
+.icon-btn{
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+  will-change: transform;
+}
+
+/* gira o próprio botão (o caractere ↻ gira junto) */
+@keyframes spinSoft{
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.icon-btn.is-loading{
+  animation: spinSoft 1.05s linear infinite;
+  filter: saturate(1.05);
+}
+
+/* opcional: ao passar o mouse, mantém “vivo” sem exagero */
+.icon-btn.is-loading:hover{
+  box-shadow: 0 12px 24px rgba(44,49,92,0.12);
+}
+
+
+/* Último registro: não forçar caixa alta nos valores */
+.checkin-card .v{
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+
+/* ===== Último registro: mais respiro entre linhas ===== */
+.checkin-card .meta{
+  gap: 14px; /* antes era 10px */
+}
+
+/* cada linha vira um “mini-parágrafo” */
+.checkin-card .row{
+  gap: 6px;           /* distância entre título e valor */
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(223, 211, 201, 0.55);
+}
+
+.checkin-card .row:last-child{
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* valor com cara de parágrafo */
+.checkin-card .v{
+  display: block;
+  margin-top: 2px;
+  line-height: 1.55;
+}
+
+/* dá mais “ar” só nas ENERGIAS (fica elegante) */
+.checkin-card .k{
+  margin-bottom: 2px;
 }
