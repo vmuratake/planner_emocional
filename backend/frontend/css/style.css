@@ -896,3 +896,16 @@ body{
 .sheet.is-collapsed .section-head{
   margin-bottom: 0;
 }
+
+/* ===== FIX definitivo: botão recarregar perfeitamente redondo no mobile ===== */
+#btnRecarregar{
+  -webkit-appearance: none;
+  appearance: none;
+
+  padding: 0;              /* remove padding interno nativo */
+  line-height: 1;          /* evita distorção vertical */
+  aspect-ratio: 1 / 1;     /* força proporção quadrada */
+  border-radius: 50%;      /* círculo real */
+  display: grid;
+  place-items: center;     /* centraliza o ↻ */
+}

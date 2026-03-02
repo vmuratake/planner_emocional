@@ -334,7 +334,7 @@ async function carregarUltimo() {
 // ===== HINT DO "ÚLTIMO REGISTRO"  =====
 const hintUltimo = document.querySelector(".section-actions .hint");
 
-const HINT_PADRAO = "atualiza automaticamente ao salvar";
+const HINT_PADRAO = "Clique para visualizar o último registro";
 let hintTimerId = null;
 
 function setHintUltimo(msg, variant = "default") {
