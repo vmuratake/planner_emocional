@@ -273,8 +273,8 @@ function renderizarUltimo(registros) {
     `;
   };
 
-// helper: energia obrigatória (sempre mostra) - exibe label amigável
-const linhaEnergia = (rotulo, field, valor) => `
+  // helper: energia obrigatória (sempre mostra) - exibe label amigável
+  const linhaEnergia = (rotulo, field, valor) => `
   <div class="row">
     <span class="k">${rotulo}</span>
     <span class="v">${escapeHtml(labelFrom(field, valor))}</span>
@@ -295,7 +295,7 @@ ${linhaEnergia("❤️ Energia Emocional", "energia_emocional", r.energia_emocio
 ${linhaEnergia("🌱 Energia Espiritual", "energia_espiritual", r.energia_espiritual)}
 ${linhaEnergia("🧍 Energia Social", "energia_social", r.energia_social)}
 
-        ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente)}
+        ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente ?? r.ocupa_mente)}
         ${linhaSeTiver("🧠 O que mais me afetou hoje?", r.afetou_hoje)}
         ${linhaSeTiver("🌱 Algo simples que posso fazer por mim", r.autocuidado)}
         ${linhaSeTiver("✍️ Observações Livres", r.observacoes_livres)}
@@ -315,6 +315,7 @@ async function carregarUltimo() {
   try {
     const res = await fetch(`${API_BASE_URL}/checkins`);
     const data = await res.json();
+    console.log("DEBUG último registro:", data?.[0]);
 
     if (!res.ok) {
       listaCheckinsEl.innerHTML =
@@ -461,6 +462,7 @@ form.addEventListener("submit", async (event) => {
     energia_social: energiaSocial,
 
     ocupou_mente: ocupouMente || null,
+    ocupa_mente: ocupouMente || null,
     afetou_hoje: afetouHoje || null,
     autocuidado: autocuidado || null,
     observacoes_livres: observacoesLivres || null,
