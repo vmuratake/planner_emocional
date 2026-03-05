@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login • Diário de Bordo Emocional</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <h1 class="title">Diário de Bordo</h1>
+      <p class="subtitle">Acesse sua conta</p>
+
+      <form id="loginForm" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="email" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" required />
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </label>
+
+        <div class="actions">
+          <button id="btnEntrar" type="submit" class="btn btn-primary">Entrar</button>
+          <button id="btnCriarConta" type="button" class="btn btn-secondary">Criar conta</button>
+        </div>
+
+        <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- Modal Criar Conta -->
+    <div id="modalCriarConta" class="modal hidden" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Criar conta">
+        <h2>Criar conta</h2>
+
+        <label class="field">
+          <span>Nome</span>
+          <input id="nomeCadastro" type="text" placeholder="Seu nome" required />
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input id="emailCadastro" type="email" placeholder="seuemail@exemplo.com" required />
+        </label>
+
+        <label class="field">
+          <span>Data de nascimento</span>
+          <input id="nascimentoCadastro" type="date" required />
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input id="senhaCadastro" type="password" placeholder="Crie uma senha" required />
+        </label>
+
+        <label class="field">
+          <span>Confirmar senha</span>
+          <input id="senhaCadastro2" type="password" placeholder="Repita a senha" required />
+        </label>
+
+        <div class="actions modal-actions">
+          <button id="btnSalvarDados" type="button" class="btn btn-primary">Salvar dados</button>
+          <button id="btnExcluirConta" type="button" class="btn btn-danger hidden">Excluir conta</button>
+          <button id="btnSairModal" type="button" class="btn btn-secondary">Sair</button>
+        </div>
+
+        <p id="cadastroStatus" class="status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/js/login.js"></script>
+</body>
+</html>
