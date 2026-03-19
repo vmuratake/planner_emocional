@@ -67,4 +67,74 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, login };
+
+// POST /auth/:id (exclusão de conta)
+async function deleteAccount(req, res) {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ erro: "ID inválido" });
+    }
+
+    const result = await loginService.deleteById(Number(id));
+
+    if (!result.deleted) {
+      return res.status(404).json({ erro: "Conta não encontrada" });
+    }
+
+    return res.status(200).json({ mensagem: "Conta excluída com sucesso" });
+  } catch (error) {
+    console.error("Erro ao excluir conta:", error.message);
+    return res.status(500).json({ erro: "Erro interno ao excluir conta" });
+  }
+}
+
+// POST Esqueci minha senha
+async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ erro: "Email obrigatório" });
+    }
+
+    await loginService.createResetToken(email);
+
+    return res.status(200).json({
+      mensagem: "Enviamos um link de redefinição para o seu email.",
+    });
+  } catch (error) {
+    if (error.code === "EMAIL_NAO_CADASTRADO") {
+      return res.status(404).json({ erro: "Email não cadastrado. Crie uma conta para realizar login." });
+    }
+
+    console.error("Erro em forgotPassword:", error.message);
+    return res.status(500).json({ erro: "Erro ao processar solicitação" });
+  }
+}
+
+// POST Redefinir senha
+async function resetPassword(req, res) {
+  try {
+    const { token, senha } = req.body;
+
+    if (!token || !senha) {
+      return res.status(400).json({ erro: "Token e senha são obrigatórios" });
+    }
+
+    await loginService.resetPassword(token, senha);
+
+    return res.status(200).json({
+      mensagem: "Senha atualizada com sucesso",
+    });
+  } catch (error) {
+    if (error.message === "TOKEN_INVALIDO") {
+      return res.status(400).json({ erro: "Token inválido ou expirado" });
+    }
+
+    return res.status(500).json({ erro: "Erro ao redefinir senha" });
+  }
+}
+
+module.exports = { register, login, deleteAccount, forgotPassword, resetPassword };

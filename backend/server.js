@@ -33,6 +33,10 @@ app.get("/login", (req, res) =>
   res.sendFile(path.join(__dirname, "frontend", "pages", "login.html"))
 );
 
+app.get("/reset-password", (req, res) =>
+  res.sendFile(path.join(__dirname, "frontend", "pages", "reset-password.html"))
+);
+
 // API
 app.get("/health", (req, res) =>
   res.status(200).json({ ok: true, service: "planner_emocional_api" })

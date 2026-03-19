@@ -46,6 +46,7 @@ modal?.addEventListener("click", (e) => {
   if (e.target === modal) fecharModal();
 });
 
+
 // ===== CADASTRO =====
 btnSalvarDados?.addEventListener("click", async () => {
   try {
@@ -86,7 +87,18 @@ btnSalvarDados?.addEventListener("click", async () => {
     // sucesso
     setStatus(cadastroStatus, "Conta criada com sucesso ✅");
 
-    // Esconde salvar e mostra excluir (como você pediu)
+    // guarda usuário criado localmente
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: data.id,
+        nome,
+        email,
+        data_nascimento
+      })
+    );
+
+    // Esconde salvar e mostra excluir 
     btnSalvarDados?.classList.add("hidden");
     btnExcluirConta?.classList.remove("hidden");
 
@@ -100,14 +112,79 @@ btnSalvarDados?.addEventListener("click", async () => {
   }
 });
 
-// ===== EXCLUIR CONTA (placeholder por enquanto) =====
-btnExcluirConta?.addEventListener("click", () => {
+
+// ===== EXCLUIR CONTA  =====
+btnExcluirConta?.addEventListener("click", async () => {
   const ok = window.confirm("Tem certeza que deseja excluir a conta?");
   if (!ok) return;
 
-  // Próximo passo: criar DELETE /auth/:id
-  setStatus(cadastroStatus, "Exclusão ainda não implementada (próximo passo).");
+  try {
+    // tenta pegar do localStorage (se já tiver logado)
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+
+    // se ainda não tiver user salvo, tenta pegar pelo email do cadastro (fallback simples)
+    if (!user?.id) {
+      setStatus(cadastroStatus, "Não encontrei o ID do usuário. Faça login e tente novamente.");
+      return;
+    }
+
+    const res = await fetch(`${API_BASE_URL}/auth/${user.id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      return setStatus(cadastroStatus, data.erro || "Erro ao excluir conta.");
+    }
+
+    // limpa sessão e volta pro login limpo
+    localStorage.removeItem("user");
+    setStatus(cadastroStatus, "Conta excluída com sucesso ✅");
+
+    // reset visual do modal
+    btnExcluirConta.classList.add("hidden");
+    btnSalvarDados.classList.remove("hidden");
+
+  } catch (err) {
+    console.error(err);
+    setStatus(cadastroStatus, "Falha de conexão ao excluir.");
+  }
 });
+
+
+// ===== ESQUECI MINHA SENHA =====
+document.getElementById("esqueciSenha")?.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("email")?.value.trim();
+
+  if (!email) {
+    return setStatus(loginStatus, "Digite seu email para recuperar a senha.");
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      return setStatus(loginStatus, data.erro || "Erro ao solicitar redefinição de senha.");
+    }
+
+    setStatus(loginStatus, data.mensagem || "Confira seu email.");
+  } catch (error) {
+    console.error(error);
+    setStatus(loginStatus, "Falha de conexão ao solicitar redefinição de senha.");
+  }
+});
+
 
 // ===== LOGIN =====
 loginForm?.addEventListener("submit", async (e) => {

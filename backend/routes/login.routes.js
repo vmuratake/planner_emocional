@@ -9,4 +9,13 @@ router.post("/register", loginController.register);
 // POST /auth/login
 router.post("/login", loginController.login);
 
+// DELETE /auth/:id
+router.delete("/:id", loginController.deleteAccount);
+
+// POST /auth/forgot-password
+router.post("/forgot-password", loginController.forgotPassword);
+
+// POST /auth/reset-password
+router.post("/reset-password", loginController.resetPassword);
+
 module.exports = router;
