@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { pool } = require("../db");
 const crypto = require("crypto");
 const { sendEmail } = require("./email.service");
+const baseUrl = process.env.APP_BASE_URL;
 
 // busca por email (usado no login)
 async function findByEmail(email) {
@@ -66,6 +67,13 @@ async function createResetToken(email) {
     throw err;
   }
 
+  // invalida qualquer token anterior explicitamente, regra: 1)apaga token anterior; 2)gera novo token;
+  //3)salva novo token; 4)envia link novo
+  await pool.query(
+    "UPDATE tbLogin SET reset_token = NULL, reset_token_expira = NULL WHERE id = ?",
+    [user.id]
+  );
+
   const token = crypto.randomBytes(32).toString("hex");
 
   await pool.query(
@@ -73,20 +81,28 @@ async function createResetToken(email) {
     [token, user.id]
   );
 
-  const link = `http://localhost:3000/reset-password?token=${token}`;
-
+  const link = `${baseUrl}/reset-password?token=${token}`;
+  console.log("LINK FINAL:", link);
   console.log("TOKEN GERADO:", token);
-  console.log("LINK RESET:", link);
 
-  await sendEmail({
-    to: user.email,
-    subject: "Redefinição de senha",
-    html: `
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: "Redefinição de senha",
+      html: `
       <h3>Redefinir senha</h3>
       <p>Clique no link abaixo:</p>
       <a href="${link}">${link}</a>
     `,
-  });
+    });
+  } catch (error) {
+    // limpa token se o envio falhar
+    await pool.query(
+      "UPDATE tbLogin SET reset_token = NULL, reset_token_expira = NULL WHERE id = ?",
+      [user.id]
+    );
+    throw error;
+  }
 }
 
 
