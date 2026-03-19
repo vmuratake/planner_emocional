@@ -59,21 +59,24 @@ async function deleteById(id) {
 // ESQUECI MINHA SENHA
 async function createResetToken(email) {
   const user = await findByEmail(email);
-    if (!user) {
+
+  if (!user) {
     const err = new Error("EMAIL_NAO_CADASTRADO");
     err.code = "EMAIL_NAO_CADASTRADO";
     throw err;
-  } 
+  }
 
   const token = crypto.randomBytes(32).toString("hex");
-  const expira = new Date(Date.now() + 1000 * 60 * 30); // 30 min
 
   await pool.query(
-    "UPDATE tbLogin SET reset_token = ?, reset_token_expira = ? WHERE id = ?",
-    [token, expira, user.id]
+    "UPDATE tbLogin SET reset_token = ?, reset_token_expira = DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE id = ?",
+    [token, user.id]
   );
 
   const link = `http://localhost:3000/reset-password?token=${token}`;
+
+  console.log("TOKEN GERADO:", token);
+  console.log("LINK RESET:", link);
 
   await sendEmail({
     to: user.email,
@@ -89,21 +92,24 @@ async function createResetToken(email) {
 
 // redefinir senha usando token
 async function resetPassword(token, novaSenha) {
+  console.log("TOKEN RECEBIDO NO RESET:", token);
+
   const [rows] = await pool.query(
-    "SELECT id FROM tbLogin WHERE reset_token = ? AND reset_token_expira > NOW()",
+    "SELECT id, reset_token, reset_token_expira FROM tbLogin WHERE reset_token = ? LIMIT 1",
     [token]
   );
+
+  console.log("ROWS RESET:", rows);
 
   if (!rows.length) {
     throw new Error("TOKEN_INVALIDO");
   }
 
   const userId = rows[0].id;
-
-  const senha_hash = await bcrypt.hash(novaSenha, 10);
+  const senha_hash = await bcrypt.hash(String(novaSenha), 10);
 
   await pool.query(
-    `UPDATE tbLogin 
+    `UPDATE tbLogin
      SET senha_hash = ?, reset_token = NULL, reset_token_expira = NULL
      WHERE id = ?`,
     [senha_hash, userId]
