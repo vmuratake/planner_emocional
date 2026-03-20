@@ -23,7 +23,7 @@ async function sendEmail({ to, subject, html }) {
       body: JSON.stringify({
         sender: {
           name: "Planner Emocional",
-          email: "vanessamuratake@10838144.brevosend.com"
+          email: "noreply@diariodebordo.net.br"
         },
         to: [
           {
