@@ -21,9 +21,29 @@ const senhaCadastro = document.getElementById("senhaCadastro");
 const senhaCadastro2 = document.getElementById("senhaCadastro2");
 
 // ===== Helpers =====
-function setStatus(el, msg) {
+function setStatus(el, msg, type = "info") {
   if (!el) return;
   el.textContent = msg || "";
+  el.classList.remove("is-success", "is-error", "is-info");
+
+  if (type === "success") el.classList.add("is-success");
+  else if (type === "error") el.classList.add("is-error");
+  else el.classList.add("is-info");
+}
+
+function setButtonLoading(button, isLoading, loadingText, defaultText) {
+  if (!button) return;
+
+  if (isLoading) {
+    button.disabled = true;
+    button.classList.add("is-loading");
+    button.dataset.originalText = button.textContent;
+    button.textContent = loadingText;
+  } else {
+    button.disabled = false;
+    button.classList.remove("is-loading");
+    button.textContent = defaultText || button.dataset.originalText || "Salvar";
+  }
 }
 
 function abrirModal() {
@@ -47,10 +67,35 @@ modal?.addEventListener("click", (e) => {
 });
 
 
+// mostrar/ocultar senha
+document.querySelectorAll(".toggle-password-text").forEach((button) => {
+  button.addEventListener("click", () => {
+    const targetId = button.dataset.target;
+    const input = document.getElementById(targetId);
+
+    if (!input) return;
+
+    const isPassword = input.type === "password";
+
+    // alterna tipo
+    input.type = isPassword ? "text" : "password";
+
+    // troca texto
+    button.textContent = isPassword ? "Ocultar" : "Exibir";
+
+    // acessibilidade
+    button.setAttribute(
+      "aria-label",
+      isPassword ? "Ocultar senha" : "Exibir senha"
+    );
+  });
+});
+
+
 // ===== CADASTRO =====
 btnSalvarDados?.addEventListener("click", async () => {
   try {
-    setStatus(cadastroStatus, "");
+    setStatus(cadastroStatus, "", "info");
 
     const nome = nomeCadastro?.value.trim();
     const email = emailCadastro?.value.trim();
@@ -59,16 +104,18 @@ btnSalvarDados?.addEventListener("click", async () => {
     const senha2 = senhaCadastro2?.value || "";
 
     if (!nome || !email || !data_nascimento || !senha || !senha2) {
-      return setStatus(cadastroStatus, "Preencha todos os campos do cadastro.");
+      return setStatus(cadastroStatus, "Preencha todos os campos do cadastro.", "error");
     }
 
     if (senha.length < 6) {
-      return setStatus(cadastroStatus, "A senha deve ter no mínimo 6 caracteres.");
+      return setStatus(cadastroStatus, "A senha deve ter no mínimo 6 caracteres.", "error");
     }
 
     if (senha !== senha2) {
-      return setStatus(cadastroStatus, "As senhas não conferem.");
+      return setStatus(cadastroStatus, "As senhas não conferem.", "error");
     }
+
+    setButtonLoading(btnSalvarDados, true, "Salvando...", "Salvar dados");
 
     // chama API
     const res = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -80,12 +127,14 @@ btnSalvarDados?.addEventListener("click", async () => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      if (res.status === 409) return setStatus(cadastroStatus, data.erro || "Email já cadastrado.");
-      return setStatus(cadastroStatus, data.erro || "Erro ao cadastrar.");
+      if (res.status === 409) {
+        return setStatus(cadastroStatus, data.erro || "Email já cadastrado.", "error");
+    }
+      return setStatus(cadastroStatus, data.erro || "Erro ao cadastrar.", "error");
     }
 
     // sucesso
-    setStatus(cadastroStatus, "Conta criada com sucesso ✅");
+    setStatus(cadastroStatus, "Conta criada com sucesso ✅", "success");
 
     // guarda usuário criado localmente
     localStorage.setItem(
@@ -105,10 +154,14 @@ btnSalvarDados?.addEventListener("click", async () => {
     // pré-preenche o login
     document.getElementById("email").value = email;
     document.getElementById("senha").value = "";
+    senhaCadastro.value = "";
+    senhaCadastro2.value = "";
 
   } catch (err) {
     console.error(err);
-    setStatus(cadastroStatus, "Falha de conexão ao cadastrar.");
+    setStatus(cadastroStatus, "Falha de conexão ao cadastrar.", "error");
+  } finally {
+    setButtonLoading(btnSalvarDados, false, "Salvando...", "Salvar dados");
   }
 });
 
@@ -158,12 +211,20 @@ document.getElementById("esqueciSenha")?.addEventListener("click", async (e) => 
   e.preventDefault();
 
   const email = document.getElementById("email")?.value.trim();
+  const linkEsqueci = document.getElementById("esqueciSenha");
 
   if (!email) {
-    return setStatus(loginStatus, "Digite seu email para recuperar a senha.");
+    return setStatus(loginStatus, "Digite seu email para recuperar a senha.", "error");
   }
 
   try {
+    if (linkEsqueci) {
+      linkEsqueci.style.pointerEvents = "none";
+      linkEsqueci.style.opacity = "0.7";
+    }
+
+    setStatus(loginStatus, "Enviando link de redefinição...", "info");
+
     const res = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
       method: "POST",
       headers: {
@@ -175,13 +236,18 @@ document.getElementById("esqueciSenha")?.addEventListener("click", async (e) => 
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      return setStatus(loginStatus, data.erro || "Erro ao solicitar redefinição de senha.");
+      return setStatus(loginStatus, data.erro || "Erro ao solicitar redefinição de senha.", "error");
     }
 
-    setStatus(loginStatus, data.mensagem || "Confira seu email.");
+    setStatus(loginStatus, data.mensagem || "Confira seu email.", "success");
   } catch (error) {
     console.error(error);
-    setStatus(loginStatus, "Falha de conexão ao solicitar redefinição de senha.");
+    setStatus(loginStatus, "Falha de conexão ao solicitar redefinição de senha.", "error");
+  } finally {
+    if (linkEsqueci) {
+      linkEsqueci.style.pointerEvents = "";
+      linkEsqueci.style.opacity = "";
+    }
   }
 });
 
@@ -189,16 +255,19 @@ document.getElementById("esqueciSenha")?.addEventListener("click", async (e) => 
 // ===== LOGIN =====
 loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  setStatus(loginStatus, "");
+  setStatus(loginStatus, "", "info");
 
   const email = document.getElementById("email")?.value.trim();
   const senha = document.getElementById("senha")?.value;
+  const btnEntrar = document.getElementById("btnEntrar");
 
   if (!email || !senha) {
-    return setStatus(loginStatus, "Informe email e senha.");
+    return setStatus(loginStatus, "Informe email e senha.", "error");
   }
 
   try {
+    setButtonLoading(btnEntrar, true, "Entrando...", "Entrar");
+
     const res = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -208,17 +277,22 @@ loginForm?.addEventListener("submit", async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      return setStatus(loginStatus, data.erro || "Email ou senha inválidos.");
+      return setStatus(loginStatus, data.erro || "Email ou senha inválidos.", "error");
     }
 
     // opcional: guardar usuário logado no navegador (AC2 simples)
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    setStatus(loginStatus, "Login OK ✅ Redirecionando...");
-    window.location.href = "/"; // vai pro check-in atual
+    setStatus(loginStatus, "Login realizado com sucesso ✅ Redirecionando...", "success");
+    
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 900);
 
   } catch (err) {
     console.error(err);
-    setStatus(loginStatus, "Falha de conexão ao fazer login.");
+    setStatus(loginStatus, "Falha de conexão ao fazer login.", "error");
+  } finally {
+    setButtonLoading(btnEntrar, false, "Entrando...", "Entrar");
   }
 });

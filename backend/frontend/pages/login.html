@@ -48,7 +48,7 @@
     <!-- Modal Criar Conta -->
     <div id="modalCriarConta" class="modal hidden" aria-hidden="true">
       <div class="modal-content" role="dialog" aria-modal="true" aria-label="Criar conta">
-        <h2>Criar conta</h2>
+        <h2 class="modal-title">Criar conta</h2>
 
         <label class="field">
           <span>Nome</span>
@@ -65,15 +65,25 @@
           <input id="nascimentoCadastro" type="date" required />
         </label>
 
-        <label class="field">
-          <span>Senha</span>
-          <input id="senhaCadastro" type="password" placeholder="Crie uma senha" required />
-        </label>
+<label class="field">
+  <span>Senha</span>
+  <div class="password-wrap">
+    <input id="senhaCadastro" type="password" placeholder="Crie uma senha" required />
+    <button type="button" class="toggle-password-text" data-target="senhaCadastro">
+      Exibir
+    </button>
+  </div>
+</label>
 
-        <label class="field">
-          <span>Confirmar senha</span>
-          <input id="senhaCadastro2" type="password" placeholder="Repita a senha" required />
-        </label>
+<label class="field">
+  <span>Confirmar senha</span>
+  <div class="password-wrap">
+    <input id="senhaCadastro2" type="password" placeholder="Repita a senha" required />
+    <button type="button" class="toggle-password-text" data-target="senhaCadastro2">
+      Exibir
+    </button>
+  </div>
+</label>
 
         <div class="actions modal-actions">
           <button id="btnSalvarDados" type="button" class="btn btn-primary">Salvar dados</button>

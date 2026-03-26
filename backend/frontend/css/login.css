@@ -103,6 +103,15 @@ body{
   padding:16px;
 }
 
+.modal-title {
+  margin: 0 0 20px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 3.2vw, 2.55rem);
+  font-weight: 700;
+  color: #31428d;
+  line-height: 1;
+}
+
 .modal-content{
   width:min(520px, 100%);
   background: rgba(255,255,255,0.92);
@@ -115,4 +124,81 @@ body{
 
 .modal-actions{
   flex-wrap: wrap;
+}
+
+.btn[disabled] {
+  opacity: 0.72;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn.is-loading {
+  position: relative;
+}
+
+.status.is-success {
+  color: #5f72d8;
+}
+
+.status.is-error {
+  color: #b84f5c;
+}
+
+.status.is-info {
+  color: rgba(47, 64, 127, 0.72);
+}
+
+.link-inline {
+  margin-top: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+}
+
+.link-inline a {
+  color: #31428d;
+  text-decoration: underline;
+}
+
+.link-inline a:hover {
+  opacity: 0.85;
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  width: 100%;
+  padding-right: 90px;
+}
+
+/* botão Exibir/Ocultar */
+.toggle-password-text {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border: 1.0px solid #364694;
+  border-radius: 20px;
+  background: transparent;
+
+  font-size: 0.60rem;
+  font-weight: 600;
+  color: #364694;
+
+  padding: 4px 10px;
+  cursor: pointer;
+
+  transition: all 0.1s ease;
+}
+
+.toggle-password-text:hover {
+  background: rgba(95, 114, 216, 0.1);
+}
+
+.field input::placeholder {
+  color: rgba(47, 64, 127, 0.30);
 }
