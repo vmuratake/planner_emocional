@@ -20,6 +20,19 @@
 
     <!-- Topo -->
     <header class="entry-header">
+
+    <!-- Menu engrenagem -->
+<div class="header-menu">
+  <button id="btnMenuUsuario" class="nav-btn nav-left" type="button" aria-label="Abrir menu do usuário" title="Menu">
+    ⚙
+  </button>
+
+  <div id="menuUsuario" class="user-menu hidden">
+    <button id="btnAbrirPerfil" type="button" class="user-menu-item">Perfil</button>
+    <button id="btnSairConta" type="button" class="user-menu-item">Sair</button>
+  </div>
+</div>
+
       <!-- Botão voltar -->
       <button class="nav-btn nav-next" type="button" aria-label="Ir para o Calendário (em breve)"
         title="Calendário (em breve)">
@@ -27,6 +40,8 @@
       </button>
 
       <h1 class="title">Meu Diário</h1>
+
+      <p id="boasVindasUsuario" class="welcome-user">Bem-vindo(a)</p>
 
       <div class="header-ornament" aria-hidden="true">
         <span></span><i>✦✦✦</i><span></span>

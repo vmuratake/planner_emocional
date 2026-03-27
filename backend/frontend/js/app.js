@@ -3,6 +3,9 @@ const API_BASE_URL =
     ? "http://localhost:3000"
     : "https://planneremocional-production.up.railway.app";
 
+// =============================
+// ELEMENTOS DA TELA
+// =============================    
 const form = document.getElementById("checkinForm");
 const statusMsg = document.getElementById("statusMsg");
 const dataAtualEl = document.getElementById("dataAtual");
@@ -12,6 +15,11 @@ const listaCheckinsEl = document.getElementById("listaCheckins");
 const btnRecarregar = document.getElementById("btnRecarregar");
 const ultimoHint = document.getElementById("ultimoHint");
 const secUltimoRegistro = document.getElementById("secUltimoRegistro");
+const boasVindasUsuario = document.getElementById("boasVindasUsuario");
+const btnMenuUsuario = document.getElementById("btnMenuUsuario");
+const menuUsuario = document.getElementById("menuUsuario");
+const btnAbrirPerfil = document.getElementById("btnAbrirPerfil");
+const btnSairConta = document.getElementById("btnSairConta");
 
 
 // ===== Labels amigáveis (para exibir no "Último registro") =====
@@ -62,6 +70,45 @@ const LABELS = {
     PROTETIVA: "🛡️ Protetivo(a)",
   },
 };
+
+// =============================
+// FUNÇÕES UTILITÁRIAS
+// =============================
+
+// ----------------usuário vinculado------------
+function getUsuarioLogado() {
+  try {
+    return JSON.parse(localStorage.getItem("user") || "null");
+  } catch {
+    return null;
+  }
+}
+
+function aplicarBoasVindas() {
+  const user = getUsuarioLogado();
+
+  if (!user) {
+    window.location.href = "/login";
+    return;
+  }
+
+  const primeiroNome = String(user.nome || "").trim().split(" ")[0] || "usuária";
+
+  if (boasVindasUsuario) {
+    boasVindasUsuario.textContent = `✨ Bem-vindo(a), ${primeiroNome} ✨`;
+  }
+}
+
+function toggleMenuUsuario() {
+  if (!menuUsuario) return;
+  menuUsuario.classList.toggle("hidden");
+}
+
+function fecharMenuUsuario() {
+  if (!menuUsuario) return;
+  menuUsuario.classList.add("hidden");
+}
+
 
 // ----------------formata: enum -> label amigável------------
 function labelFrom(field, rawValue) {
@@ -365,6 +412,40 @@ function setHintUltimo(msg, variant = "default") {
   }
 }
 
+/* =============================
+   3. EVENTOS  
+============================= */
+
+// BOTÃO ENGRENAGEM
+btnMenuUsuario?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleMenuUsuario();
+});
+
+// FECHAR MENU AO CLICAR FORA
+document.addEventListener("click", (e) => {
+  if (!menuUsuario || !btnMenuUsuario) return;
+
+  const clicouNoMenu = menuUsuario.contains(e.target);
+  const clicouNoBotao = btnMenuUsuario.contains(e.target);
+
+  if (!clicouNoMenu && !clicouNoBotao) {
+    fecharMenuUsuario();
+  }
+});
+
+// SAIR
+btnSairConta?.addEventListener("click", () => {
+  localStorage.removeItem("user");
+  window.location.href = "/login";
+});
+
+// PERFIL (por enquanto só placeholder)
+btnAbrirPerfil?.addEventListener("click", () => {
+  fecharMenuUsuario();
+  alert("Perfil será implementado no próximo passo");
+});
+
 
 // -------- LIMPAR --------
 btnLimpar.addEventListener("click", () => {
@@ -508,4 +589,5 @@ form.addEventListener("submit", async (event) => {
 setStatus(STATUS_PADRAO);
 setHintUltimo(HINT_PADRAO, "default");
 configurarChips();
+aplicarBoasVindas();
 // carregarUltimo();  // ❌ não carregar automaticamente

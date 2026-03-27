@@ -280,17 +280,23 @@ loginForm?.addEventListener("submit", async (e) => {
       return setStatus(loginStatus, data.erro || "Email ou senha inválidos.", "error");
     }
 
-    // opcional: guardar usuário logado no navegador (AC2 simples)
-    localStorage.setItem("user", JSON.stringify(data.user));
+      // GARANTE QUE O USER EXISTE
+  if (!data.user) {
+    return setStatus(loginStatus, "Erro ao carregar usuário.", "error");
+  }
+
+    // SALVA USUÁRIO NO LOCALSTORAGE
+  localStorage.setItem("user", JSON.stringify(data.user));
 
     setStatus(loginStatus, "Login realizado com sucesso ✅ Redirecionando...", "success");
     
+    // REDIRECIONA
     setTimeout(() => {
       window.location.href = "/";
-    }, 900);
+    }, 1200);
 
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Erro no login:", error);
     setStatus(loginStatus, "Falha de conexão ao fazer login.", "error");
   } finally {
     setButtonLoading(btnEntrar, false, "Entrando...", "Entrar");

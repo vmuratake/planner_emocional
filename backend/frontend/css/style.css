@@ -909,3 +909,73 @@ body{
   display: grid;
   place-items: center;     /* centraliza o ↻ */
 }
+
+.nav-left {
+  left: 10px;
+}
+
+.header-menu {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  z-index: 30;
+}
+
+.user-menu {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  min-width: 150px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 211, 201, 0.95);
+  background: rgba(255, 252, 249, 0.98);
+  box-shadow: 0 14px 28px rgba(44, 49, 92, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.user-menu.hidden {
+  display: none;
+}
+
+.user-menu-item {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(47, 64, 127, 0.88);
+  cursor: pointer;
+}
+
+.user-menu-item:hover {
+  background: rgba(111, 127, 223, 0.10);
+}
+
+.welcome-user {
+  margin: 10px 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(47, 64, 127, 0.72);
+}
+
+.menu-usuario {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  padding: 10px;
+}
+
+.menu-usuario.ativo {
+  display: block;
+}
