@@ -370,7 +370,9 @@ ${linhaEnergia("🧍 Energia Social", "energia_social", r.energia_social)}
 
 async function carregarUltimo() {
   try {
-    const res = await fetch(`${API_BASE_URL}/checkins`);
+    const user = getUsuarioLogado();
+
+    const res = await fetch(`${API_BASE_URL}/checkins?login_id=${user.id}`);
     const data = await res.json();
     console.log("DEBUG último registro:", data?.[0]);
 
@@ -633,7 +635,17 @@ form.addEventListener("submit", async (event) => {
   if (!energiaSocial) return setStatus("Selecione a Energia Social.");
 
 
+  const usuarioLogado = getUsuarioLogado();
+
+  if (!usuarioLogado?.id) {
+    setStatus("Usuário não identificado. Faça login novamente.");
+    window.location.href = "/login";
+    return;
+  }
+
+
   const payload = {
+    login_id: usuarioLogado.id,
     data_checkin: dataISOHoje(),
     horario_registro_local: horaRegistroLocal,
 
@@ -644,7 +656,6 @@ form.addEventListener("submit", async (event) => {
     energia_social: energiaSocial,
 
     ocupou_mente: ocupouMente || null,
-    ocupa_mente: ocupouMente || null,
     afetou_hoje: afetouHoje || null,
     autocuidado: autocuidado || null,
     observacoes_livres: observacoesLivres || null,
@@ -687,8 +698,14 @@ form.addEventListener("submit", async (event) => {
 });
 
 // Inicialização
-setStatus(STATUS_PADRAO);
-setHintUltimo(HINT_PADRAO, "default");
-configurarChips();
-aplicarBoasVindas();
-// carregarUltimo();  // ❌ não carregar automaticamente
+const usuarioLogado = getUsuarioLogado();
+
+if (!usuarioLogado) {
+  window.location.href = "/login";
+} else {
+  setStatus(STATUS_PADRAO);
+  setHintUltimo(HINT_PADRAO, "default");
+  configurarChips();
+  aplicarBoasVindas();
+  // carregarUltimo(); // ❌ não carregar automaticamente
+}

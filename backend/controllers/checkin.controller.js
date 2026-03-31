@@ -1,11 +1,11 @@
 
 const checkinService = require("../services/checkin.service");
 
-const ENERGIA_FISICA = ["ENERGIZADO","CANSADO","EXAUSTO","LEVE","PESADO","TENSO","RELAXADO"];
-const ENERGIA_MENTAL = ["CLARA","CONFUSA","ACELERADA","DISPERSA","FOCADA","SOBRECARREGADA","CRIATIVA"];
-const ENERGIA_EMOCIONAL = ["ESTAVEL","SENSIVEL","REATIVA","ACOLHEDORA","DEFENSIVA","VULNERAVEL","INSENSIVEL"];
-const ENERGIA_ESPIRITUAL = ["CONECTADA","DESCONECTADA","EM_PAZ","EM_CONFLITO","CONFIANTE","VAZIA","ESPERANCOSA"];
-const ENERGIA_SOCIAL = ["ABERTA","FECHADA","CONECTADA","ISOLADA","RECEPTIVA","IRRITAVEL","PROTETIVA"];
+const ENERGIA_FISICA = ["ENERGIZADO", "CANSADO", "EXAUSTO", "LEVE", "PESADO", "TENSO", "RELAXADO"];
+const ENERGIA_MENTAL = ["CLARA", "CONFUSA", "ACELERADA", "DISPERSA", "FOCADA", "SOBRECARREGADA", "CRIATIVA"];
+const ENERGIA_EMOCIONAL = ["ESTAVEL", "SENSIVEL", "REATIVA", "ACOLHEDORA", "DEFENSIVA", "VULNERAVEL", "INSENSIVEL"];
+const ENERGIA_ESPIRITUAL = ["CONECTADA", "DESCONECTADA", "EM_PAZ", "EM_CONFLITO", "CONFIANTE", "VAZIA", "ESPERANCOSA"];
+const ENERGIA_SOCIAL = ["ABERTA", "FECHADA", "CONECTADA", "ISOLADA", "RECEPTIVA", "IRRITAVEL", "PROTETIVA"];
 
 function validarSePreenchido(valor, dominio, campo) {
   if (valor == null || String(valor).trim() === "") return null;
@@ -15,7 +15,13 @@ function validarSePreenchido(valor, dominio, campo) {
 
 async function listar(req, res) {
   try {
-    const rows = await checkinService.listarCheckins();
+    const login_id = req.query.login_id;
+
+    if (!login_id) {
+      return res.status(400).json({ erro: "login_id obrigatório" });
+    }
+
+    const rows = await checkinService.listarCheckins(login_id);
     return res.status(200).json(rows);
   } catch (error) {
     console.error("Erro ao listar registros:", error.message);
@@ -41,6 +47,7 @@ async function criar(req, res) {
     const body = req.body;
 
     const {
+      login_id,
       data_checkin,
       energia_fisica,
       energia_mental,
@@ -55,9 +62,9 @@ async function criar(req, res) {
       horario_registro_local,
     } = body;
 
-    if (!data_checkin || !energia_fisica || !energia_mental || !energia_emocional || !energia_espiritual || !energia_social) {
+    if (!data_checkin || !energia_fisica || !energia_mental || !energia_emocional || !energia_espiritual || !energia_social || !login_id) {
       return res.status(400).json({
-        erro: "Campos obrigatórios: data_checkin, energia_fisica, energia_mental, energia_emocional, energia_espiritual, energia_social",
+        erro: "Campos obrigatórios: data_checkin, energia_fisica, energia_mental, energia_emocional, energia_espiritual, energia_social, login_id",
       });
     }
 
@@ -81,6 +88,7 @@ async function criar(req, res) {
     }
 
     const id = await checkinService.criarCheckin({
+      login_id,
       data_checkin,
       energia_fisica: vFisica,
       energia_mental: vMental,

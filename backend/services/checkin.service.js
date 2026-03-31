@@ -1,7 +1,7 @@
 
 const { pool } = require("../db");
 
-async function listarCheckins() {
+async function listarCheckins(login_id) {
   const sql = `
     SELECT
       id,
@@ -29,6 +29,7 @@ async function buscarPorData(data) {
   const sql = `
     SELECT
       id,
+      login_id,
       data_checkin,
       energia_fisica,
       energia_mental,
@@ -53,6 +54,7 @@ async function buscarPorData(data) {
 
 async function criarCheckin(payload) {
   const {
+    login_id,
     data_checkin,
     energia_fisica,
     energia_mental,
@@ -70,6 +72,7 @@ async function criarCheckin(payload) {
   const sql = `
     INSERT INTO tbcheckin
     (
+      login_id,
       data_checkin,
       energia_fisica,
       energia_mental,
@@ -83,10 +86,11 @@ async function criarCheckin(payload) {
       pequena_vitoria,
       horario_registro_local
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const valores = [
+    login_id,
     data_checkin,
     energia_fisica,
     energia_mental,
