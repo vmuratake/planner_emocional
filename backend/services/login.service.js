@@ -56,6 +56,19 @@ async function deleteById(id) {
   return { deleted: result.affectedRows > 0 };
 }
 
+// atualizar perfil por id (PUT /auth/:id)
+async function updateProfile(id, { nome, data_nascimento }) {
+  const sql = `
+    UPDATE tbLogin
+    SET nome = ?, data_nascimento = ?
+    WHERE id = ?
+  `;
+
+  const [result] = await pool.query(sql, [nome, data_nascimento, id]);
+
+  return { updated: result.affectedRows > 0 };
+}
+
 
 // ESQUECI MINHA SENHA
 async function createResetToken(email) {
@@ -132,4 +145,4 @@ async function resetPassword(token, novaSenha) {
   );
 }
 
-module.exports = { findByEmail, register, deleteById, createResetToken, resetPassword };
+module.exports = { findByEmail, register, deleteById, createResetToken, resetPassword, updateProfile };

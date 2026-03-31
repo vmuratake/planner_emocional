@@ -8,7 +8,6 @@ const modal = document.getElementById("modalCriarConta");
 const btnCriarConta = document.getElementById("btnCriarConta");
 const btnSairModal = document.getElementById("btnSairModal");
 const btnSalvarDados = document.getElementById("btnSalvarDados");
-const btnExcluirConta = document.getElementById("btnExcluirConta");
 
 const loginForm = document.getElementById("loginForm");
 const loginStatus = document.getElementById("loginStatus");
@@ -61,9 +60,22 @@ function fecharModal() {
 btnCriarConta?.addEventListener("click", abrirModal);
 btnSairModal?.addEventListener("click", fecharModal);
 
-// fechar clicando fora do conteúdo
+// modal: fecha clicando fora do conteúdo
+const modalContent = document.querySelector("#modalCriarConta .modal-content");
+
+modal?.addEventListener("mousedown", (e) => {
+  modal.dataset.canClose = String(e.target === modal);
+});
+
 modal?.addEventListener("click", (e) => {
-  if (e.target === modal) fecharModal();
+  const canClose = modal.dataset.canClose === "true";
+  if (canClose && e.target === modal) {
+    fecharModal();
+  }
+});
+
+modalContent?.addEventListener("click", (e) => {
+  e.stopPropagation();
 });
 
 
@@ -107,6 +119,12 @@ btnSalvarDados?.addEventListener("click", async () => {
       return setStatus(cadastroStatus, "Preencha todos os campos do cadastro.", "error");
     }
 
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailValido.test(email)) {
+      return setStatus(cadastroStatus, "Digite um email válido.", "error");
+    }
+
     if (senha.length < 6) {
       return setStatus(cadastroStatus, "A senha deve ter no mínimo 6 caracteres.", "error");
     }
@@ -129,79 +147,37 @@ btnSalvarDados?.addEventListener("click", async () => {
     if (!res.ok) {
       if (res.status === 409) {
         return setStatus(cadastroStatus, data.erro || "Email já cadastrado.", "error");
-    }
+      }
       return setStatus(cadastroStatus, data.erro || "Erro ao cadastrar.", "error");
     }
 
     // sucesso
-    setStatus(cadastroStatus, "Conta criada com sucesso ✅", "success");
+setStatus(cadastroStatus, "Conta criada com sucesso ✅", "success");
 
-    // guarda usuário criado localmente
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: data.id,
-        nome,
-        email,
-        data_nascimento
-      })
-    );
+localStorage.setItem(
+  "user",
+  JSON.stringify({
+    id: data.id,
+    nome,
+    email,
+    data_nascimento
+  })
+);
 
-    // Esconde salvar e mostra excluir 
-    btnSalvarDados?.classList.add("hidden");
-    btnExcluirConta?.classList.remove("hidden");
+// limpa campos do modal
+senhaCadastro.value = "";
+senhaCadastro2.value = "";
 
-    // pré-preenche o login
-    document.getElementById("email").value = email;
-    document.getElementById("senha").value = "";
-    senhaCadastro.value = "";
-    senhaCadastro2.value = "";
+// redireciona já logada
+setTimeout(() => {
+  window.location.href = "/";
+}, 1000);
 
   } catch (err) {
     console.error(err);
     setStatus(cadastroStatus, "Falha de conexão ao cadastrar.", "error");
   } finally {
     setButtonLoading(btnSalvarDados, false, "Salvando...", "Salvar dados");
-  }
-});
-
-
-// ===== EXCLUIR CONTA  =====
-btnExcluirConta?.addEventListener("click", async () => {
-  const ok = window.confirm("Tem certeza que deseja excluir a conta?");
-  if (!ok) return;
-
-  try {
-    // tenta pegar do localStorage (se já tiver logado)
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-
-    // se ainda não tiver user salvo, tenta pegar pelo email do cadastro (fallback simples)
-    if (!user?.id) {
-      setStatus(cadastroStatus, "Não encontrei o ID do usuário. Faça login e tente novamente.");
-      return;
-    }
-
-    const res = await fetch(`${API_BASE_URL}/auth/${user.id}`, {
-      method: "DELETE",
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      return setStatus(cadastroStatus, data.erro || "Erro ao excluir conta.");
-    }
-
-    // limpa sessão e volta pro login limpo
-    localStorage.removeItem("user");
-    setStatus(cadastroStatus, "Conta excluída com sucesso ✅");
-
-    // reset visual do modal
-    btnExcluirConta.classList.add("hidden");
-    btnSalvarDados.classList.remove("hidden");
-
-  } catch (err) {
-    console.error(err);
-    setStatus(cadastroStatus, "Falha de conexão ao excluir.");
   }
 });
 
@@ -277,19 +253,19 @@ loginForm?.addEventListener("submit", async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      return setStatus(loginStatus, data.erro || "Email ou senha inválidos.", "error");
+      return setStatus(loginStatus, data.erro || "Não foi possível fazer login.", "error");
     }
 
-      // GARANTE QUE O USER EXISTE
-  if (!data.user) {
-    return setStatus(loginStatus, "Erro ao carregar usuário.", "error");
-  }
+    // GARANTE QUE O USER EXISTE
+    if (!data.user) {
+      return setStatus(loginStatus, "Erro ao carregar usuário.", "error");
+    }
 
     // SALVA USUÁRIO NO LOCALSTORAGE
-  localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("user", JSON.stringify(data.user));
 
     setStatus(loginStatus, "Login realizado com sucesso ✅ Redirecionando...", "success");
-    
+
     // REDIRECIONA
     setTimeout(() => {
       window.location.href = "/";

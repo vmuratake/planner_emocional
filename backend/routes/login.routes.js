@@ -12,6 +12,9 @@ router.post("/login", loginController.login);
 // DELETE /auth/:id
 router.delete("/:id", loginController.deleteAccount);
 
+// UPDATE /auth/:id
+router.put("/:id", loginController.updateProfile);
+
 // POST /auth/forgot-password
 router.post("/forgot-password", loginController.forgotPassword);
 

@@ -11,6 +11,14 @@ async function register(req, res) {
         erro: "Campos obrigatórios: nome, email, senha, data_nascimento",
       });
     }
+    
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailValido.test(String(email).trim())) {
+      return res.status(400).json({
+        erro: "Email inválido"
+      });
+    }
 
     const result = await loginService.register({
       nome,
@@ -44,7 +52,7 @@ async function login(req, res) {
 
     const user = await loginService.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ erro: "Email ou senha inválidos" });
+      return res.status(404).json({ erro: "Email não cadastrado. Crie uma conta" });
     }
 
     const ok = await bcrypt.compare(String(senha), user.senha_hash);
@@ -89,6 +97,42 @@ async function deleteAccount(req, res) {
     return res.status(500).json({ erro: "Erro interno ao excluir conta" });
   }
 }
+
+
+// PUT /auth/:id (atualização de perfil)
+async function updateProfile(req, res) {
+  try {
+    const { id } = req.params;
+    const { nome, data_nascimento } = req.body;
+
+    if (!nome || !data_nascimento) {
+      return res.status(400).json({
+        erro: "Campos obrigatórios: nome, data_nascimento"
+      });
+    }
+
+    const result = await loginService.updateProfile(id, {
+      nome,
+      data_nascimento
+    });
+
+    if (!result.updated) {
+      return res.status(404).json({
+        erro: "Usuário não encontrado"
+      });
+    }
+
+    return res.status(200).json({
+      mensagem: "Perfil atualizado com sucesso"
+    });
+  } catch (error) {
+    console.error("Erro ao atualizar perfil:", error);
+    return res.status(500).json({
+      erro: "Erro interno ao atualizar perfil"
+    });
+  }
+}
+
 
 // POST Esqueci minha senha
 async function forgotPassword(req, res) {
@@ -137,4 +181,4 @@ async function resetPassword(req, res) {
   }
 }
 
-module.exports = { register, login, deleteAccount, forgotPassword, resetPassword };
+module.exports = { register, login, deleteAccount, forgotPassword, resetPassword, updateProfile };

@@ -15,11 +15,21 @@ const listaCheckinsEl = document.getElementById("listaCheckins");
 const btnRecarregar = document.getElementById("btnRecarregar");
 const ultimoHint = document.getElementById("ultimoHint");
 const secUltimoRegistro = document.getElementById("secUltimoRegistro");
+
 const boasVindasUsuario = document.getElementById("boasVindasUsuario");
 const btnMenuUsuario = document.getElementById("btnMenuUsuario");
 const menuUsuario = document.getElementById("menuUsuario");
 const btnAbrirPerfil = document.getElementById("btnAbrirPerfil");
 const btnSairConta = document.getElementById("btnSairConta");
+
+const modalPerfil = document.getElementById("modalPerfil");
+const perfilNome = document.getElementById("perfilNome");
+const perfilEmail = document.getElementById("perfilEmail");
+const perfilDataNascimento = document.getElementById("perfilDataNascimento");
+
+const btnSalvarPerfil = document.getElementById("btnSalvarPerfil");
+const btnExcluirConta = document.getElementById("btnExcluirConta");
+const btnFecharPerfil = document.getElementById("btnFecharPerfil");
 
 
 // ===== Labels amigáveis (para exibir no "Último registro") =====
@@ -440,10 +450,101 @@ btnSairConta?.addEventListener("click", () => {
   window.location.href = "/login";
 });
 
-// PERFIL (por enquanto só placeholder)
+// PERFIL (Abrir modal)
 btnAbrirPerfil?.addEventListener("click", () => {
   fecharMenuUsuario();
-  alert("Perfil será implementado no próximo passo");
+
+  const user = getUsuarioLogado();
+
+  if (!user) return;
+
+  perfilNome.value = user.nome || "";
+  perfilEmail.value = user.email || "";
+  perfilDataNascimento.value = user.data_nascimento?.split("T")[0] || "";
+
+  modalPerfil.classList.remove("hidden");
+});
+
+// PERFIL (Fechar modal)
+btnFecharPerfil?.addEventListener("click", () => {
+  modalPerfil.classList.add("hidden");
+});
+
+
+// PERFIL (Salvar alterações)
+btnSalvarPerfil?.addEventListener("click", async () => {
+  const user = getUsuarioLogado();
+
+  if (!user) return;
+
+  try {
+    const res = await fetch(`/auth/${user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome: perfilNome.value,
+        data_nascimento: perfilDataNascimento.value,
+      }),
+    });
+
+    if (!res.ok) {
+      alert("Erro ao atualizar perfil");
+      return;
+    }
+
+    const updatedUser = {
+      ...user,
+      nome: perfilNome.value,
+      data_nascimento: perfilDataNascimento.value,
+    };
+
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    aplicarBoasVindas();
+
+    alert("Perfil atualizado com sucesso ✅");
+
+    modalPerfil.classList.add("hidden");
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro de conexão");
+  }
+});
+
+
+// Perfil (Excluir conta)
+btnExcluirConta?.addEventListener("click", async () => {
+  const user = getUsuarioLogado();
+
+  if (!user) return;
+
+  const confirmar = confirm("Tem certeza que deseja excluir sua conta?");
+
+  if (!confirmar) return;
+
+  try {
+    const res = await fetch(`/auth/${user.id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      alert("Erro ao excluir conta");
+      return;
+    }
+
+    localStorage.removeItem("user");
+
+    alert("Conta excluída com sucesso");
+
+    window.location.href = "/login";
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro de conexão");
+  }
 });
 
 
