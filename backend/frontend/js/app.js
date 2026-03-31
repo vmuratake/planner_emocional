@@ -707,5 +707,4 @@ if (!usuarioLogado) {
   setHintUltimo(HINT_PADRAO, "default");
   configurarChips();
   aplicarBoasVindas();
-  // carregarUltimo(); // ❌ não carregar automaticamente
 }
