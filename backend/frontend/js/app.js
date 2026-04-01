@@ -875,8 +875,6 @@ if (!usuarioLogado) {
   configurarChips();
   aplicarBoasVindas();
 
-  if (modalPerfil) {
   configurarToggleSenhaPerfil();
-}
   carregarUltimo();
 }
