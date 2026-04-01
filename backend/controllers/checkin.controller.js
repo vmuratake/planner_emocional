@@ -16,8 +16,6 @@ async function listar(req, res) {
   try {
     const { login_id } = req.query;
 
-    console.log("LOGIN_ID RECEBIDO NO LISTAR:", req.query.login_id);
-
     if (!login_id) {
       return res.status(400).json({ erro: "login_id obrigatório" });
     }
@@ -116,7 +114,7 @@ async function criar(req, res) {
     return res.status(201).json({ mensagem: "Registro criado com sucesso", id });
   } catch (error) {
     if (error.code === "ER_DUP_ENTRY") {
-      return res.status(409).json({ erro: "Já existe registro para essa data" });
+      return res.status(409).json({ erro: "Você já possui um registro para essa data" });
     }
 
     if (error.code === "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD" || error.code === "WARN_DATA_TRUNCATED") {

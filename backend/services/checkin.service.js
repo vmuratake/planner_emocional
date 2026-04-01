@@ -2,7 +2,6 @@ const { pool } = require("../db");
 
 async function listarCheckins(login_id) {
 
-  console.log("LOGIN_ID NO SERVICE:", login_id);
   const sql = `
     SELECT
       id,
@@ -25,7 +24,6 @@ async function listarCheckins(login_id) {
     ORDER BY data_checkin DESC, id DESC
   `;
   const [rows] = await pool.query(sql, [login_id]);
-  console.log("ROWS LISTAR:", rows);
   return rows;
 }
 
