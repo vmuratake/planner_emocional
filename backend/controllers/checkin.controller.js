@@ -1,11 +1,10 @@
-
 const checkinService = require("../services/checkin.service");
 
-const ENERGIA_FISICA = ["ENERGIZADO", "CANSADO", "EXAUSTO", "LEVE", "PESADO", "TENSO", "RELAXADO"];
-const ENERGIA_MENTAL = ["CLARA", "CONFUSA", "ACELERADA", "DISPERSA", "FOCADA", "SOBRECARREGADA", "CRIATIVA"];
-const ENERGIA_EMOCIONAL = ["ESTAVEL", "SENSIVEL", "REATIVA", "ACOLHEDORA", "DEFENSIVA", "VULNERAVEL", "INSENSIVEL"];
-const ENERGIA_ESPIRITUAL = ["CONECTADA", "DESCONECTADA", "EM_PAZ", "EM_CONFLITO", "CONFIANTE", "VAZIA", "ESPERANCOSA"];
-const ENERGIA_SOCIAL = ["ABERTA", "FECHADA", "CONECTADA", "ISOLADA", "RECEPTIVA", "IRRITAVEL", "PROTETIVA"];
+const ENERGIA_FISICA = ["ENERGIZADO","CANSADO","EXAUSTO","LEVE","PESADO","TENSO","RELAXADO"];
+const ENERGIA_MENTAL = ["CLARA","CONFUSA","ACELERADA","DISPERSA","FOCADA","SOBRECARREGADA","CRIATIVA"];
+const ENERGIA_EMOCIONAL = ["ESTAVEL","SENSIVEL","REATIVA","ACOLHEDORA","DEFENSIVA","VULNERAVEL","INSENSIVEL"];
+const ENERGIA_ESPIRITUAL = ["CONECTADA","DESCONECTADA","EM_PAZ","EM_CONFLITO","CONFIANTE","VAZIA","ESPERANCOSA"];
+const ENERGIA_SOCIAL = ["ABERTA","FECHADA","CONECTADA","ISOLADA","RECEPTIVA","IRRITAVEL","PROTETIVA"];
 
 function validarSePreenchido(valor, dominio, campo) {
   if (valor == null || String(valor).trim() === "") return null;
@@ -15,7 +14,9 @@ function validarSePreenchido(valor, dominio, campo) {
 
 async function listar(req, res) {
   try {
-    const login_id = req.query.login_id;
+    const { login_id } = req.query;
+
+    console.log("LOGIN_ID RECEBIDO NO LISTAR:", req.query.login_id);
 
     if (!login_id) {
       return res.status(400).json({ erro: "login_id obrigatório" });
@@ -32,9 +33,18 @@ async function listar(req, res) {
 async function buscarByDate(req, res) {
   try {
     const { data } = req.params;
-    const row = await checkinService.buscarPorData(data);
+    const { login_id } = req.query;
 
-    if (!row) return res.status(404).json({ erro: "Não existe registro para essa data" });
+    if (!login_id) {
+      return res.status(400).json({ erro: "login_id obrigatório" });
+    }
+
+    const row = await checkinService.buscarPorData(data, login_id);
+
+    if (!row) {
+      return res.status(404).json({ erro: "Não existe registro para essa data" });
+    }
+
     return res.status(200).json(row);
   } catch (error) {
     console.error("Erro ao buscar registro por data:", error.message);
@@ -105,7 +115,9 @@ async function criar(req, res) {
 
     return res.status(201).json({ mensagem: "Registro criado com sucesso", id });
   } catch (error) {
-    if (error.code === "ER_DUP_ENTRY") return res.status(409).json({ erro: "Já existe registro para essa data" });
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ erro: "Já existe registro para essa data" });
+    }
 
     if (error.code === "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD" || error.code === "WARN_DATA_TRUNCATED") {
       return res.status(400).json({ erro: "Valor inválido em algum campo de energia" });
@@ -116,4 +128,34 @@ async function criar(req, res) {
   }
 }
 
-module.exports = { listar, buscarByDate, criar };
+async function excluir(req, res) {
+  try {
+    const { id } = req.params;
+    const { login_id } = req.query;
+
+    if (!id || !login_id) {
+      return res.status(400).json({
+        erro: "Parâmetros obrigatórios: id e login_id",
+      });
+    }
+
+    const result = await checkinService.excluirCheckin(id, login_id);
+
+    if (!result.deleted) {
+      return res.status(404).json({
+        erro: "Registro não encontrado para este usuário",
+      });
+    }
+
+    return res.status(200).json({
+      mensagem: "Registro excluído com sucesso",
+    });
+  } catch (error) {
+    console.error("Erro ao excluir registro:", error.message);
+    return res.status(500).json({
+      erro: "Erro interno ao excluir registro",
+    });
+  }
+}
+
+module.exports = { listar, buscarByDate, criar, excluir };

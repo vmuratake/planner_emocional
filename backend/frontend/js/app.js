@@ -340,10 +340,31 @@ function renderizarUltimo(registros) {
 
   listaCheckinsEl.innerHTML = `
     <div class="checkin-card ultimo">
-      <div class="top">
-        <div class="date">${dataISOToBR(r.data_checkin)}</div>
-        <div class="pill">📅 ${dataISOToBR(r.data_checkin)} • ⏰ ${horaRegistro}</div>
-      </div>
+<div class="top">
+  <div class="date">📅 ${dataISOToBR(r.data_checkin)} • ⏰ ${horaRegistro}</div>
+
+  <div class="card-menu-wrap">
+    <button
+      class="card-menu-btn"
+      type="button"
+      data-id="${r.id}"
+      aria-label="Abrir opções do registro"
+      title="Opções"
+    >
+      ⋯
+    </button>
+
+    <div class="card-menu hidden" id="menu-checkin-${r.id}">
+      <button
+        class="btn-excluir-checkin"
+        type="button"
+        data-id="${r.id}"
+      >
+        🗑️ Excluir
+      </button>
+    </div>
+  </div>
+</div>
 
       <div class="meta">
 ${linhaEnergia("🔋 Energia Física", "energia_fisica", r.energia_fisica)}
@@ -361,10 +382,13 @@ ${linhaEnergia("🧍 Energia Social", "energia_social", r.energia_social)}
 
       <div class="foot">
         <span class="id">ID: ${r.id}</span>
-        <span class="created">Criado em: ${dataISOToBR(normalizarISODate(r.created_at)) || ""}</span>
+        <span class="created">Criado em: ${dataISOToBR(r.data_checkin)} • ${horaRegistro}</span>
       </div>
     </div>
   `;
+
+  configurarMenuUltimoRegistro();
+
 }
 
 
@@ -387,6 +411,80 @@ async function carregarUltimo() {
     listaCheckinsEl.innerHTML =
       `<p class="status">Falha de conexão ao carregar registros.</p>`;
   }
+}
+
+
+// -------- EXCLUIR CHECKIN --------
+function fecharTodosMenusCheckin() {
+  document.querySelectorAll(".card-menu").forEach((menu) => {
+    menu.classList.add("hidden");
+  });
+}
+
+
+// -------- CONFIGURAR MENU DO ÚLTIMO REGISTRO --------
+function configurarMenuUltimoRegistro() {
+  const btnMenu = document.querySelector(".card-menu-btn");
+  const btnExcluir = document.querySelector(".btn-excluir-checkin");
+
+  btnMenu?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const id = btnMenu.dataset.id;
+    const menu = document.getElementById(`menu-checkin-${id}`);
+    if (!menu) return;
+
+    const estavaFechado = menu.classList.contains("hidden");
+
+    fecharTodosMenusCheckin();
+
+    if (estavaFechado) {
+      menu.classList.remove("hidden");
+    } else {
+      menu.classList.add("hidden");
+    }
+  });
+
+  btnExcluir?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const id = btnExcluir.dataset.id;
+    if (!id) return;
+
+    const usuarioLogado = getUsuarioLogado();
+    if (!usuarioLogado?.id) {
+      setStatus("Usuário não identificado. Faça login novamente.");
+      window.location.href = "/login";
+      return;
+    }
+
+    const confirmar = confirm("Tem certeza que deseja excluir este último registro?");
+    if (!confirmar) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/checkins/${id}?login_id=${usuarioLogado.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setStatus(data.erro || "Erro ao excluir registro.");
+        return;
+      }
+
+      listaCheckinsEl.innerHTML =
+        '<p class="status">Registro excluído com sucesso ✅</p>';
+
+      setStatusTemporario("Último registro excluído ✅", 3000);
+      fecharTodosMenusCheckin();
+    } catch (error) {
+      console.error("Erro ao excluir check-in:", error);
+      setStatus("Falha de conexão ao excluir registro.");
+    }
+  });
 }
 
 
@@ -595,6 +693,17 @@ btnRecarregar?.addEventListener("click", async () => {
     btnRecarregar.classList.remove("is-loading");
   }
 });
+
+// Fecha menus de check-in 
+document.addEventListener("click", (e) => {
+  const clicouNoBotao = e.target.closest(".card-menu-btn");
+  const clicouNoMenu = e.target.closest(".card-menu");
+
+  if (clicouNoBotao || clicouNoMenu) return;
+
+  fecharTodosMenusCheckin();
+});
+
 
 // -------- SUBMIT / POST --------
 form.addEventListener("submit", async (event) => {
