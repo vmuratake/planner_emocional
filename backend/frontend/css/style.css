@@ -1040,7 +1040,8 @@ body{
 }
 
 /* Título */
-.perfil-title {
+.perfil-title,
+.perfil-subtitle {
   font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 700;
@@ -1216,4 +1217,62 @@ body{
 .btn-excluir-checkin:hover {
   background: rgba(255, 109, 109, 0.14);
   color: #b93b3b;
+}
+
+/* .perfil-title,
+.perfil-subtitle {
+  margin: 18px 0 12px;
+  color: rgba(49, 66, 141, 0.95);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-weight: 700;
+} */
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(223, 211, 201, 0.75);
+  margin: 18px 0 14px;
+}
+
+.perfil-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.perfil-password-wrap input {
+  width: 100%;
+  padding-right: 92px;
+}
+
+.perfil-password-wrap .toggle-password-text {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.toggle-password-text {
+  min-width: 64px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(72, 90, 180, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+  color: rgba(49, 66, 141, 0.95);
+  font-family: "Inter", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+.perfil-password-wrap input::placeholder,
+#novaSenhaPerfil::placeholder,
+#novaSenhaPerfil2::placeholder {
+  color: rgba(73, 86, 140, 0.42);
+}
+
+.perfil-field input::placeholder {
+  color: rgba(73, 86, 140, 0.42);
 }

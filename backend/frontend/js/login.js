@@ -57,6 +57,27 @@ function fecharModal() {
   modal?.setAttribute("aria-hidden", "true");
 }
 
+// ===== Toggle senha =====
+function configurarToggleSenha() {
+  document.querySelectorAll(".toggle-password-text").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const input = document.getElementById(targetId);
+
+      if (!input) return;
+
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      button.textContent = isPassword ? "Ocultar" : "Exibir";
+      button.setAttribute(
+        "aria-label",
+        isPassword ? "Ocultar senha" : "Exibir senha"
+      );
+    });
+  });
+}
+
+
 btnCriarConta?.addEventListener("click", abrirModal);
 btnSairModal?.addEventListener("click", fecharModal);
 
@@ -79,29 +100,7 @@ modalContent?.addEventListener("click", (e) => {
 });
 
 
-// mostrar/ocultar senha
-document.querySelectorAll(".toggle-password-text").forEach((button) => {
-  button.addEventListener("click", () => {
-    const targetId = button.dataset.target;
-    const input = document.getElementById(targetId);
-
-    if (!input) return;
-
-    const isPassword = input.type === "password";
-
-    // alterna tipo
-    input.type = isPassword ? "text" : "password";
-
-    // troca texto
-    button.textContent = isPassword ? "Ocultar" : "Exibir";
-
-    // acessibilidade
-    button.setAttribute(
-      "aria-label",
-      isPassword ? "Ocultar senha" : "Exibir senha"
-    );
-  });
-});
+configurarToggleSenha();
 
 
 // ===== CADASTRO =====

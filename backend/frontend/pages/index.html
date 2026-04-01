@@ -366,16 +366,40 @@
         <input type="date" id="perfilDataNascimento" />
       </div>
 
-      <div class="perfil-actions">
-        <button id="btnSalvarPerfil" class="btn btn-primary">Salvar dados</button>
+      <!--  Campo para alterar senha  -->
+      <hr class="divider" />
 
-        <button id="btnFecharPerfil" class="btn btn-secondary">Fechar</button>
+      <h3 class="perfil-subtitle">Alterar senha</h3>
 
-        <button id="btnExcluirConta" class="btn btn-danger">Excluir conta</button>
+      <div class="perfil-field">
+        <label for="novaSenhaPerfil">Nova senha</label>
+        <div class="password-wrap perfil-password-wrap">
+          <input id="novaSenhaPerfil" type="password" placeholder="Nova senha" />
+          <button type="button" class="toggle-password-text" data-target="novaSenhaPerfil" aria-label="Exibir senha">
+            Exibir
+          </button>
+        </div>
       </div>
 
+      <div class="perfil-field">
+        <label for="novaSenhaPerfil2">Confirmar nova senha</label>
+        <div class="password-wrap perfil-password-wrap">
+          <input id="novaSenhaPerfil2" type="password" placeholder="Confirme a senha" />
+          <button type="button" class="toggle-password-text" data-target="novaSenhaPerfil2" aria-label="Exibir senha">
+            Exibir
+          </button>
+        </div>
+      </div>
+
+
+      <div class="perfil-actions">
+        <button id="btnSalvarPerfil" class="btn btn-primary">Salvar dados</button>
+        <button id="btnFecharPerfil" class="btn btn-secondary">Fechar</button>
+        <button id="btnExcluirConta" class="btn btn-danger">Excluir conta</button>
+      </div>
     </div>
   </div>
+
 
   <script>
     (function () {
@@ -395,7 +419,6 @@
   </script>
 
   <script src="/js/app.js"></script>
-
 </body>
 
 </html>

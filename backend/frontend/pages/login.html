@@ -29,7 +29,12 @@
 
         <label class="field">
           <span>Senha</span>
-          <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          <div class="password-wrap">
+            <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required />
+            <button type="button" class="toggle-password-text" data-target="senha">
+              Exibir
+            </button>
+          </div>
         </label>
 
         <div class="actions">
@@ -65,25 +70,25 @@
           <input id="nascimentoCadastro" type="date" required />
         </label>
 
-<label class="field">
-  <span>Senha</span>
-  <div class="password-wrap">
-    <input id="senhaCadastro" type="password" placeholder="Crie uma senha" required />
-    <button type="button" class="toggle-password-text" data-target="senhaCadastro">
-      Exibir
-    </button>
-  </div>
-</label>
+        <label class="field">
+          <span>Senha</span>
+          <div class="password-wrap">
+            <input id="senhaCadastro" type="password" placeholder="Crie uma senha" required />
+            <button type="button" class="toggle-password-text" data-target="senhaCadastro">
+              Exibir
+            </button>
+          </div>
+        </label>
 
-<label class="field">
-  <span>Confirmar senha</span>
-  <div class="password-wrap">
-    <input id="senhaCadastro2" type="password" placeholder="Repita a senha" required />
-    <button type="button" class="toggle-password-text" data-target="senhaCadastro2">
-      Exibir
-    </button>
-  </div>
-</label>
+        <label class="field">
+          <span>Confirmar senha</span>
+          <div class="password-wrap">
+            <input id="senhaCadastro2" type="password" placeholder="Repita a senha" required />
+            <button type="button" class="toggle-password-text" data-target="senhaCadastro2">
+              Exibir
+            </button>
+          </div>
+        </label>
 
         <div class="actions modal-actions">
           <button id="btnSalvarDados" type="button" class="btn btn-primary">Salvar dados</button>
@@ -93,7 +98,6 @@
         <p id="cadastroStatus" class="status" role="status" aria-live="polite"></p>
       </div>
     </div>
-
   </main>
 
   <script src="/js/login.js"></script>

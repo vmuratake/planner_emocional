@@ -57,14 +57,26 @@ async function deleteById(id) {
 }
 
 // atualizar perfil por id (PUT /auth/:id)
-async function updateProfile(id, { nome, data_nascimento }) {
-  const sql = `
+async function updateProfile(id, { nome, data_nascimento, senha }) {
+
+  let sql = `
     UPDATE tbLogin
     SET nome = ?, data_nascimento = ?
-    WHERE id = ?
   `;
 
-  const [result] = await pool.query(sql, [nome, data_nascimento, id]);
+  const valores = [nome, data_nascimento];
+
+  // se veio senha → atualiza também
+  if (senha) {
+    const senha_hash = await bcrypt.hash(String(senha), 10);
+    sql += `, senha_hash = ?`;
+    valores.push(senha_hash);
+  }
+
+  sql += ` WHERE id = ?`;
+  valores.push(id);
+
+  const [result] = await pool.query(sql, valores);
 
   return { updated: result.affectedRows > 0 };
 }

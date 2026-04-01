@@ -235,6 +235,28 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
+
+function configurarToggleSenhaPerfil() {
+  const botoes = modalPerfil?.querySelectorAll(".toggle-password-text") || [];
+
+  botoes.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const input = document.getElementById(targetId);
+
+      if (!input) return;
+
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      button.textContent = isPassword ? "Ocultar" : "Exibir";
+      button.setAttribute(
+        "aria-label",
+        isPassword ? "Ocultar senha" : "Exibir senha"
+      );
+    });
+  });
+}
+
 dataAtualEl.textContent = "";
 
 const infoDataEl = document.getElementById("infoDataCheckin");
@@ -396,6 +418,13 @@ async function carregarUltimo() {
   try {
     const user = getUsuarioLogado();
 
+        if (!user?.id) {
+      listaCheckinsEl.innerHTML =
+        `<p class="status">Usuário não identificado. Faça login novamente.</p>`;
+      window.location.href = "/login";
+      return;
+    }
+
     const res = await fetch(`${API_BASE_URL}/checkins?login_id=${user.id}`);
     const data = await res.json();
     console.log("DEBUG último registro:", data?.[0]);
@@ -538,9 +567,15 @@ document.addEventListener("click", (e) => {
 
   const clicouNoMenu = menuUsuario.contains(e.target);
   const clicouNoBotao = btnMenuUsuario.contains(e.target);
+  const clicouNoBotaoMenuCheckin = e.target.closest(".card-menu-btn");
+  const clicouNoMenuCheckin = e.target.closest(".card-menu");
 
   if (!clicouNoMenu && !clicouNoBotao) {
     fecharMenuUsuario();
+  }
+
+  if (!clicouNoBotaoMenuCheckin && !clicouNoMenuCheckin) {
+    fecharTodosMenusCheckin();
   }
 });
 
@@ -555,12 +590,16 @@ btnAbrirPerfil?.addEventListener("click", () => {
   fecharMenuUsuario();
 
   const user = getUsuarioLogado();
-
   if (!user) return;
 
   perfilNome.value = user.nome || "";
   perfilEmail.value = user.email || "";
   perfilDataNascimento.value = user.data_nascimento?.split("T")[0] || "";
+
+  const senha1 = document.getElementById("novaSenhaPerfil");
+  const senha2 = document.getElementById("novaSenhaPerfil2");
+  if (senha1) senha1.value = "";
+  if (senha2) senha2.value = "";
 
   modalPerfil.classList.remove("hidden");
 });
@@ -574,8 +613,23 @@ btnFecharPerfil?.addEventListener("click", () => {
 // PERFIL (Salvar alterações)
 btnSalvarPerfil?.addEventListener("click", async () => {
   const user = getUsuarioLogado();
-
   if (!user) return;
+
+  const novaSenha = document.getElementById("novaSenha")?.value;
+  const novaSenha2 = document.getElementById("novaSenha2")?.value;
+
+  // validação de senha
+  if (novaSenha || novaSenha2) {
+    if (novaSenha !== novaSenha2) {
+      alert("As senhas não coincidem");
+      return;
+    }
+
+    if (novaSenha.length < 6) {
+      alert("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+  }
 
   try {
     const res = await fetch(`/auth/${user.id}`, {
@@ -586,6 +640,7 @@ btnSalvarPerfil?.addEventListener("click", async () => {
       body: JSON.stringify({
         nome: perfilNome.value,
         data_nascimento: perfilDataNascimento.value,
+        senha: novaSenha || null
       }),
     });
 
@@ -606,6 +661,10 @@ btnSalvarPerfil?.addEventListener("click", async () => {
 
     alert("Perfil atualizado com sucesso ✅");
 
+    // limpa campos de senha
+    document.getElementById("novaSenha").value = "";
+    document.getElementById("novaSenha2").value = "";
+
     modalPerfil.classList.add("hidden");
 
   } catch (err) {
@@ -613,7 +672,6 @@ btnSalvarPerfil?.addEventListener("click", async () => {
     alert("Erro de conexão");
   }
 });
-
 
 // Perfil (Excluir conta)
 btnExcluirConta?.addEventListener("click", async () => {
@@ -816,4 +874,9 @@ if (!usuarioLogado) {
   setHintUltimo(HINT_PADRAO, "default");
   configurarChips();
   aplicarBoasVindas();
+
+  if (modalPerfil) {
+  configurarToggleSenhaPerfil();
+}
+  carregarUltimo();
 }
