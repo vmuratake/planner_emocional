@@ -53,7 +53,10 @@ async function deleteById(id) {
   const [result] = await pool.query(sql, [id]);
 
   // result.affectedRows = 1 se deletou, 0 se não achou
-  return { deleted: result.affectedRows > 0 };
+  return { 
+    deleted: result.affectedRows > 0,
+    affectedRows: result.affectedRows
+  };
 }
 
 // atualizar perfil por id (PUT /auth/:id)

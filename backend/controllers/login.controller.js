@@ -91,12 +91,20 @@ async function deleteAccount(req, res) {
       return res.status(404).json({ erro: "Conta não encontrada" });
     }
 
-    return res.status(200).json({ mensagem: "Conta excluída com sucesso" });
+    return res.status(200).json({
+      mensagem: "Conta excluída com sucesso"
+    });
   } catch (error) {
-    console.error("Erro ao excluir conta:", error.message);
-    return res.status(500).json({ erro: "Erro interno ao excluir conta" });
+    console.error("Erro ao excluir conta:", error);
+    console.error("Código SQL:", error.code);
+    console.error("Mensagem SQL:", error.sqlMessage);
+
+    return res.status(500).json({
+      erro: "Erro interno ao excluir conta"
+    });
   }
 }
+
 
 
 // PUT /auth/:id (atualização de perfil)
