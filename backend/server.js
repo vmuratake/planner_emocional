@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "frontend")));
 
 // páginas
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "frontend", "pages", "index.html"))
+  res.sendFile(path.join(__dirname, "frontend", "pages", "checkin.html"))
 );
 
 app.get("/login", (req, res) =>
