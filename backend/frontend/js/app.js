@@ -31,6 +31,8 @@ const btnSalvarPerfil = document.getElementById("btnSalvarPerfil");
 const btnExcluirConta = document.getElementById("btnExcluirConta");
 const btnFecharPerfil = document.getElementById("btnFecharPerfil");
 
+const btnAbrirHistorico = document.getElementById("btnAbrirHistorico");
+
 
 // ===== Labels amigáveis (para exibir no "Último registro") =====
 const LABELS = {
@@ -560,6 +562,13 @@ btnMenuUsuario?.addEventListener("click", (e) => {
   e.stopPropagation();
   toggleMenuUsuario();
 });
+
+
+// BOTÃO AVANÇAR PARA HISTÓRICO
+btnAbrirHistorico?.addEventListener("click", () => {
+  window.location.href = "/historico";
+});
+
 
 // FECHAR MENU AO CLICAR FORA
 document.addEventListener("click", (e) => {
