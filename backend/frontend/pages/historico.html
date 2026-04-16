@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário Emocional • Planner Emocional</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/historico.css" />
+
+  <style>
+    body.auth-loading {
+      visibility: hidden;
+    }
+  </style>
+</head>
+
+<body class="auth-loading">
+  <main class="page historico-page-shell">
+    <header class="entry-header historico-header-top">
+      <button id="btnVoltarCheckin" class="nav-btn nav-left" type="button" aria-label="Voltar para o diário"
+        title="Voltar">
+        ←
+      </button>
+
+      <h1 class="title">Calendário Emocional</h1>
+
+      <div class="header-ornament" aria-hidden="true">
+        <span></span><i>✦✦✦</i><span></span>
+      </div>
+
+      <p id="boasVindasHistorico" class="welcome-user">Seu histórico emocional</p>
+    </header>
+
+    <section class="sheet historico-sheet">
+      <div class="sheet-content historico-content">
+        <section class="calendar-toolbar">
+          <button id="btnMesAnterior" class="calendar-nav-btn" type="button" aria-label="Mês anterior">‹</button>
+
+          <h2 id="mesAnoAtual" class="calendar-month-title">Janeiro 2026</h2>
+
+          <button id="btnMesProximo" class="calendar-nav-btn" type="button" aria-label="Próximo mês">›</button>
+        </section>
+
+        <section class="calendar-wrapper">
+          <div class="calendar-weekdays">
+            <span>D</span>
+            <span>S</span>
+            <span>T</span>
+            <span>Q</span>
+            <span>Q</span>
+            <span>S</span>
+            <span>S</span>
+          </div>
+
+          <div id="calendarioGrid" class="calendar-grid"></div>
+        </section>
+
+        <section class="calendar-legend-card">
+          <div id="legendaGrid" class="calendar-legend-grid"></div>
+        </section>
+
+        <section id="historicoVazio" class="historico-vazio hidden">
+          <p>Nenhum registro encontrado neste mês.</p>
+        </section>
+
+        <section id="detalheDiaSection" class="detalhe-dia hidden">
+          <div class="detalhe-dia-card">
+            <h3>Detalhes do dia</h3>
+            <div id="detalheDiaConteudo"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      try {
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+
+        if (!user || !user.id) {
+          window.location.replace("/login");
+          return;
+        }
+
+        document.body.classList.remove("auth-loading");
+      } catch (e) {
+        window.location.replace("/login");
+      }
+    })();
+  </script>
+
+  <script src="/js/historico.js"></script>
+</body>
+
+</html>
