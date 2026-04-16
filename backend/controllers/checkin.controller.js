@@ -1,10 +1,26 @@
 const checkinService = require("../services/checkin.service");
 
-const ENERGIA_FISICA = ["ENERGIZADO","CANSADO","EXAUSTO","LEVE","PESADO","TENSO","RELAXADO"];
-const ENERGIA_MENTAL = ["CLARA","CONFUSA","ACELERADA","DISPERSA","FOCADA","SOBRECARREGADA","CRIATIVA"];
-const ENERGIA_EMOCIONAL = ["ESTAVEL","SENSIVEL","REATIVA","ACOLHEDORA","DEFENSIVA","VULNERAVEL","INSENSIVEL"];
-const ENERGIA_ESPIRITUAL = ["CONECTADA","DESCONECTADA","EM_PAZ","EM_CONFLITO","CONFIANTE","VAZIA","ESPERANCOSA"];
-const ENERGIA_SOCIAL = ["ABERTA","FECHADA","CONECTADA","ISOLADA","RECEPTIVA","IRRITAVEL","PROTETIVA"];
+const COMO_ME_SINTO = [
+  "FELIZ",
+  "TRISTE",
+  "PREOCUPADO",
+  "ANSIOSO",
+  "CALMO",
+  "DESPREOCUPADO",
+  "IRRITADO",
+  "GRATO",
+  "APAIXONADO",
+  "OTIMISTA",
+  "ESPERANCOSO",
+  "REALIZADO",
+  "FRUSTRADO",
+  "CULPADO",
+  "ANGUSTIADO",
+  "NOSTALGICO"
+];
+const ENERGIA_FISICA = ["ENERGIZADO", "CANSADO", "EXAUSTO", "LEVE", "PESADO", "TENSO", "RELAXADO"];
+const ENERGIA_MENTAL = ["CLARA", "CONFUSA", "ACELERADA", "DISPERSA", "FOCADA", "SOBRECARREGADA", "CRIATIVA"];
+
 
 // Função auxiliar para validar campos de energia, permitindo valores nulos ou vazios, mas garantindo que valores preenchidos sejam válidos
 function validarSePreenchido(valor, dominio, campo) {
@@ -61,11 +77,9 @@ async function criar(req, res) {
     const {
       login_id,
       data_checkin,
+      como_me_sinto,
       energia_fisica,
       energia_mental,
-      energia_emocional,
-      energia_espiritual,
-      energia_social,
       ocupou_mente,
       afetou_hoje,
       autocuidado,
@@ -74,11 +88,14 @@ async function criar(req, res) {
       horario_registro_local,
     } = body;
 
-    if (!data_checkin || !energia_fisica || !energia_mental || !energia_emocional || !energia_espiritual || !energia_social || !login_id) {
+    if (!data_checkin || !como_me_sinto || !energia_fisica || !energia_mental || !login_id) {
       return res.status(400).json({
-        erro: "Campos obrigatórios: data_checkin, energia_fisica, energia_mental, energia_emocional, energia_espiritual, energia_social, login_id",
+        erro: "Campos obrigatórios: data_checkin, como_me_sinto, energia_fisica, energia_mental, login_id",
       });
     }
+
+    const vComoMeSinto = validarSePreenchido(como_me_sinto, COMO_ME_SINTO, "como_me_sinto");
+    if (vComoMeSinto?.erro) return res.status(400).json(vComoMeSinto);
 
     const vFisica = validarSePreenchido(energia_fisica, ENERGIA_FISICA, "energia_fisica");
     if (vFisica?.erro) return res.status(400).json(vFisica);
@@ -86,14 +103,7 @@ async function criar(req, res) {
     const vMental = validarSePreenchido(energia_mental, ENERGIA_MENTAL, "energia_mental");
     if (vMental?.erro) return res.status(400).json(vMental);
 
-    const vEmocional = validarSePreenchido(energia_emocional, ENERGIA_EMOCIONAL, "energia_emocional");
-    if (vEmocional?.erro) return res.status(400).json(vEmocional);
 
-    const vEspiritual = validarSePreenchido(energia_espiritual, ENERGIA_ESPIRITUAL, "energia_espiritual");
-    if (vEspiritual?.erro) return res.status(400).json(vEspiritual);
-
-    const vSocial = validarSePreenchido(energia_social, ENERGIA_SOCIAL, "energia_social");
-    if (vSocial?.erro) return res.status(400).json(vSocial);
 
     if (horario_registro_local && !/^\d{2}:\d{2}$/.test(horario_registro_local)) {
       return res.status(400).json({ erro: "horario_registro_local inválido (use HH:MM)" });
@@ -102,11 +112,9 @@ async function criar(req, res) {
     const id = await checkinService.criarCheckin({
       login_id,
       data_checkin,
+      como_me_sinto: vComoMeSinto,
       energia_fisica: vFisica,
       energia_mental: vMental,
-      energia_emocional: vEmocional,
-      energia_espiritual: vEspiritual,
-      energia_social: vSocial,
       ocupou_mente,
       afetou_hoje,
       autocuidado,
