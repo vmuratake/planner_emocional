@@ -20,16 +20,43 @@ const nomesMeses = [
 ];
 
 const MAPA_EMOCIONAL = {
-  ESTAVEL: { label: "Estável", cor: "#f3c7c7" },
-  SENSIVEL: { label: "Sensível", cor: "#f4d8ea" },
-  REATIVA: { label: "Reativo(a)", cor: "#f6b8b0" },
-  ACOLHEDORA: { label: "Acolhedor(a)", cor: "#cfe7d9" },
-  DEFENSIVA: { label: "Defensivo(a)", cor: "#c9d8f4" },
-  VULNERAVEL: { label: "Vulnerável", cor: "#dcccf0" },
-  INSENSIVEL: { label: "Insensível", cor: "#cbc6e9" },
+  FELIZ: { label: "Feliz", cor: "#f6c1b3" },
+  TRISTE: { label: "Triste", cor: "#cfc4ea" },
+  PREOCUPADO: { label: "Preocupado(a)", cor: "#d9c9bd" },
+  ANSIOSO: { label: "Ansioso(a)", cor: "#bdb7e8" },
+  CALMO: { label: "Calmo(a)", cor: "#f3df9c" },
+  DESPREOCUPADO: { label: "Despreocupado(a)", cor: "#cbe7d3" },
+  IRRITADO: { label: "Irritado(a)", cor: "#f2a8a0" },
+  GRATO: { label: "Grato(a)", cor: "#f7d7a8" },
+  APAIXONADO: { label: "Apaixonado(a)", cor: "#f6bfd5" },
+  OTIMISTA: { label: "Otimista", cor: "#ffe09a" },
+  ESPERANCOSO: { label: "Esperançoso(a)", cor: "#d6f0c2" },
+  REALIZADO: { label: "Realizado(a)", cor: "#bfe4cf" },
+  FRUSTRADO: { label: "Frustrado(a)", cor: "#d8b8b8" },
+  CULPADO: { label: "Culpado(a)", cor: "#cfc7d8" },
+  ANGUSTIADO: { label: "Angustiado(a)", cor: "#bcaed8" },
+  NOSTALGICO: { label: "Nostálgico(a)", cor: "#d8c7a8" },
 };
 
 const LABELS = {
+  como_me_sinto: {
+  FELIZ: "😊 Feliz",
+  TRISTE: "😢 Triste",
+  PREOCUPADO: "😟 Preocupado(a)",
+  ANSIOSO: "😰 Ansioso(a)",
+  CALMO: "😌 Calmo(a)",
+  DESPREOCUPADO: "😎 Despreocupado(a)",
+  IRRITADO: "😠 Irritado(a)",
+  GRATO: "🙏 Grato(a)",
+  APAIXONADO: "🥰 Apaixonado(a)",
+  OTIMISTA: "✨ Otimista",
+  ESPERANCOSO: "🌟 Esperançoso(a)",
+  REALIZADO: "🏆 Realizado(a)",
+  FRUSTRADO: "😞 Frustrado(a)",
+  CULPADO: "😔 Culpado(a)",
+  ANGUSTIADO: "😣 Angustiado(a)",
+  NOSTALGICO: "🍂 Nostálgico(a)",
+},
   energia_fisica: {
     ENERGIZADO: "⚡ Energizado",
     CANSADO: "😮‍💨 Cansado",
@@ -47,33 +74,6 @@ const LABELS = {
     FOCADA: "🎯 Focada",
     SOBRECARREGADA: "🧯 Sobrecarregada",
     CRIATIVA: "💡 Criativa",
-  },
-  energia_emocional: {
-    ESTAVEL: "⚖️ Estável",
-    SENSIVEL: "🌸 Sensível",
-    REATIVA: "🔥 Reativo(a)",
-    ACOLHEDORA: "🤲 Acolhedor(a)",
-    DEFENSIVA: "🛡️ Defensivo(a)",
-    VULNERAVEL: "🫶 Vulnerável",
-    INSENSIVEL: "🧊 Insensível",
-  },
-  energia_espiritual: {
-    CONECTADA: "🔗 Conectado(a)",
-    DESCONECTADA: "📴 Desconectado(a)",
-    EM_PAZ: "🕊️ Em paz",
-    EM_CONFLITO: "⚔️ Em conflito",
-    CONFIANTE: "🛐 Confiante",
-    VAZIA: "🫙 Vazio(a)",
-    ESPERANCOSA: "🌟 Esperançoso(a)",
-  },
-  energia_social: {
-    ABERTA: "🌞 Aberto(a)",
-    FECHADA: "🌙 Fechado(a)",
-    CONECTADA: "🤝 Conectado(a)",
-    ISOLADA: "🏝️ Isolado(a)",
-    RECEPTIVA: "📩 Receptivo(a)",
-    IRRITAVEL: "🌋 Irritável",
-    PROTETIVA: "🛡️ Protetivo(a)",
   },
 };
 
@@ -263,11 +263,9 @@ function renderizarDetalheDia(chaveData, registro) {
   detalheDiaConteudo.innerHTML = `
     ${linhaDetalhe("📅 Data", formatarDataVisual(chaveData))}
     ${linhaDetalhe("⏰ Horário", registro.horario_registro_local || "—")}
+    ${linhaDetalhe("😊 Como me sinto hoje?", labelFrom("como_me_sinto", registro.como_me_sinto))}
     ${linhaDetalhe("🔋 Energia Física", labelFrom("energia_fisica", registro.energia_fisica))}
     ${linhaDetalhe("🧠 Energia Mental", labelFrom("energia_mental", registro.energia_mental))}
-    ${linhaDetalhe("❤️ Energia Emocional", labelFrom("energia_emocional", registro.energia_emocional))}
-    ${linhaDetalhe("🌱 Energia Espiritual", labelFrom("energia_espiritual", registro.energia_espiritual))}
-    ${linhaDetalhe("🧍 Energia Social", labelFrom("energia_social", registro.energia_social))}
     ${linhaDetalhe("💭 O que ocupou minha mente", registro.ocupou_mente || "—")}
     ${linhaDetalhe("🧠 O que mais me afetou hoje?", registro.afetou_hoje || "—")}
     ${linhaDetalhe("🌱 Algo simples que posso fazer por mim", registro.autocuidado || "—")}
@@ -286,7 +284,7 @@ function linhaDetalhe(chave, valor) {
 }
 
 function corDoRegistro(registro) {
-  const chave = String(registro.energia_emocional || "").trim().toUpperCase();
+  const chave = String(registro.como_me_sinto || "").trim().toUpperCase();
   return MAPA_EMOCIONAL[chave]?.cor || "#e5def0";
 }
 
