@@ -36,6 +36,24 @@ const btnAbrirHistorico = document.getElementById("btnAbrirHistorico");
 
 // ===== Labels amigáveis (para exibir no "Último registro") =====
 const LABELS = {
+  como_me_sinto: {
+    FELIZ: "😊 Feliz",
+    TRISTE: "😢 Triste",
+    PREOCUPADO: "😟 Preocupado(a)",
+    ANSIOSO: "😰 Ansioso(a)",
+    CALMO: "😌 Calmo(a)",
+    DESPREOCUPADO: "😎 Despreocupado(a)",
+    IRRITADO: "😠 Irritado(a)",
+    GRATO: "🙏 Grato(a)",
+    APAIXONADO: "🥰 Apaixonado(a)",
+    OTIMISTA: "✨ Otimista",
+    ESPERANCOSO: "🌟 Esperançoso(a)",
+    REALIZADO: "🏆 Realizado(a)",
+    FRUSTRADO: "😞 Frustrado(a)",
+    CULPADO: "😔 Culpado(a)",
+    ANGUSTIADO: "😣 Angustiado(a)",
+    NOSTALGICO: "🍂 Nostálgico(a)",
+  },
   energia_fisica: {
     ENERGIZADO: "⚡ Energizado",
     CANSADO: "😮‍💨 Cansado",
@@ -53,35 +71,9 @@ const LABELS = {
     FOCADA: "🎯 Focada",
     SOBRECARREGADA: "🧯 Sobrecarregada",
     CRIATIVA: "💡 Criativa",
-  },
-  energia_emocional: {
-    ESTAVEL: "⚖️ Estável",
-    SENSIVEL: "🌸 Sensível",
-    REATIVA: "🔥 Reativo(a)",
-    ACOLHEDORA: "🤲 Acolhedor(a)",
-    DEFENSIVA: "🛡️ Defensivo(a)",
-    VULNERAVEL: "🫶 Vulnerável",
-    INSENSIVEL: "🧊 Insensível",
-  },
-  energia_espiritual: {
-    CONECTADA: "🔗 Conectado(a)",
-    DESCONECTADA: "📴 Desconectado(a)",
-    EM_PAZ: "🕊️ Em paz",
-    EM_CONFLITO: "⚔️ Em conflito",
-    CONFIANTE: "🛐 Confiante",
-    VAZIA: "🫙 Vazio(a)",
-    ESPERANCOSA: "🌟 Esperançoso(a)",
-  },
-  energia_social: {
-    ABERTA: "🌞 Aberto(a)",
-    FECHADA: "🌙 Fechado(a)",
-    CONECTADA: "🤝 Conectado(a)",
-    ISOLADA: "🏝️ Isolado(a)",
-    RECEPTIVA: "📩 Receptivo(a)",
-    IRRITAVEL: "🌋 Irritável",
-    PROTETIVA: "🛡️ Protetivo(a)",
-  },
+  }
 };
+
 
 // =============================
 // FUNÇÕES UTILITÁRIAS
@@ -312,11 +304,9 @@ function resetarFormularioAposSalvar() {
 
   // garante selects no "Selecione..."
   const selectsObrigatorios = [
+    "como_me_sinto",
     "energia_fisica",
     "energia_mental",
-    "energia_emocional",
-    "energia_espiritual",
-    "energia_social",
   ];
 
   selectsObrigatorios.forEach((id) => {
@@ -324,7 +314,7 @@ function resetarFormularioAposSalvar() {
     if (el) el.selectedIndex = 0;
   });
 
-  document.getElementById("energia_fisica")?.focus();
+  document.getElementById("como_me_sinto")?.focus();
 }
 
 // -------- RENDER ÚLTIMO REGISTRO --------
@@ -391,11 +381,9 @@ function renderizarUltimo(registros) {
 </div>
 
       <div class="meta">
-${linhaEnergia("🔋 Energia Física", "energia_fisica", r.energia_fisica)}
-${linhaEnergia("🧠 Energia Mental", "energia_mental", r.energia_mental)}
-${linhaEnergia("❤️ Energia Emocional", "energia_emocional", r.energia_emocional)}
-${linhaEnergia("🌱 Energia Espiritual", "energia_espiritual", r.energia_espiritual)}
-${linhaEnergia("🧍 Energia Social", "energia_social", r.energia_social)}
+        ${linhaEnergia("😊 Como me sinto hoje?", "como_me_sinto", r.como_me_sinto)}
+        ${linhaEnergia("🔋 Energia Física", "energia_fisica", r.energia_fisica)}
+        ${linhaEnergia("🧠 Energia Mental", "energia_mental", r.energia_mental)}
 
         ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente ?? r.ocupa_mente)}
         ${linhaSeTiver("🧠 O que mais me afetou hoje?", r.afetou_hoje)}
@@ -420,7 +408,7 @@ async function carregarUltimo() {
   try {
     const user = getUsuarioLogado();
 
-        if (!user?.id) {
+    if (!user?.id) {
       listaCheckinsEl.innerHTML =
         `<p class="status">Usuário não identificado. Faça login novamente.</p>`;
       window.location.href = "/login";
@@ -790,11 +778,9 @@ form.addEventListener("submit", async (event) => {
 
 
   // CAPTURA DOS SELECTS
+  const comoMeSinto = document.getElementById("como_me_sinto").value;
   const energiaFisica = document.getElementById("energia_fisica").value;
   const energiaMental = document.getElementById("energia_mental").value;
-  const energiaEmocional = document.getElementById("energia_emocional").value;
-  const energiaEspiritual = document.getElementById("energia_espiritual").value;
-  const energiaSocial = document.getElementById("energia_social").value;
 
   // CAPTURA DAS TEXTAREAS
   const ocupouMente = document.getElementById("ocupou_mente")?.value.trim() || "";
@@ -804,11 +790,9 @@ form.addEventListener("submit", async (event) => {
   const observacoesLivres = document.getElementById("observacoes_livres")?.value.trim() || "";
 
   // ✅ Regras mínimas de preenchimento obrigatório (domínio)
+  if (!comoMeSinto) return setStatus("Selecione como você se sente hoje.");
   if (!energiaFisica) return setStatus("Selecione a Energia Física.");
   if (!energiaMental) return setStatus("Selecione a Energia Mental.");
-  if (!energiaEmocional) return setStatus("Selecione a Energia Emocional.");
-  if (!energiaEspiritual) return setStatus("Selecione a Energia Espiritual.");
-  if (!energiaSocial) return setStatus("Selecione a Energia Social.");
 
 
   const usuarioLogado = getUsuarioLogado();
@@ -825,11 +809,9 @@ form.addEventListener("submit", async (event) => {
     data_checkin: dataISOHoje(),
     horario_registro_local: horaRegistroLocal,
 
+    como_me_sinto: comoMeSinto,
     energia_fisica: energiaFisica,
     energia_mental: energiaMental,
-    energia_emocional: energiaEmocional,
-    energia_espiritual: energiaEspiritual,
-    energia_social: energiaSocial,
 
     ocupou_mente: ocupouMente || null,
     afetou_hoje: afetouHoje || null,
