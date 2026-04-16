@@ -6,12 +6,14 @@ const ENERGIA_EMOCIONAL = ["ESTAVEL","SENSIVEL","REATIVA","ACOLHEDORA","DEFENSIV
 const ENERGIA_ESPIRITUAL = ["CONECTADA","DESCONECTADA","EM_PAZ","EM_CONFLITO","CONFIANTE","VAZIA","ESPERANCOSA"];
 const ENERGIA_SOCIAL = ["ABERTA","FECHADA","CONECTADA","ISOLADA","RECEPTIVA","IRRITAVEL","PROTETIVA"];
 
+// Função auxiliar para validar campos de energia, permitindo valores nulos ou vazios, mas garantindo que valores preenchidos sejam válidos
 function validarSePreenchido(valor, dominio, campo) {
   if (valor == null || String(valor).trim() === "") return null;
   if (!dominio.includes(valor)) return { erro: `${campo} inválido` };
   return valor;
 }
 
+// Listagem de check-ins, garantindo que o login_id seja fornecido e tratando erros de forma consistente
 async function listar(req, res) {
   try {
     const { login_id } = req.query;
@@ -28,6 +30,7 @@ async function listar(req, res) {
   }
 }
 
+// Busca de check-in por data, garantindo que o registro pertence ao usuário e tratando casos de não encontrado ou falta de login_id
 async function buscarByDate(req, res) {
   try {
     const { data } = req.params;
@@ -50,6 +53,7 @@ async function buscarByDate(req, res) {
   }
 }
 
+// Criação de check-in, com validação de campos obrigatórios e valores de energia
 async function criar(req, res) {
   try {
     const body = req.body;
@@ -126,6 +130,7 @@ async function criar(req, res) {
   }
 }
 
+// Exclusão de check-in por ID, garantindo que o registro pertence ao usuário
 async function excluir(req, res) {
   try {
     const { id } = req.params;
@@ -156,4 +161,31 @@ async function excluir(req, res) {
   }
 }
 
-module.exports = { listar, buscarByDate, criar, excluir };
+// Busca de histórico de check-ins por mês e ano, garantindo que o login_id seja fornecido e tratando erros de forma consistente
+async function buscarHistorico(req, res) {
+  try {
+    const { login_id, mes, ano } = req.query;
+
+    if (!login_id || !mes || !ano) {
+      return res.status(400).json({
+        erro: "login_id, mes e ano são obrigatórios."
+      });
+    }
+
+    const historico = await checkinService.buscarHistoricoPorMes({
+      login_id: Number(login_id),
+      mes: Number(mes),
+      ano: Number(ano)
+    });
+
+    return res.status(200).json(historico);
+  } catch (error) {
+    console.error("Erro ao buscar histórico:", error);
+    return res.status(500).json({
+      erro: "Erro interno ao buscar histórico.",
+      detalhe: error.message
+    });
+  }
+}
+
+module.exports = { listar, buscarByDate, criar, excluir, buscarHistorico };
