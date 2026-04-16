@@ -3,23 +3,21 @@ const { pool } = require("../db");
 // Serviço de check-in, responsável por interagir com o banco de dados e realizar operações relacionadas aos check-ins dos usuários
 async function listarCheckins(login_id) {
   const sql = `
-    SELECT
-      id,
-      login_id,
-      data_checkin,
-      energia_fisica,
-      energia_mental,
-      energia_emocional,
-      energia_espiritual,
-      energia_social,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
-      observacoes_livres,
-      pequena_vitoria,
-      horario_registro_local,
-      created_at
-    FROM tbcheckin
+SELECT
+  id,
+  login_id,
+  data_checkin,
+  como_me_sinto,
+  energia_fisica,
+  energia_mental,
+  ocupou_mente,
+  afetou_hoje,
+  autocuidado,
+  observacoes_livres,
+  pequena_vitoria,
+  horario_registro_local,
+  created_at
+FROM tbcheckin
     WHERE login_id = ?
     ORDER BY data_checkin DESC, id DESC
   `;
@@ -34,11 +32,9 @@ async function buscarPorData(data, login_id) {
       id,
       login_id,
       data_checkin,
+      como_me_sinto,
       energia_fisica,
       energia_mental,
-      energia_emocional,
-      energia_espiritual,
-      energia_social,
       ocupou_mente,
       afetou_hoje,
       autocuidado,
@@ -60,11 +56,9 @@ async function criarCheckin(payload) {
   const {
     login_id,
     data_checkin,
+    como_me_sinto,
     energia_fisica,
     energia_mental,
-    energia_emocional,
-    energia_espiritual,
-    energia_social,
     ocupou_mente,
     afetou_hoje,
     autocuidado,
@@ -78,11 +72,9 @@ async function criarCheckin(payload) {
     (
       login_id,
       data_checkin,
+      como_me_sinto,
       energia_fisica,
       energia_mental,
-      energia_emocional,
-      energia_espiritual,
-      energia_social,
       ocupou_mente,
       afetou_hoje,
       autocuidado,
@@ -90,17 +82,15 @@ async function criarCheckin(payload) {
       pequena_vitoria,
       horario_registro_local
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const valores = [
     login_id,
     data_checkin,
+    como_me_sinto,
     energia_fisica,
     energia_mental,
-    energia_emocional,
-    energia_espiritual,
-    energia_social,
     (ocupou_mente == null || String(ocupou_mente).trim() === "") ? null : ocupou_mente,
     (afetou_hoje == null || String(afetou_hoje).trim() === "") ? null : afetou_hoje,
     (autocuidado == null || String(autocuidado).trim() === "") ? null : autocuidado,
@@ -138,11 +128,9 @@ async function buscarHistoricoPorMes({ login_id, mes, ano }) {
       login_id,
       data_checkin,
       horario_registro_local,
+      como_me_sinto,
       energia_fisica,
       energia_mental,
-      energia_emocional,
-      energia_espiritual,
-      energia_social,
       ocupou_mente,
       afetou_hoje,
       autocuidado,
