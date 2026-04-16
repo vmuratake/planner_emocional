@@ -89,6 +89,56 @@
           </div>
 
 
+          <!-- 😊 Como me sinto hoje? -->
+          <div class="lined-block select-block">
+            <label for="como_me_sinto">
+              <span class="label-emoji">😊</span>
+              <span class="label-title">Como me sinto hoje?</span>
+              <span class="label-sub">Qual emoção me define neste momento?</span>
+            </label>
+
+            <select id="como_me_sinto" name="como_me_sinto" required>
+              <option value="" selected disabled>Selecione...</option>
+              <option value="FELIZ">😊 Feliz</option>
+              <option value="TRISTE">😢 Triste</option>
+              <option value="PREOCUPADO">😟 Preocupado(a)</option>
+              <option value="ANSIOSO">😰 Ansioso(a)</option>
+              <option value="CALMO">😌 Calmo(a)</option>
+              <option value="DESPREOCUPADO">😎 Despreocupado(a)</option>
+              <option value="IRRITADO">😠 Irritado(a)</option>
+              <option value="GRATO">🙏 Grato(a)</option>
+              <option value="APAIXONADO">🥰 Apaixonado(a)</option>
+              <option value="OTIMISTA">✨ Otimista</option>
+              <option value="ESPERANCOSO">🌟 Esperançoso(a)</option>
+              <option value="REALIZADO">🏆 Realizado(a)</option>
+              <option value="FRUSTRADO">😞 Frustrado(a)</option>
+              <option value="CULPADO">😔 Culpado(a)</option>
+              <option value="ANGUSTIADO">😣 Angustiado(a)</option>
+              <option value="NOSTALGICO">🍂 Nostálgico(a)</option>
+            </select>
+
+            <!-- Chips  -->
+            <div class="chips" data-target="como_me_sinto" aria-label="Opções rápidas de como me sinto hoje">
+              <button type="button" class="chip" data-value="FELIZ">😊 Feliz</button>
+              <button type="button" class="chip" data-value="TRISTE">😢 Triste</button>
+              <button type="button" class="chip" data-value="PREOCUPADO">😟 Preocupado(a)</button>
+              <button type="button" class="chip" data-value="ANSIOSO">😰 Ansioso(a)</button>
+              <button type="button" class="chip" data-value="CALMO">😌 Calmo(a)</button>
+              <button type="button" class="chip" data-value="DESPREOCUPADO">😎 Despreocupado(a)</button>
+              <button type="button" class="chip" data-value="IRRITADO">😠 Irritado(a)</button>
+              <button type="button" class="chip" data-value="GRATO">🙏 Grato(a)</button>
+              <button type="button" class="chip" data-value="APAIXONADO">🥰 Apaixonado(a)</button>
+              <button type="button" class="chip" data-value="OTIMISTA">✨ Otimista</button>
+              <button type="button" class="chip" data-value="ESPERANCOSO">🌟 Esperançoso(a)</button>
+              <button type="button" class="chip" data-value="REALIZADO">🏆 Realizado(a)</button>
+              <button type="button" class="chip" data-value="FRUSTRADO">😞 Frustrado(a)</button>
+              <button type="button" class="chip" data-value="CULPADO">😔 Culpado(a)</button>
+              <button type="button" class="chip" data-value="ANGUSTIADO">😣 Angustiado(a)</button>
+              <button type="button" class="chip" data-value="NOSTALGICO">🍂 Nostálgico(a)</button>
+            </div>
+          </div>
+
+
           <!-- 🔋 Energia Física (SELECT) -->
           <div class="lined-block select-block">
             <label for="energia_fisica">
@@ -149,102 +199,6 @@
               <button type="button" class="chip" data-value="FOCADA">🎯 Focada</button>
               <button type="button" class="chip" data-value="SOBRECARREGADA">🧯 Sobrecarregada</button>
               <button type="button" class="chip" data-value="CRIATIVA">💡 Criativa</button>
-            </div>
-          </div>
-
-
-          <!-- ❤️ Energia Emocional (SELECT) -->
-          <div class="lined-block select-block">
-            <label for="energia_emocional">
-              <span class="label-emoji">❤️</span>
-              <span class="label-title">Energia Emocional</span>
-              <span class="label-sub">Estou mais aberto(a) ou fechado(a) emocionalmente?</span>
-            </label>
-
-            <select id="energia_emocional" name="energia_emocional" required>
-              <option value="" selected disabled>Selecione...</option>
-              <option value="ESTAVEL">⚖️ Estável</option>
-              <option value="SENSIVEL">🌸 Sensível</option>
-              <option value="REATIVA">🔥 Reativo(a)</option>
-              <option value="ACOLHEDORA">🤲 Acolhedor(a)</option>
-              <option value="DEFENSIVA">🛡️ Defensivo(a)</option>
-              <option value="VULNERAVEL">🫶 Vulnerável</option>
-              <option value="INSENSIVEL">🧊 Insensível</option>
-            </select>
-
-            <!-- Chips  -->
-            <div class="chips" data-target="energia_emocional" aria-label="Opções rápidas de energia emocional">
-              <button type="button" class="chip" data-value="ESTAVEL">⚖️ Estável</button>
-              <button type="button" class="chip" data-value="SENSIVEL">🌸 Sensível</button>
-              <button type="button" class="chip" data-value="REATIVA">🔥 Reativo(a)</button>
-              <button type="button" class="chip" data-value="ACOLHEDORA">🤲 Acolhedor(a)</button>
-              <button type="button" class="chip" data-value="DEFENSIVA">🛡️ Defensivo(a)</button>
-              <button type="button" class="chip" data-value="VULNERAVEL">🫶 Vulnerável</button>
-              <button type="button" class="chip" data-value="INSENSIVEL">🧊 Insensível</button>
-            </div>
-          </div>
-
-
-          <!-- 🌱 Energia Espiritual (SELECT) -->
-          <div class="lined-block select-block">
-            <label for="energia_espiritual">
-              <span class="label-emoji">🌱</span>
-              <span class="label-title">Energia Espiritual</span>
-              <span class="label-sub">Como me sinto espiritualmente hoje?</span>
-            </label>
-
-            <select id="energia_espiritual" name="energia_espiritual" required>
-              <option value="" selected disabled>Selecione...</option>
-              <option value="CONECTADA">🔗 Conectado(a)</option>
-              <option value="DESCONECTADA">📴 Desconectado(a)</option>
-              <option value="EM_PAZ">🕊️ Em paz</option>
-              <option value="EM_CONFLITO">⚔️ Em conflito</option>
-              <option value="CONFIANTE">🛐 Confiante</option>
-              <option value="VAZIA">🫙 Vazio(a)</option>
-              <option value="ESPERANCOSA">🌟 Esperançoso(a)</option>
-            </select>
-
-            <!-- Chips  -->
-            <div class="chips" data-target="energia_espiritual" aria-label="Opções rápidas de energia espiritual">
-              <button type="button" class="chip" data-value="CONECTADA">🔗 Conectado(a)</button>
-              <button type="button" class="chip" data-value="DESCONECTADA">📴 Desconectado(a)</button>
-              <button type="button" class="chip" data-value="EM_PAZ">🕊️ Em paz</button>
-              <button type="button" class="chip" data-value="EM_CONFLITO">⚔️ Em conflito</button>
-              <button type="button" class="chip" data-value="CONFIANTE">🛐 Confiante</button>
-              <button type="button" class="chip" data-value="VAZIA">🫙 Vazio(a)</button>
-              <button type="button" class="chip" data-value="ESPERANCOSA">🌟 Esperançoso(a)</button>
-            </div>
-          </div>
-
-
-          <!-- 🧍 Energia Social (SELECT) -->
-          <div class="lined-block select-block">
-            <label for="energia_social">
-              <span class="label-emoji">🧍</span>
-              <span class="label-title">Energia Social</span>
-              <span class="label-sub">Tenho mais vontade de me aproximar ou me afastar hoje?</span>
-            </label>
-
-            <select id="energia_social" name="energia_social" required>
-              <option value="" selected disabled>Selecione...</option>
-              <option value="ABERTA">🌞 Aberto(a)</option>
-              <option value="FECHADA">🌙 Fechado(a)</option>
-              <option value="CONECTADA">🤝 Conectado(a)</option>
-              <option value="ISOLADA">🏝️ Isolado(a)</option>
-              <option value="RECEPTIVA">📩 Receptivo(a)</option>
-              <option value="IRRITAVEL">🌋 Irritável</option>
-              <option value="PROTETIVA">🛡️ Protetivo(a)</option>
-            </select>
-
-            <!-- Chips  -->
-            <div class="chips" data-target="energia_social" aria-label="Opções rápidas de energia social">
-              <button type="button" class="chip" data-value="ABERTA">🌞 Aberto(a)</button>
-              <button type="button" class="chip" data-value="FECHADA">🌙 Fechado(a)</button>
-              <button type="button" class="chip" data-value="CONECTADA">🤝 Conectado(a)</button>
-              <button type="button" class="chip" data-value="ISOLADA">🏝️ Isolado(a)</button>
-              <button type="button" class="chip" data-value="RECEPTIVA">📩 Receptivo(a)</button>
-              <button type="button" class="chip" data-value="IRRITAVEL">🌋 Irritável</button>
-              <button type="button" class="chip" data-value="PROTETIVA">🛡️ Protetivo(a)</button>
             </div>
           </div>
 
