@@ -3,21 +3,41 @@
 ========================================================= */
 
 .historico-page-shell {
-  max-width: 760px;
+  width: min(920px, 100%);
+  max-width: 920px;
 }
 
 .historico-header-top {
-  margin-bottom: 12px;
+  margin-bottom: 22px;
 }
 
 .historico-sheet {
-  margin-top: 18px;
+  margin-top: 34px;
+}
+
+.historico-header-top .welcome-user {
+  margin: 12px 0 8px;
+}
+
+.historico-header-top .header-ornament {
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .historico-content {
   padding-top: 24px;
   padding-bottom: 22px;
 }
+
+
+.nav-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.nav-btn:active {
+  transform: scale(0.96);
+}
+
 
 .calendar-toolbar {
   display: flex;
@@ -26,7 +46,7 @@
   gap: 16px;
 
   margin: 0 auto 26px;
-  width: min(520px, 100%);
+  width: min(700px, 100%);
   padding: 12px 18px;
 
   border-radius: 999px;
@@ -66,7 +86,7 @@
 }
 
 .calendar-wrapper {
-  width: min(560px, 100%);
+  width: min(700px, 100%);
   margin: 0 auto;
 }
 
@@ -141,7 +161,7 @@
 }
 
 .calendar-legend-card {
-  width: min(560px, 100%);
+  width: min(700px, 100%);
   margin: 28px auto 0;
   padding: 16px 18px;
 
@@ -176,7 +196,7 @@
 }
 
 .historico-vazio {
-  width: min(560px, 100%);
+  width: min(700px, 100%);
   margin: 18px auto 0;
   text-align: center;
   font-family: "Inter", sans-serif;
@@ -185,7 +205,7 @@
 }
 
 .detalhe-dia {
-  width: min(560px, 100%);
+  width: min(700px, 100%);
   margin: 24px auto 0;
 }
 
@@ -237,7 +257,7 @@
   display: none !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 700px) {
   .calendar-toolbar {
     padding: 10px 12px;
   }

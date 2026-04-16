@@ -143,6 +143,65 @@ body{
 .nav-btn:active { transform: translateY(0px); box-shadow: 0 8px 18px rgba(44, 49, 92, 0.12); }
 .nav-next { right: 10px; }
 
+
+
+/* =========================================================
+   ÍCONES DE NAVEGAÇÃO
+========================================================= */
+
+.icon-nav {
+  width: 18px;
+  height: 18px;
+  color: rgba(54, 70, 148, 0.85);
+  display: block;
+}
+
+.icon-back {
+  transform: translateX(-1px);
+}
+
+.icon-forward {
+  transform: translateX(1px);
+}
+
+.icon-gear {
+  width: 19px;
+  height: 19px;
+}
+
+.nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+
+  background: rgba(255, 255, 255, 0.70);
+  border: 1px solid rgba(223, 211, 201, 0.92);
+
+  box-shadow:
+    0 12px 22px rgba(44, 49, 92, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+
+  backdrop-filter: blur(6px);
+}
+
+.nav-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 24px rgba(44, 49, 92, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.nav-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 8px 18px rgba(44, 49, 92, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+
+
 /* =========================================================
     “Folha”
 ========================================================= */
