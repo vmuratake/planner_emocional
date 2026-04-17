@@ -112,7 +112,7 @@ function aplicarBoasVindas() {
 
 function configurarEventos() {
   btnVoltarCheckin?.addEventListener("click", () => {
-    window.location.href = "/checkin";
+    window.location.href = "/";
   });
 
   btnMesAnterior?.addEventListener("click", () => {
