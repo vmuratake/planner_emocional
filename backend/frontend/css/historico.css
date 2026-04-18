@@ -258,24 +258,6 @@
 }
 
 @media (max-width: 700px) {
-  .calendar-toolbar {
-    padding: 10px 12px;
-  }
-
-  .calendar-month-title {
-    font-size: 0.92rem;
-  }
-
-  .calendar-grid {
-    gap: 10px 4px;
-  }
-
-  .calendar-day,
-  .calendar-empty {
-    width: 38px;
-    height: 38px;
-  }
-
   .calendar-legend-grid {
     grid-template-columns: 1fr 1fr;
     gap: 10px 12px;
@@ -283,5 +265,27 @@
 
   .legend-item {
     font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-legend-card {
+    width: min(92%, 100%);
+    padding: 14px 16px;
+  }
+
+  .calendar-legend-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .legend-item {
+    font-size: 0.82rem;
+    line-height: 1.3;
+    align-items: flex-start;
+  }
+
+  .legend-color {
+    margin-top: 3px;
   }
 }
