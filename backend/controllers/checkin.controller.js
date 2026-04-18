@@ -80,11 +80,9 @@ async function criar(req, res) {
       como_me_sinto,
       energia_fisica,
       energia_mental,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
+      me_conte_seu_dia,
+      aprendizados_hoje,
       observacoes_livres,
-      pequena_vitoria,
       horario_registro_local,
     } = body;
 
@@ -115,11 +113,9 @@ async function criar(req, res) {
       como_me_sinto: vComoMeSinto,
       energia_fisica: vFisica,
       energia_mental: vMental,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
+      me_conte_seu_dia,
+      aprendizados_hoje,
       observacoes_livres,
-      pequena_vitoria,
       horario_registro_local,
     });
 
