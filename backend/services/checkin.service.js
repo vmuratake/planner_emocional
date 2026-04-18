@@ -10,11 +10,9 @@ SELECT
   como_me_sinto,
   energia_fisica,
   energia_mental,
-  ocupou_mente,
-  afetou_hoje,
-  autocuidado,
+  me_conte_seu_dia,
+  aprendizados_hoje,
   observacoes_livres,
-  pequena_vitoria,
   horario_registro_local,
   created_at
 FROM tbcheckin
@@ -35,11 +33,9 @@ async function buscarPorData(data, login_id) {
       como_me_sinto,
       energia_fisica,
       energia_mental,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
+      me_conte_seu_dia,
+      aprendizados_hoje,
       observacoes_livres,
-      pequena_vitoria,
       horario_registro_local,
       created_at
     FROM tbcheckin
@@ -59,11 +55,9 @@ async function criarCheckin(payload) {
     como_me_sinto,
     energia_fisica,
     energia_mental,
-    ocupou_mente,
-    afetou_hoje,
-    autocuidado,
+    me_conte_seu_dia,
+    aprendizados_hoje,
     observacoes_livres,
-    pequena_vitoria,
     horario_registro_local,
   } = payload;
 
@@ -75,14 +69,12 @@ async function criarCheckin(payload) {
       como_me_sinto,
       energia_fisica,
       energia_mental,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
+      me_conte_seu_dia,
+      aprendizados_hoje,
       observacoes_livres,
-      pequena_vitoria,
       horario_registro_local
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const valores = [
@@ -91,11 +83,9 @@ async function criarCheckin(payload) {
     como_me_sinto,
     energia_fisica,
     energia_mental,
-    (ocupou_mente == null || String(ocupou_mente).trim() === "") ? null : ocupou_mente,
-    (afetou_hoje == null || String(afetou_hoje).trim() === "") ? null : afetou_hoje,
-    (autocuidado == null || String(autocuidado).trim() === "") ? null : autocuidado,
+    (me_conte_seu_dia == null || String(me_conte_seu_dia).trim() === "") ? null : me_conte_seu_dia,
+    (aprendizados_hoje == null || String(aprendizados_hoje).trim() === "") ? null : aprendizados_hoje,
     (observacoes_livres == null || String(observacoes_livres).trim() === "") ? null : observacoes_livres,
-    (pequena_vitoria == null || String(pequena_vitoria).trim() === "") ? null : pequena_vitoria,
     horario_registro_local,
   ];
 
@@ -131,11 +121,9 @@ async function buscarHistoricoPorMes({ login_id, mes, ano }) {
       como_me_sinto,
       energia_fisica,
       energia_mental,
-      ocupou_mente,
-      afetou_hoje,
-      autocuidado,
+      me_conte_seu_dia,
+      aprendizados_hoje,
       observacoes_livres,
-      pequena_vitoria,
       created_at
     FROM tbcheckin
     WHERE login_id = ?
