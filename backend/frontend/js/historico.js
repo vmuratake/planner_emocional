@@ -20,43 +20,52 @@ const nomesMeses = [
 ];
 
 const MAPA_EMOCIONAL = {
-  FELIZ: { label: "Feliz", cor: "#f6c1b3" },
-  TRISTE: { label: "Triste", cor: "#cfc4ea" },
-  PREOCUPADO: { label: "Preocupado(a)", cor: "#d9c9bd" },
-  ANSIOSO: { label: "Ansioso(a)", cor: "#bdb7e8" },
-  CALMO: { label: "Calmo(a)", cor: "#f3df9c" },
-  DESPREOCUPADO: { label: "Despreocupado(a)", cor: "#cbe7d3" },
-  IRRITADO: { label: "Irritado(a)", cor: "#f2a8a0" },
-  GRATO: { label: "Grato(a)", cor: "#f7d7a8" },
-  APAIXONADO: { label: "Apaixonado(a)", cor: "#f6bfd5" },
-  OTIMISTA: { label: "Otimista", cor: "#ffe09a" },
-  ESPERANCOSO: { label: "Esperançoso(a)", cor: "#d6f0c2" },
-  REALIZADO: { label: "Realizado(a)", cor: "#bfe4cf" },
-  FRUSTRADO: { label: "Frustrado(a)", cor: "#d8b8b8" },
-  CULPADO: { label: "Culpado(a)", cor: "#cfc7d8" },
-  ANGUSTIADO: { label: "Angustiado(a)", cor: "#bcaed8" },
-  NOSTALGICO: { label: "Nostálgico(a)", cor: "#d8c7a8" },
+  // ❤️ EMOÇÕES MAIS VIVAS
+  FELIZ: { label: "Feliz", cor: "#f4a9a0" },
+  IRRITADO: { label: "Irritado(a)", cor: "#e57373" },
+  APAIXONADO: { label: "Apaixonado(a)", cor: "#ec8fb5" },
+
+  // 💜 GRUPO ANSIEDADE / INTROSPECTIVO (AGORA DIFERENCIADO)
+  TRISTE: { label: "Triste", cor: "#d4c6f0" },        // lilás claro
+  ANSIOSO: { label: "Ansioso(a)", cor: "#b39ddb" },   // roxo médio
+  ANGUSTIADO: { label: "Angustiado(a)", cor: "#9575cd" }, // roxo mais forte
+  CULPADO: { label: "Culpado(a)", cor: "#b0a4c9" },   // roxo acinzentado
+
+  // 🟡 CALMA / POSITIVO (AGORA NÃO IGUAL)
+  CALMO: { label: "Calmo(a)", cor: "#f3e5ab" },       // amarelo suave
+  GRATO: { label: "Grato(a)", cor: "#f6c177" },       // dourado
+  OTIMISTA: { label: "Otimista", cor: "#f4b942" },    // âmbar mais forte
+
+  // 🤎 REFLEXIVO (SEPARADOS)
+  PREOCUPADO: { label: "Preocupado(a)", cor: "#d7c2a3" }, // bege
+  FRUSTRADO: { label: "Frustrado(a)", cor: "#caa6a6" },   // rosado queimado
+  NOSTALGICO: { label: "Nostálgico(a)", cor: "#bfa88a" }, // sépia
+
+  // 💚 POSITIVO EQUILIBRADO
+  ESPERANCOSO: { label: "Esperançoso(a)", cor: "#c5e1a5" }, // verde claro
+  DESPREOCUPADO: { label: "Despreocupado(a)", cor: "#aed9c9" }, // verde pastel
+  REALIZADO: { label: "Realizado(a)", cor: "#81c7a5" }, // verde-água mais forte
 };
 
 const LABELS = {
   como_me_sinto: {
-  FELIZ: "😊 Feliz",
-  TRISTE: "😢 Triste",
-  PREOCUPADO: "😟 Preocupado(a)",
-  ANSIOSO: "😰 Ansioso(a)",
-  CALMO: "😌 Calmo(a)",
-  DESPREOCUPADO: "😎 Despreocupado(a)",
-  IRRITADO: "😠 Irritado(a)",
-  GRATO: "🙏 Grato(a)",
-  APAIXONADO: "🥰 Apaixonado(a)",
-  OTIMISTA: "✨ Otimista",
-  ESPERANCOSO: "🌟 Esperançoso(a)",
-  REALIZADO: "🏆 Realizado(a)",
-  FRUSTRADO: "😞 Frustrado(a)",
-  CULPADO: "😔 Culpado(a)",
-  ANGUSTIADO: "😣 Angustiado(a)",
-  NOSTALGICO: "🍂 Nostálgico(a)",
-},
+    FELIZ: "😊 Feliz",
+    TRISTE: "😢 Triste",
+    PREOCUPADO: "😟 Preocupado(a)",
+    ANSIOSO: "😰 Ansioso(a)",
+    CALMO: "😌 Calmo(a)",
+    DESPREOCUPADO: "😎 Despreocupado(a)",
+    IRRITADO: "😠 Irritado(a)",
+    GRATO: "🙏 Grato(a)",
+    APAIXONADO: "🥰 Apaixonado(a)",
+    OTIMISTA: "✨ Otimista",
+    ESPERANCOSO: "🌟 Esperançoso(a)",
+    REALIZADO: "🏆 Realizado(a)",
+    FRUSTRADO: "😞 Frustrado(a)",
+    CULPADO: "😔 Culpado(a)",
+    ANGUSTIADO: "😣 Angustiado(a)",
+    NOSTALGICO: "🍂 Nostálgico(a)",
+  },
   energia_fisica: {
     ENERGIZADO: "⚡ Energizado",
     CANSADO: "😮‍💨 Cansado",
@@ -116,11 +125,13 @@ function configurarEventos() {
   });
 
   btnMesAnterior?.addEventListener("click", () => {
+    dataNavegacao.setDate(1);
     dataNavegacao.setMonth(dataNavegacao.getMonth() - 1);
     carregarHistoricoDoMes();
   });
 
   btnMesProximo?.addEventListener("click", () => {
+    dataNavegacao.setDate(1);
     dataNavegacao.setMonth(dataNavegacao.getMonth() + 1);
     carregarHistoricoDoMes();
   });
@@ -199,6 +210,7 @@ function renderizarCalendario() {
   const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
   const totalDiasNoMes = new Date(ano, mes + 1, 0).getDate();
 
+  // Preencher células vazias antes do primeiro dia do mês
   for (let i = 0; i < primeiroDiaSemana; i++) {
     const celulaVazia = document.createElement("div");
     celulaVazia.className = "calendar-cell";
@@ -206,6 +218,7 @@ function renderizarCalendario() {
     calendarioGrid.appendChild(celulaVazia);
   }
 
+  // Preencher dias do mês
   for (let dia = 1; dia <= totalDiasNoMes; dia++) {
     const chaveData = formatarChaveData(ano, mes + 1, dia);
     const registro = mapaPorData[chaveData];
@@ -240,6 +253,17 @@ function renderizarCalendario() {
 
     celula.appendChild(botao);
     calendarioGrid.appendChild(celula);
+  }
+
+  // Preencher células vazias após o último dia do mês para completar a grade. completa sempre até 42 células (6 semanas)
+  const totalCelulasAtuais = primeiroDiaSemana + totalDiasNoMes;
+  const celulasRestantes = 42 - totalCelulasAtuais;
+
+  for (let i = 0; i < celulasRestantes; i++) {
+    const celulaVazia = document.createElement("div");
+    celulaVazia.className = "calendar-cell";
+    celulaVazia.innerHTML = `<div class="calendar-empty"></div>`;
+    calendarioGrid.appendChild(celulaVazia);
   }
 }
 
