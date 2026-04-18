@@ -266,11 +266,9 @@ function renderizarDetalheDia(chaveData, registro) {
     ${linhaDetalhe("😊 Como me sinto hoje?", labelFrom("como_me_sinto", registro.como_me_sinto))}
     ${linhaDetalhe("🔋 Energia Física", labelFrom("energia_fisica", registro.energia_fisica))}
     ${linhaDetalhe("🧠 Energia Mental", labelFrom("energia_mental", registro.energia_mental))}
-    ${linhaDetalhe("💭 O que ocupou minha mente", registro.ocupou_mente || "—")}
-    ${linhaDetalhe("🧠 O que mais me afetou hoje?", registro.afetou_hoje || "—")}
-    ${linhaDetalhe("🌱 Algo simples que posso fazer por mim", registro.autocuidado || "—")}
+    ${linhaDetalhe("📝 Me conte como foi seu dia", registro.me_conte_seu_dia || "—")}
+    ${linhaDetalhe("💡 O que aprendi com os acontecimentos de hoje?", registro.aprendizados_hoje || "—")}
     ${linhaDetalhe("✍️ Observações livres", registro.observacoes_livres || "—")}
-    ${linhaDetalhe("🏆 Pequena vitória", registro.pequena_vitoria || "—")}
   `;
 }
 
