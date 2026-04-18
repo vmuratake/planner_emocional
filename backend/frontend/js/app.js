@@ -385,11 +385,9 @@ function renderizarUltimo(registros) {
         ${linhaEnergia("🔋 Energia Física", "energia_fisica", r.energia_fisica)}
         ${linhaEnergia("🧠 Energia Mental", "energia_mental", r.energia_mental)}
 
-        ${linhaSeTiver("💭 O que ocupou minha mente", r.ocupou_mente ?? r.ocupa_mente)}
-        ${linhaSeTiver("🧠 O que mais me afetou hoje?", r.afetou_hoje)}
-        ${linhaSeTiver("🌱 Algo simples que posso fazer por mim", r.autocuidado)}
-        ${linhaSeTiver("✍️ Observações Livres", r.observacoes_livres)}
-        ${linhaSeTiver("🏆 Pequena vitória", r.pequena_vitoria)}
+        ${linhaSeTiver("📝 Me conte como foi seu dia", r.me_conte_seu_dia)}
+        ${linhaSeTiver("💡 O que aprendi com os acontecimentos de hoje?", r.aprendizados_hoje)}
+        ${linhaSeTiver("✍️ Observações livres", r.observacoes_livres)}
       </div>
 
       <div class="foot">
@@ -711,9 +709,6 @@ btnLimpar.addEventListener("click", () => {
   const selectsObrigatorios = [
     "energia_fisica",
     "energia_mental",
-    "energia_emocional",
-    "energia_espiritual",
-    "energia_social",
   ];
 
   selectsObrigatorios.forEach((id) => {
@@ -783,10 +778,8 @@ form.addEventListener("submit", async (event) => {
   const energiaMental = document.getElementById("energia_mental").value;
 
   // CAPTURA DAS TEXTAREAS
-  const ocupouMente = document.getElementById("ocupou_mente")?.value.trim() || "";
-  const pequenaVitoria = document.getElementById("pequena_vitoria")?.value.trim() || "";
-  const afetouHoje = document.getElementById("afetou_hoje")?.value.trim() || "";
-  const autocuidado = document.getElementById("autocuidado")?.value.trim() || "";
+  const meConteSeuDia = document.getElementById("me_conte_seu_dia")?.value.trim() || "";
+  const aprendizadosHoje = document.getElementById("aprendizados_hoje")?.value.trim() || "";
   const observacoesLivres = document.getElementById("observacoes_livres")?.value.trim() || "";
 
   // ✅ Regras mínimas de preenchimento obrigatório (domínio)
@@ -813,11 +806,9 @@ form.addEventListener("submit", async (event) => {
     energia_fisica: energiaFisica,
     energia_mental: energiaMental,
 
-    ocupou_mente: ocupouMente || null,
-    afetou_hoje: afetouHoje || null,
-    autocuidado: autocuidado || null,
+    me_conte_seu_dia: meConteSeuDia || null,
+    aprendizados_hoje: aprendizadosHoje || null,
     observacoes_livres: observacoesLivres || null,
-    pequena_vitoria: pequenaVitoria || null,
   };
 
   try {
