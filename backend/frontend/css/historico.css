@@ -258,34 +258,58 @@
 }
 
 @media (max-width: 700px) {
-  .calendar-legend-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 12px;
+  .calendar-toolbar {
+    padding: 10px 12px;
   }
 
-  .legend-item {
-    font-size: 0.76rem;
+  .calendar-month-title {
+    font-size: 0.92rem;
   }
-}
 
-@media (max-width: 480px) {
+  .calendar-grid {
+    gap: 10px 4px;
+  }
+
+  .calendar-day,
+  .calendar-empty {
+    width: 38px;
+    height: 38px;
+  }
+
   .calendar-legend-card {
-    width: min(92%, 100%);
-    padding: 14px 16px;
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 14px;
+    overflow: hidden;
   }
 
   .calendar-legend-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr !important;
     gap: 10px;
+    width: 100%;
   }
 
   .legend-item {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr);
+    column-gap: 10px;
+    align-items: start;
+    width: 100%;
+    min-width: 0;
     font-size: 0.82rem;
     line-height: 1.3;
-    align-items: flex-start;
+  }
+
+  .legend-item span:last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .legend-color {
+    width: 14px;
+    height: 14px;
     margin-top: 3px;
   }
 }
