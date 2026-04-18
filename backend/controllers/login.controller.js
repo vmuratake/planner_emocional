@@ -111,7 +111,9 @@ async function deleteAccount(req, res) {
 async function updateProfile(req, res) {
   try {
     const { id } = req.params;
-    const { nome, data_nascimento } = req.body;
+    const { nome, data_nascimento, senha } = req.body;
+
+    console.log("BODY UPDATE PROFILE:", req.body);
 
     if (!nome || !data_nascimento) {
       return res.status(400).json({
@@ -121,7 +123,8 @@ async function updateProfile(req, res) {
 
     const result = await loginService.updateProfile(id, {
       nome,
-      data_nascimento
+      data_nascimento,
+      senha
     });
 
     if (!result.updated) {
@@ -131,7 +134,9 @@ async function updateProfile(req, res) {
     }
 
     return res.status(200).json({
-      mensagem: "Perfil atualizado com sucesso"
+      mensagem: senha
+        ? "Perfil e senha atualizados com sucesso"
+        : "Perfil atualizado com sucesso"
     });
   } catch (error) {
     console.error("Erro ao atualizar perfil:", error);

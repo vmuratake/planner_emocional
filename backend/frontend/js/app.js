@@ -610,8 +610,8 @@ btnSalvarPerfil?.addEventListener("click", async () => {
   const user = getUsuarioLogado();
   if (!user) return;
 
-  const novaSenha = document.getElementById("novaSenha")?.value;
-  const novaSenha2 = document.getElementById("novaSenha2")?.value;
+  const novaSenha = document.getElementById("novaSenhaPerfil")?.value;
+  const novaSenha2 = document.getElementById("novaSenhaPerfil2")?.value;
 
   // validação de senha
   if (novaSenha || novaSenha2) {
@@ -657,8 +657,8 @@ btnSalvarPerfil?.addEventListener("click", async () => {
     alert("Perfil atualizado com sucesso ✅");
 
     // limpa campos de senha
-    document.getElementById("novaSenha").value = "";
-    document.getElementById("novaSenha2").value = "";
+    document.getElementById("novaSenhaPerfil").value = "";
+    document.getElementById("novaSenhaPerfil2").value = "";
 
     modalPerfil.classList.add("hidden");
 

@@ -134,6 +134,7 @@ async function criar(req, res) {
   }
 }
 
+
 // Exclusão de check-in por ID, garantindo que o registro pertence ao usuário
 async function excluir(req, res) {
   try {

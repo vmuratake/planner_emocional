@@ -1,4 +1,5 @@
 const { pool } = require("../db");
+const bcrypt = require("bcrypt");
 
 // Serviço de check-in, responsável por interagir com o banco de dados e realizar operações relacionadas aos check-ins dos usuários
 async function listarCheckins(login_id) {
@@ -92,6 +93,7 @@ async function criarCheckin(payload) {
   const [result] = await pool.query(sql, valores);
   return result.insertId;
 }
+
 
 // Exclusão de check-in por ID, garantindo que o registro pertence ao usuário
 async function excluirCheckin(id, login_id) {
