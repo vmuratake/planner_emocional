@@ -137,6 +137,7 @@ function configurarEventos() {
   });
 }
 
+// Renderiza a legenda de emoções com base no MAPA_EMOCIONAL, garantindo que cada emoção tenha seu rótulo e cor correspondentes
 function renderizarLegenda() {
   legendaGrid.innerHTML = "";
 
@@ -150,6 +151,14 @@ function renderizarLegenda() {
     legendaGrid.appendChild(div);
   });
 }
+
+// Força a reinicialização da animação CSS para que o efeito ocorra toda vez que renderizar o calendário
+function animarCalendario() {
+  calendarioGrid.classList.remove("is-animating");
+  void calendarioGrid.offsetWidth;
+  calendarioGrid.classList.add("is-animating");
+}
+
 
 async function carregarHistoricoDoMes() {
   const user = getUsuarioLogado();
@@ -187,6 +196,7 @@ async function carregarHistoricoDoMes() {
     });
 
     renderizarCalendario();
+    animarCalendario();
 
     if (registrosDoMes.length === 0) {
       historicoVazio.classList.remove("hidden");
@@ -196,6 +206,7 @@ async function carregarHistoricoDoMes() {
     registrosDoMes = [];
     mapaPorData = {};
     renderizarCalendario();
+    animarCalendario();
     historicoVazio.classList.remove("hidden");
     historicoVazio.innerHTML = "<p>Não foi possível carregar o histórico deste mês.</p>";
   }
@@ -242,29 +253,29 @@ function renderizarCalendario() {
       botao.classList.add("hoje");
     }
 
-    botao.addEventListener("click", () => {
-      document.querySelectorAll(".calendar-day").forEach((item) => {
-        item.classList.remove("selecionado");
-      });
-
-      botao.classList.add("selecionado");
-      renderizarDetalheDia(chaveData, registro);
+  botao.addEventListener("click", () => {
+    document.querySelectorAll(".calendar-day").forEach((item) => {
+      item.classList.remove("selecionado");
     });
 
-    celula.appendChild(botao);
-    calendarioGrid.appendChild(celula);
-  }
+    botao.classList.add("selecionado");
+    renderizarDetalheDia(chaveData, registro);
+  });
 
-  // Preencher células vazias após o último dia do mês para completar a grade. completa sempre até 42 células (6 semanas)
-  const totalCelulasAtuais = primeiroDiaSemana + totalDiasNoMes;
-  const celulasRestantes = 42 - totalCelulasAtuais;
+  celula.appendChild(botao);
+  calendarioGrid.appendChild(celula);
+}
 
-  for (let i = 0; i < celulasRestantes; i++) {
-    const celulaVazia = document.createElement("div");
-    celulaVazia.className = "calendar-cell";
-    celulaVazia.innerHTML = `<div class="calendar-empty"></div>`;
-    calendarioGrid.appendChild(celulaVazia);
-  }
+// Preencher células vazias após o último dia do mês para completar a grade. completa sempre até 42 células (6 semanas)
+const totalCelulasAtuais = primeiroDiaSemana + totalDiasNoMes;
+const celulasRestantes = 42 - totalCelulasAtuais;
+
+for (let i = 0; i < celulasRestantes; i++) {
+  const celulaVazia = document.createElement("div");
+  celulaVazia.className = "calendar-cell";
+  celulaVazia.innerHTML = `<div class="calendar-empty"></div>`;
+  calendarioGrid.appendChild(celulaVazia);
+}
 }
 
 function renderizarDetalheDia(chaveData, registro) {
