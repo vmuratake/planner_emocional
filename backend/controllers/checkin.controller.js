@@ -193,4 +193,27 @@ async function buscarHistorico(req, res) {
   }
 }
 
-module.exports = { listar, buscarByDate, criar, excluir, buscarHistorico };
+// Busca de dados para dashboard, garantindo que o login_id seja fornecido e tratando erros de forma consistente
+async function buscarDadosDashboard(req, res) {
+  try {
+    const { login_id } = req.query;
+
+    if (!login_id) {
+      return res.status(400).json({
+        erro: "login_id obrigatório."
+      });
+    }
+
+    const dados = await checkinService.buscarDadosDashboard(Number(login_id));
+
+    return res.status(200).json(dados);
+  } catch (error) {
+    console.error("Erro ao buscar dados do dashboard:", error);
+    return res.status(500).json({
+      erro: "Erro interno ao buscar dados do dashboard.",
+      detalhe: error.message
+    });
+  }
+}
+
+module.exports = { listar, buscarByDate, criar, excluir, buscarHistorico, buscarDadosDashboard };
