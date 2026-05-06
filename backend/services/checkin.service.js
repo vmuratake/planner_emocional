@@ -138,6 +138,30 @@ async function buscarHistoricoPorMes({ login_id, mes, ano }) {
   return rows;
 }
 
+// Busca de dados para dashboard, garantindo que os registros pertencem ao usuário e ordenando por data e ID
+async function buscarDadosDashboard(login_id) {
+  const sql = `
+    SELECT
+      id,
+      login_id,
+      data_checkin,
+      horario_registro_local,
+      como_me_sinto,
+      energia_fisica,
+      energia_mental,
+      me_conte_seu_dia,
+      aprendizados_hoje,
+      observacoes_livres,
+      created_at
+    FROM tbcheckin
+    WHERE login_id = ?
+    ORDER BY data_checkin ASC, id ASC
+  `;
+
+  const [rows] = await pool.query(sql, [login_id]);
+  return rows;
+}
+
 
 module.exports = {
   listarCheckins,
@@ -145,4 +169,5 @@ module.exports = {
   criarCheckin,
   excluirCheckin,
   buscarHistoricoPorMes,
+  buscarDadosDashboard
 };
