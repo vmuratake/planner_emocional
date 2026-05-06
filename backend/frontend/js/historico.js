@@ -4,6 +4,7 @@ const API_BASE_URL =
     : "https://planneremocional-production.up.railway.app";
 
 const btnVoltarCheckin = document.getElementById("btnVoltarCheckin");
+const btnAbrirDashboard = document.getElementById("btnAbrirDashboard");
 const btnMesAnterior = document.getElementById("btnMesAnterior");
 const btnMesProximo = document.getElementById("btnMesProximo");
 const mesAnoAtualEl = document.getElementById("mesAnoAtual");
@@ -122,6 +123,10 @@ function aplicarBoasVindas() {
 function configurarEventos() {
   btnVoltarCheckin?.addEventListener("click", () => {
     window.location.href = "/";
+  });
+
+  btnAbrirDashboard?.addEventListener("click", () => {
+    window.location.href = "/dashboard.html";
   });
 
   btnMesAnterior?.addEventListener("click", () => {
@@ -253,29 +258,29 @@ function renderizarCalendario() {
       botao.classList.add("hoje");
     }
 
-  botao.addEventListener("click", () => {
-    document.querySelectorAll(".calendar-day").forEach((item) => {
-      item.classList.remove("selecionado");
+    botao.addEventListener("click", () => {
+      document.querySelectorAll(".calendar-day").forEach((item) => {
+        item.classList.remove("selecionado");
+      });
+
+      botao.classList.add("selecionado");
+      renderizarDetalheDia(chaveData, registro);
     });
 
-    botao.classList.add("selecionado");
-    renderizarDetalheDia(chaveData, registro);
-  });
+    celula.appendChild(botao);
+    calendarioGrid.appendChild(celula);
+  }
 
-  celula.appendChild(botao);
-  calendarioGrid.appendChild(celula);
-}
+  // Preencher células vazias após o último dia do mês para completar a grade. completa sempre até 42 células (6 semanas)
+  const totalCelulasAtuais = primeiroDiaSemana + totalDiasNoMes;
+  const celulasRestantes = 42 - totalCelulasAtuais;
 
-// Preencher células vazias após o último dia do mês para completar a grade. completa sempre até 42 células (6 semanas)
-const totalCelulasAtuais = primeiroDiaSemana + totalDiasNoMes;
-const celulasRestantes = 42 - totalCelulasAtuais;
-
-for (let i = 0; i < celulasRestantes; i++) {
-  const celulaVazia = document.createElement("div");
-  celulaVazia.className = "calendar-cell";
-  celulaVazia.innerHTML = `<div class="calendar-empty"></div>`;
-  calendarioGrid.appendChild(celulaVazia);
-}
+  for (let i = 0; i < celulasRestantes; i++) {
+    const celulaVazia = document.createElement("div");
+    celulaVazia.className = "calendar-cell";
+    celulaVazia.innerHTML = `<div class="calendar-empty"></div>`;
+    calendarioGrid.appendChild(celulaVazia);
+  }
 }
 
 function renderizarDetalheDia(chaveData, registro) {
