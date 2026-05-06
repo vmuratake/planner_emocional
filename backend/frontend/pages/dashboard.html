@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dashboard Emocional • Planner Emocional</title>
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <main class="page dashboard-page">
+    <header class="entry-header">
+      <button id="btnVoltarHistorico" class="nav-btn nav-left" type="button" title="Voltar">
+        ‹
+      </button>
+
+      <h1 class="title">Dashboard Emocional</h1>
+      <p id="boasVindasDashboard" class="welcome-user">Acompanhe sua evolução emocional</p>
+
+      <div class="header-ornament" aria-hidden="true">
+        <span></span><i>✦✦✦</i><span></span>
+      </div>
+    </header>
+
+    <section class="dashboard-container">
+      <section class="cards-dashboard">
+        <div class="dashboard-card">
+          <h3>Total de registros</h3>
+          <p id="totalRegistros">0</p>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>Dias positivos</h3>
+          <p id="diasBons">0</p>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>Dias difíceis</h3>
+          <p id="diasRuins">0</p>
+        </div>
+
+        <div class="dashboard-card">
+          <h3>Emoção mais frequente</h3>
+          <p id="emocaoFrequente">—</p>
+        </div>
+      </section>
+
+      <section class="grafico-card">
+        <h2>Evolução das energias</h2>
+        <canvas id="graficoLinhaEnergias"></canvas>
+      </section>
+
+      <section class="grafico-card">
+        <h2>Comparativo emocional</h2>
+        <canvas id="graficoComparativo"></canvas>
+      </section>
+
+      <section class="insights-card">
+        <h2>Insights do período</h2>
+        <p id="textoInsights">Carregando análise emocional...</p>
+      </section>
+
+      <section id="dashboardVazio" class="dashboard-vazio hidden">
+        <p>Nenhum registro encontrado para gerar o dashboard.</p>
+      </section>
+    </section>
+  </main>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
