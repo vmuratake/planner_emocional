@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function configurarEventos() {
   btnVoltarHistorico?.addEventListener("click", () => {
-    window.location.href = "/historico.html";
+    window.location.href = "/historico";
   });
 }
 
