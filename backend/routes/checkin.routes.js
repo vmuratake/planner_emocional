@@ -8,6 +8,7 @@ router.get("/", controller.listar);
 router.get("/by-date/:data", controller.buscarByDate);
 router.post("/", controller.criar);
 router.get("/historico", controller.buscarHistorico);
+router.get("/dashboard", controller.buscarDadosDashboard);
 router.delete("/:id", controller.excluir);
 
 
