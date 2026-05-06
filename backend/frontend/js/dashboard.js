@@ -73,3 +73,66 @@ async function carregarDashboard() {
     `;
   }
 }
+
+
+function preencherCards() {
+
+  totalRegistrosEl.textContent = registros.length;
+
+  let diasBons = 0;
+  let diasRuins = 0;
+
+  const contadorEmocoes = {};
+
+  registros.forEach((registro) => {
+
+    const emocao = registro.como_me_sinto;
+
+    contadorEmocoes[emocao] =
+      (contadorEmocoes[emocao] || 0) + 1;
+
+    const positivas = [
+      "FELIZ",
+      "CALMO",
+      "GRATO",
+      "OTIMISTA",
+      "REALIZADO",
+      "ESPERANCOSO",
+      "DESPREOCUPADO",
+      "APAIXONADO"
+    ];
+
+    const negativas = [
+      "TRISTE",
+      "ANSIOSO",
+      "IRRITADO",
+      "FRUSTRADO",
+      "CULPADO",
+      "ANGUSTIADO",
+      "PREOCUPADO"
+    ];
+
+    if (positivas.includes(emocao)) {
+      diasBons++;
+    }
+
+    if (negativas.includes(emocao)) {
+      diasRuins++;
+    }
+  });
+
+  diasBonsEl.textContent = diasBons;
+  diasRuinsEl.textContent = diasRuins;
+
+  let emocaoMaisFrequente = "—";
+  let maiorQuantidade = 0;
+
+  Object.entries(contadorEmocoes).forEach(([emocao, quantidade]) => {
+    if (quantidade > maiorQuantidade) {
+      maiorQuantidade = quantidade;
+      emocaoMaisFrequente = emocao;
+    }
+  });
+
+  emocaoFrequenteEl.textContent = emocaoMaisFrequente;
+}
