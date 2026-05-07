@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,6 +29,7 @@
     </header>
 
     <section class="dashboard-container">
+
       <section class="cards-dashboard">
         <div class="dashboard-card">
           <h3>Total de registros</h3>
@@ -52,12 +54,18 @@
 
       <section class="grafico-card">
         <h2>Evolução das energias</h2>
-        <canvas id="graficoLinhaEnergias"></canvas>
+
+        <div class="grafico-wrapper">
+          <canvas id="graficoLinhaEnergias"></canvas>
+        </div>
       </section>
 
       <section class="grafico-card">
         <h2>Comparativo emocional</h2>
-        <canvas id="graficoComparativo"></canvas>
+
+        <div class="grafico-wrapper">
+          <canvas id="graficoComparativo"></canvas>
+        </div>
       </section>
 
       <section class="insights-card">
@@ -68,9 +76,11 @@
       <section id="dashboardVazio" class="dashboard-vazio hidden">
         <p>Nenhum registro encontrado para gerar o dashboard.</p>
       </section>
+
     </section>
   </main>
 
   <script src="/js/dashboard.js"></script>
 </body>
+
 </html>
