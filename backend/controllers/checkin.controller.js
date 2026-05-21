@@ -196,7 +196,11 @@ async function buscarHistorico(req, res) {
 // Busca de dados para dashboard, garantindo que o login_id seja fornecido e tratando erros de forma consistente
 async function buscarDadosDashboard(req, res) {
   try {
-    const { login_id } = req.query;
+    const {
+      login_id,
+      data_inicio,
+      data_fim
+    } = req.query;
 
     if (!login_id) {
       return res.status(400).json({
@@ -204,11 +208,25 @@ async function buscarDadosDashboard(req, res) {
       });
     }
 
-    const dados = await checkinService.buscarDadosDashboard(Number(login_id));
+    const dados =
+      await checkinService.buscarDadosDashboard({
+
+        login_id: Number(login_id),
+
+        data_inicio,
+
+        data_fim
+      });
 
     return res.status(200).json(dados);
+
   } catch (error) {
-    console.error("Erro ao buscar dados do dashboard:", error);
+
+    console.error(
+      "Erro ao buscar dados do dashboard:",
+      error
+    );
+
     return res.status(500).json({
       erro: "Erro interno ao buscar dados do dashboard.",
       detalhe: error.message
