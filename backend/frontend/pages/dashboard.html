@@ -30,6 +30,23 @@
 
     <section class="dashboard-container">
 
+      <section class="dashboard-filtros">
+        <div class="filtro-item">
+          <label for="dataInicio">Data início</label>
+          <input type="date" id="dataInicio" />
+        </div>
+
+        <div class="filtro-item">
+          <label for="dataFim">Data fim</label>
+          <input type="date" id="dataFim" />
+        </div>
+
+        <div class="acoes-filtro">
+          <button id="btnFiltrarDashboard" type="button">Filtrar</button>
+          <button id="btnLimparFiltros" type="button" class="btn-secundario">Limpar</button>
+        </div>
+      </section>
+
       <section class="cards-dashboard">
         <div class="dashboard-card">
           <h3>Total de registros</h3>
@@ -54,7 +71,6 @@
 
       <section class="grafico-card">
         <h3>Energia ao longo do tempo</h3>
-
         <div class="grafico-wrapper">
           <canvas id="graficoLinhaEnergias"></canvas>
         </div>
@@ -62,7 +78,6 @@
 
       <section class="grafico-card">
         <h3>Comparativo das energias Mental e Física</h3>
-
         <div class="grafico-wrapper grafico-wrapper-menor">
           <canvas id="graficoComparativo"></canvas>
         </div>
