@@ -212,9 +212,7 @@ async function buscarDadosDashboard(req, res) {
       await checkinService.buscarDadosDashboard({
 
         login_id: Number(login_id),
-
         data_inicio,
-
         data_fim
       });
 
