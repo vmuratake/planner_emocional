@@ -17,22 +17,22 @@ let registros = [];
 
 // Mapeamento de emoções para labels mais amigáveis
 const LABEL_EMOCOES = {
-  FELIZ: "😊 Feliz",
-  TRISTE: "😢 Triste",
-  PREOCUPADO: "😟 Preocupado(a)",
-  ANSIOSO: "😰 Ansioso(a)",
-  CALMO: "😌 Calmo(a)",
-  DESPREOCUPADO: "😎 Despreocupado(a)",
-  IRRITADO: "😠 Irritado(a)",
-  GRATO: "🙏 Grato(a)",
-  APAIXONADO: "🥰 Apaixonado(a)",
-  OTIMISTA: "✨ Otimista",
-  ESPERANCOSO: "🌟 Esperançoso(a)",
-  REALIZADO: "🏆 Realizado(a)",
-  FRUSTRADO: "😞 Frustrado(a)",
-  CULPADO: "😔 Culpado(a)",
-  ANGUSTIADO: "😣 Angustiado(a)",
-  NOSTALGICO: "🍂 Nostálgico(a)"
+    FELIZ: "😊 Feliz",
+    TRISTE: "😢 Triste",
+    PREOCUPADO: "😟 Preocupado(a)",
+    ANSIOSO: "😰 Ansioso(a)",
+    CALMO: "😌 Calmo(a)",
+    DESPREOCUPADO: "😎 Despreocupado(a)",
+    IRRITADO: "😠 Irritado(a)",
+    GRATO: "🙏 Grato(a)",
+    APAIXONADO: "🥰 Apaixonado(a)",
+    OTIMISTA: "✨ Otimista",
+    ESPERANCOSO: "🌟 Esperançoso(a)",
+    REALIZADO: "🏆 Realizado(a)",
+    FRUSTRADO: "😞 Frustrado(a)",
+    CULPADO: "😔 Culpado(a)",
+    ANGUSTIADO: "😣 Angustiado(a)",
+    NOSTALGICO: "🍂 Nostálgico(a)"
 };
 
 
@@ -158,7 +158,7 @@ function preencherCards() {
     });
 
     emocaoFrequenteEl.textContent =
-  LABEL_EMOCOES[emocaoMaisFrequente] || emocaoMaisFrequente;
+        LABEL_EMOCOES[emocaoMaisFrequente] || emocaoMaisFrequente;
 }
 
 // Função para criar o gráfico de linha comparando energia física e mental
@@ -179,7 +179,7 @@ function criarGraficoLinha() {
     const ctx = document
         .getElementById("graficoLinhaEnergias");
 
-    if (!ctx) return;    
+    if (!ctx) return;
 
     new Chart(ctx, {
         type: "line",
@@ -204,7 +204,18 @@ function criarGraficoLinha() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: false
+            animation: false,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        boxWidth: 10,
+                        font: {
+                            size: 11
+                        }
+                    }
+                }
+            }
         }
     });
 }
@@ -294,7 +305,18 @@ function criarGraficoComparativo() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: false
+            animation: false,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        boxWidth: 10,
+                        font: {
+                            size: 11
+                        }
+                    }
+                }
+            }
         }
     });
 }
@@ -332,11 +354,11 @@ function converterEnergiaMental(valor) {
 }
 
 function formatarData(data) {
-  if (!data) return "—";
+    if (!data) return "—";
 
-  const dataISO = String(data).slice(0, 10);
-  const [ano, mes, dia] = dataISO.split("-");
+    const dataISO = String(data).slice(0, 10);
+    const [ano, mes, dia] = dataISO.split("-");
 
-  return `${dia}/${mes}/${ano}`;
+    return `${dia}/${mes}/${ano}`;
 }
 
