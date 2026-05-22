@@ -386,3 +386,107 @@
     height: 11px;
   }
 }
+
+
+
+@media (max-width: 640px) {
+  .historico-page-shell {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .historico-header-top {
+    margin-bottom: 14px;
+  }
+
+  .historico-sheet {
+    margin-top: 22px;
+  }
+
+  .historico-content {
+    padding-top: 18px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .calendar-toolbar {
+    width: 100%;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 22px;
+  }
+
+  .calendar-month-title {
+    font-size: 1rem;
+  }
+
+  .calendar-nav-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .calendar-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .calendar-weekdays {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+
+  .calendar-weekdays span {
+    font-size: 0.78rem;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px 2px;
+    min-height: auto;
+  }
+
+  .calendar-cell {
+    min-height: 36px;
+    min-width: 0;
+  }
+
+  .calendar-day,
+  .calendar-empty {
+    width: 32px;
+    height: 32px;
+  }
+
+  .calendar-day {
+    font-size: 0.82rem;
+  }
+
+  .calendar-legend-card,
+  .detalhe-dia,
+  .historico-vazio {
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .calendar-day,
+  .calendar-empty {
+    width: 29px;
+    height: 29px;
+  }
+
+  .calendar-day {
+    font-size: 0.76rem;
+  }
+
+  .calendar-grid {
+    gap: 7px 1px;
+  }
+
+  .calendar-weekdays span {
+    font-size: 0.72rem;
+  }
+}
