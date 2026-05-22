@@ -382,23 +382,24 @@ function gerarInsights() {
 
   let mensagem = "";
 
-  if (mentalBoa > mentalRuim) {
-    mensagem += "Sua energia mental apresentou mais registros positivos do que difíceis neste período. ";
-  } else if (mentalRuim > mentalBoa) {
-    mensagem += "Sua energia mental apareceu mais baixa em vários registros, indicando possível cansaço mental ou sobrecarga. ";
-  } else {
-    mensagem += "Sua energia mental ficou equilibrada neste período. ";
-  }
 
-  if (fisicaBoa > fisicaRuim) {
-    mensagem += "Sua energia física teve bons sinais de disposição e leveza.";
-  } else if (fisicaRuim > fisicaBoa) {
-    mensagem += "Sua energia física apresentou sinais de cansaço, tensão ou exaustão.";
-  } else {
-    mensagem += "Sua energia física ficou equilibrada neste período.";
-  }
+if (mentalBoa > mentalRuim) {
+  mensagem += "🔋 Sua energia mental apresentou mais registros positivos do que difíceis neste período.<br><br>";
+} else if (mentalRuim > mentalBoa) {
+  mensagem += "🪫 Sua energia mental apareceu mais baixa em vários registros, indicando possível cansaço mental ou sobrecarga.<br><br>";
+} else {
+  mensagem += "⚖️ Sua energia mental ficou equilibrada neste período.<br><br>";
+}
 
-  textoInsightsEl.textContent = mensagem;
+if (fisicaBoa > fisicaRuim) {
+  mensagem += "💪 Sua energia física teve bons sinais de disposição e leveza.";
+} else if (fisicaRuim > fisicaBoa) {
+  mensagem += "🥱 Sua energia física apresentou sinais de cansaço, tensão ou exaustão.";
+} else {
+  mensagem += "⚖️ Sua energia física ficou equilibrada neste período.";
+}
+
+textoInsightsEl.innerHTML = mensagem;
 }
 
 function converterEnergiaFisica(valor) {

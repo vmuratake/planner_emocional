@@ -5,7 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Dashboard Emocional • Planner Emocional</title>
+  <title>Relatório Emocional • Planner Emocional</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/dashboard.css" />
@@ -14,84 +20,93 @@
 </head>
 
 <body>
-  <main class="page dashboard-page">
-    <header class="entry-header">
-      <button id="btnVoltarHistorico" class="nav-btn nav-left" type="button" title="Voltar">
-        ‹
+  <main class="page dashboard-page-shell">
+    <header class="entry-header dashboard-header-top">
+      <button id="btnVoltarHistorico" class="nav-btn nav-left" type="button" aria-label="Voltar para o calendário"
+        title="Voltar">
+        <svg class="icon-nav icon-back" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
       </button>
 
-      <h1 class="title">Dashboard Emocional</h1>
-      <p id="boasVindasDashboard" class="welcome-user">Acompanhe sua evolução emocional</p>
+      <h1 class="title">Relatório Emocional</h1>
+
+      <p id="boasVindasDashboard" class="welcome-user">
+        ✨ Vanessa, acompanhe sua evolução emocional ✨
+      </p>
 
       <div class="header-ornament" aria-hidden="true">
         <span></span><i>✦✦✦</i><span></span>
       </div>
     </header>
 
-    <section class="dashboard-container">
+    <section class="sheet dashboard-sheet">
+      <div class="sheet-content dashboard-content">
 
-      <section class="dashboard-filtros">
-        <div class="filtro-item">
-          <label for="dataInicio">Data início</label>
-          <input type="date" id="dataInicio" />
-        </div>
+        <section class="dashboard-filtros">
+          <div class="filtro-item">
+            <label for="dataInicio">Data início</label>
+            <input type="date" id="dataInicio" />
+          </div>
 
-        <div class="filtro-item">
-          <label for="dataFim">Data fim</label>
-          <input type="date" id="dataFim" />
-        </div>
+          <div class="filtro-item">
+            <label for="dataFim">Data fim</label>
+            <input type="date" id="dataFim" />
+          </div>
 
-        <div class="acoes-filtro">
-          <button id="btnFiltrarDashboard" type="button">Filtrar</button>
-          <button id="btnLimparFiltros" type="button" class="btn-secundario">Limpar</button>
-        </div>
-      </section>
+          <div class="acoes-filtro">
+            <button id="btnFiltrarDashboard" type="button">Filtrar</button>
+            <button id="btnLimparFiltros" type="button">Limpar</button>
+          </div>
+        </section>
 
-      <section class="cards-dashboard">
-        <div class="dashboard-card">
-          <h3>Total de registros</h3>
-          <p id="totalRegistros">0</p>
-        </div>
+        <section class="cards-dashboard">
+          <div class="dashboard-card">
+            <h3>Total de registros</h3>
+            <p id="totalRegistros">0</p>
+          </div>
 
-        <div class="dashboard-card">
-          <h3>Dias positivos</h3>
-          <p id="diasBons">0</p>
-        </div>
+          <div class="dashboard-card">
+            <h3>Dias positivos</h3>
+            <p id="diasBons">0</p>
+          </div>
 
-        <div class="dashboard-card">
-          <h3>Dias difíceis</h3>
-          <p id="diasRuins">0</p>
-        </div>
+          <div class="dashboard-card">
+            <h3>Dias difíceis</h3>
+            <p id="diasRuins">0</p>
+          </div>
 
-        <div class="dashboard-card">
-          <h3>Emoção mais frequente</h3>
-          <p id="emocaoFrequente">—</p>
-        </div>
-      </section>
+          <div class="dashboard-card">
+            <h3>Emoção mais frequente</h3>
+            <p id="emocaoFrequente">—</p>
+          </div>
+        </section>
 
-      <section class="grafico-card">
-        <h3>Energia ao longo do tempo</h3>
-        <div class="grafico-wrapper">
-          <canvas id="graficoLinhaEnergias"></canvas>
-        </div>
-      </section>
+        <section class="dashboard-panel">
+          <h3>Energia ao longo do tempo</h3>
+          <div class="grafico-wrapper">
+            <canvas id="graficoLinhaEnergias"></canvas>
+          </div>
+        </section>
 
-      <section class="grafico-card">
-        <h3>Comparativo das energias Mental e Física</h3>
-        <div class="grafico-wrapper grafico-wrapper-menor">
-          <canvas id="graficoComparativo"></canvas>
-        </div>
-      </section>
+        <section class="dashboard-panel">
+          <h3>Comparativo das energias Mental e Física</h3>
+          <div class="grafico-wrapper grafico-wrapper-menor">
+            <canvas id="graficoComparativo"></canvas>
+          </div>
+        </section>
 
-      <section class="insights-card">
-        <h2>Insights do período</h2>
-        <p id="textoInsights">Carregando análise emocional...</p>
-      </section>
+        <section class="dashboard-panel insights-card">
+          <h3>Insights do período</h3>
+          <p id="textoInsights">Carregando análise emocional...</p>
+        </section>
 
-      <section id="dashboardVazio" class="dashboard-vazio hidden">
-        <p>Nenhum registro encontrado para gerar o dashboard.</p>
-      </section>
+        <section id="dashboardVazio" class="dashboard-vazio hidden">
+          <p></p>
+        </section>
 
+      </div>
     </section>
   </main>
 
