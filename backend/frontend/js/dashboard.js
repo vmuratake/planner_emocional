@@ -3,6 +3,7 @@ const API_BASE_URL =
     ? "http://localhost:3000"
     : "https://planneremocional-production.up.railway.app";
 
+const boasVindasDashboard = document.getElementById("boasVindasDashboard");
 const totalRegistrosEl = document.getElementById("totalRegistros");
 const diasBonsEl = document.getElementById("diasBons");
 const diasRuinsEl = document.getElementById("diasRuins");
@@ -15,6 +16,7 @@ const btnFiltrarDashboard = document.getElementById("btnFiltrarDashboard");
 const btnLimparFiltros = document.getElementById("btnLimparFiltros");
 const dataInicioEl = document.getElementById("dataInicio");
 const dataFimEl = document.getElementById("dataFim");
+
 
 let registros = [];
 let graficoLinhaInstance = null;
@@ -39,11 +41,39 @@ const LABEL_EMOCOES = {
   NOSTALGICO: "🍂 Nostálgico(a)"
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  configurarEventos();
-  aplicarPeriodoPadrao();
-  carregarDashboard();
-});
+function aplicarBoasVindas() {
+
+  const user = getUsuarioLogado();
+
+  if (!user?.id) {
+    window.location.href = "/login";
+    return;
+  }
+
+  const primeiroNome =
+    String(user.nome || "")
+      .trim()
+      .split(" ")[0] || "usuária";
+
+  if (boasVindasDashboard) {
+
+    boasVindasDashboard.textContent =
+      `✨ ${primeiroNome}, acompanhe sua evolução emocional ✨`;
+  }
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    aplicarBoasVindas();
+    configurarEventos();
+    aplicarPeriodoPadrao();
+    carregarDashboard();
+  }
+);
+
 
 function configurarEventos() {
   btnVoltarHistorico?.addEventListener("click", () => {
@@ -383,23 +413,23 @@ function gerarInsights() {
   let mensagem = "";
 
 
-if (mentalBoa > mentalRuim) {
-  mensagem += "🔋 Sua energia mental apresentou mais registros positivos do que difíceis neste período.<br><br>";
-} else if (mentalRuim > mentalBoa) {
-  mensagem += "🪫 Sua energia mental apareceu mais baixa em vários registros, indicando possível cansaço mental ou sobrecarga.<br><br>";
-} else {
-  mensagem += "⚖️ Sua energia mental ficou equilibrada neste período.<br><br>";
-}
+  if (mentalBoa > mentalRuim) {
+    mensagem += "🔋 Sua energia mental apresentou mais registros positivos do que difíceis neste período.<br><br>";
+  } else if (mentalRuim > mentalBoa) {
+    mensagem += "🪫 Sua energia mental apareceu mais baixa em vários registros, indicando possível cansaço mental ou sobrecarga.<br><br>";
+  } else {
+    mensagem += "⚖️ Sua energia mental ficou equilibrada neste período.<br><br>";
+  }
 
-if (fisicaBoa > fisicaRuim) {
-  mensagem += "💪 Sua energia física teve bons sinais de disposição e leveza.";
-} else if (fisicaRuim > fisicaBoa) {
-  mensagem += "🥱 Sua energia física apresentou sinais de cansaço, tensão ou exaustão.";
-} else {
-  mensagem += "⚖️ Sua energia física ficou equilibrada neste período.";
-}
+  if (fisicaBoa > fisicaRuim) {
+    mensagem += "💪 Sua energia física teve bons sinais de disposição e leveza.";
+  } else if (fisicaRuim > fisicaBoa) {
+    mensagem += "🥱 Sua energia física apresentou sinais de cansaço, tensão ou exaustão.";
+  } else {
+    mensagem += "⚖️ Sua energia física ficou equilibrada neste período.";
+  }
 
-textoInsightsEl.innerHTML = mensagem;
+  textoInsightsEl.innerHTML = mensagem;
 }
 
 function converterEnergiaFisica(valor) {
