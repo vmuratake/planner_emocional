@@ -490,3 +490,20 @@
     font-size: 0.72rem;
   }
 }
+
+.calendar-help-text {
+  width: min(700px, 100%);
+  margin: 22px auto 0;
+  padding: 10px 16px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(47, 64, 127, 0.72);
+  border-radius: 999px;
+  border: 1px solid rgba(223, 211, 201, 0.75);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 8px 18px rgba(44, 49, 92, 0.06);
+  overflow-wrap: anywhere;
+}
