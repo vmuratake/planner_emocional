@@ -181,6 +181,8 @@
   font-size: 1.65rem;
   font-weight: 700;
   color: #31428d;
+  text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .grafico-wrapper {
@@ -224,6 +226,110 @@
 .hidden {
   display: none !important;
 }
+
+
+/* INSIGHTS E RECOMENDAÇÕES */
+.recomendacoes-card {
+  background:
+    radial-gradient(700px 260px at 10% 0%, rgba(230, 245, 232, 0.45), transparent 60%),
+    rgba(255, 250, 247, 0.82);
+}
+
+.recomendacoes-lista {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.recomendacao-item {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  align-items: start;
+
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(214, 163, 150, 0.45);
+  background: rgba(255, 255, 255, 0.50);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(47, 64, 127, 0.88);
+}
+
+.recomendacao-icone {
+  text-align: center;
+}
+
+
+/* INSIGHTS E RECOMENDAÇÕES */
+.insights-lista {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.insight-item {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  align-items: start;
+
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(214, 163, 150, 0.45);
+
+  background: rgba(255, 255, 255, 0.50);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.45;
+
+  color: rgba(47, 64, 127, 0.88);
+}
+
+.insight-icone {
+  text-align: center;
+}
+
+
+.frase-card {
+  background:
+    radial-gradient(700px 260px at 90% 0%, rgba(232, 230, 255, 0.45), transparent 60%),
+    rgba(255, 250, 247, 0.82);
+}
+
+/* Estilização para as frases inspiradoras, utilizando um design leve e acolhedor com bordas arredondadas e um fundo suave, além de uma tipografia elegante e legível para criar um ambiente motivador e agradável no dashboard, incentivando o usuário a refletir sobre suas emoções de forma positiva e inspiradora */
+.frase-card p {
+  margin: 0;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+  border: 1px dashed rgba(214, 163, 150, 0.45);
+
+  background: rgba(255, 255, 255, 0.45);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.93rem;
+  font-weight: 500;
+  line-height: 1.7;
+
+  color: rgba(47, 64, 127, 0.90);
+
+  text-align: left;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
 
 /* RESPONSIVO */
 @media (max-width: 700px) {
