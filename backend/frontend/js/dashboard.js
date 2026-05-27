@@ -73,6 +73,7 @@ document.addEventListener(
 
     aplicarBoasVindas();
     configurarEventos();
+    configurarCalendarios();
     aplicarPeriodoPadrao();
     carregarDashboard();
   }
@@ -112,6 +113,14 @@ function aplicarPeriodoPadrao() {
 
   seteDiasAtras.setDate(hoje.getDate() - 6);
 
+  function converterDataBRParaBanco(dataBR) {
+    if (!dataBR) return "";
+    const [dia, mes, ano] = dataBR.split("/");
+    if (!dia || !mes || !ano) return "";
+    return `${ano}-${mes}-${dia}`;
+  }
+
+
   dataInicioEl.value = formatarDataInput(seteDiasAtras);
   dataFimEl.value = formatarDataInput(hoje);
 }
@@ -140,7 +149,12 @@ async function carregarDashboard() {
     let url = `${API_BASE_URL}/checkins/dashboard?login_id=${user.id}`;
 
     if (dataInicioEl?.value && dataFimEl?.value) {
-      url += `&data_inicio=${dataInicioEl.value}&data_fim=${dataFimEl.value}`;
+      const dataInicioBanco = converterDataParaBanco(dataInicioEl.value);
+      const dataFimBanco = converterDataParaBanco(dataFimEl.value);
+
+      if (dataInicioBanco && dataFimBanco) {
+        url += `&data_inicio=${dataInicioBanco}&data_fim=${dataFimBanco}`;
+      }
     }
 
     const response = await fetch(url);
@@ -733,10 +747,46 @@ function formatarData(data) {
   return `${dia}/${mes}/${ano}`;
 }
 
+function converterDataParaBanco(data) {
+  if (!data) return "";
+  if (data.includes("-")) {
+    return data;
+  }
+
+  if (data.includes("/")) {
+    const [dia, mes, ano] = data.split("/");
+    if (!dia || !mes || !ano) return "";
+    return `${ano}-${mes}-${dia}`;
+  }
+
+  return "";
+}
+
 function formatarDataInput(data) {
   const ano = data.getFullYear();
   const mes = String(data.getMonth() + 1).padStart(2, "0");
   const dia = String(data.getDate()).padStart(2, "0");
 
-  return `${ano}-${mes}-${dia}`;
+  return `${dia}/${mes}/${ano}`;
+}
+
+
+// Configurar os campos de data para utilizar o Flatpickr, garantindo uma melhor experiência de seleção de datas e evitando erros de formatação, além de permitir a entrada manual para maior flexibilidade do usuário
+function configurarCalendarios() {
+  if (typeof flatpickr !== "function") {
+    console.warn("Flatpickr não carregado.");
+    return;
+  }
+
+  flatpickr("#dataInicio", {
+    locale: "pt",
+    dateFormat: "d/m/Y",
+    allowInput: true
+  });
+
+  flatpickr("#dataFim", {
+    locale: "pt",
+    dateFormat: "d/m/Y",
+    allowInput: true
+  });
 }

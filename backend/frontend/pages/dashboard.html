@@ -21,7 +21,13 @@
   <link rel="stylesheet" href="/css/dashboard.css" />
   <link rel="canonical" href="https://www.diariodebordo.net.br/dashboard">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 </head>
 
 <body>
@@ -52,12 +58,12 @@
         <section class="dashboard-filtros">
           <div class="filtro-item">
             <label for="dataInicio">Data início</label>
-            <input type="date" id="dataInicio" />
+            <input type="text" id="dataInicio" placeholder="dd/mm/aaaa" />
           </div>
 
           <div class="filtro-item">
             <label for="dataFim">Data fim</label>
-            <input type="date" id="dataFim" />
+            <input type="text" id="dataFim" placeholder="dd/mm/aaaa" />
           </div>
 
           <div class="acoes-filtro">
